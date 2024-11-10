@@ -44,7 +44,7 @@ namespace QuickMed
         protected override Window CreateWindow(IActivationState? activationState)
         {
             var window = base.CreateWindow(activationState);
-            window.Title = "QuickMed";
+            window.Title = "QuickMed - Prescribe Effectively";
             return window;
         }
 
