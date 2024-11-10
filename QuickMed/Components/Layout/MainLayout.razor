@@ -2,11 +2,9 @@
 @using QuickMed.ViewModels
 @using System.Text.Json
 @inject IJSRuntime JS
-
+@inject NavigationManager Navigation
 
 <div class="page">
-    
-
     <main>
         <article class="content px-4">
             @Body
@@ -14,40 +12,43 @@
     </main>
 </div>
 
-@code{
-    // private List<MenuItem> menuData = new List<MenuItem>
-    // {
-    //     new MenuItem
-    //     {
-    //         Name = "Fuckers",
-    //         Icon = "ti-smart-home",
-    //         Link = "javascript:void(0)",
-    //         SubMenu = new List<MenuItem>
-    //         {
-    //             new MenuItem { Name = "Analytics", Link = "index.html", Icon = "ti-chart-pie-2" },
-    //             new MenuItem { Name = "CRM", Link = "dashboards-crm.html", Icon = "ti-3d-cube-sphere" },
-    //             new MenuItem { Name = "eCommerce", Link = "dashboards-ecommerce.html", Icon = "ti-atom-2" }
-    //         }
-    //     }
-    //     // Add more items as needed
-    // };
+@code {
+    private string currentPage;
+
     protected override async Task OnInitializedAsync()
     {
-        // Convert the C# menu data to JSON
-        // var menuJson = JsonSerializer.Serialize(menuData);
+        // Track the current page
+        currentPage = Navigation.Uri;
 
-        // Pass the JSON data to JavaScript to render the menu
-        await JS.InvokeVoidAsync("LoadPage", "1");
+        // Conditionally invoke the JavaScript function only if the current page is not the "counter" page
+        if (
+
+            !currentPage.Contains("/dashboard")
+            && !currentPage.Contains("/prescription")
+            && !currentPage.Contains("/prescription-list")
+            && !currentPage.Contains("/treatment")
+            && !currentPage.Contains("/favourite")
+            && !currentPage.Contains("/refer")
+            && !currentPage.Contains("/advice")
+            && !currentPage.Contains("/ix")
+            && !currentPage.Contains("/dose")
+            && !currentPage.Contains("/duration")
+            && !currentPage.Contains("/dx")
+            && !currentPage.Contains("/cc")
+            && !currentPage.Contains("/mix")
+            && !currentPage.Contains("/note")
+            && !currentPage.Contains("/appoinment")
+            && !currentPage.Contains("/databaseTool")
+            && !currentPage.Contains("/checkUpgrade")
+            && !currentPage.Contains("/drug")
+
+
+
+        )
+        {
+            await JS.InvokeVoidAsync("clearLocalStorage");
+            await JS.InvokeVoidAsync("LoadPage", "1");
+        }
+       
     }
-
-
 }
-
-<script>
-
-
-   
-    // Call the function with your menu data
-    // generateMenu(menuData);
-
-</script>

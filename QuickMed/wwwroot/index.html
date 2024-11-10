@@ -60,6 +60,97 @@
     <script src="themeassets/vendor/js/template-customizer.js"></script>
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="themeassets/js/config.js"></script>
+    <script>
+
+
+        function setActiveMenu(menuId) {
+            // Remove active class from all menu items
+            const allMenuItems = document.querySelectorAll('.menu-item');
+            allMenuItems.forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Add active class to the clicked menu item
+            const menuItem = document.getElementById(menuId);
+            if (menuItem) {
+                menuItem.classList.add('active');
+                // Save the active menu item to localStorage
+                localStorage.setItem('activeMenu', menuId);
+            }
+
+            // Redirect to respective pages
+            switch (menuId) {
+                case 'dashboard':
+                    window.location.href = '/dashboard';
+                    break;
+                case 'prescription':
+                    window.location.href = '/prescription';
+                    break;
+                case 'prescription-list':
+                    window.location.href = '/prescription-list';
+                    break;
+                case 'treatment':
+                    window.location.href = '/treatment';
+                    break;
+                case 'favourite':
+                    window.location.href = '/favourite';
+                    break;
+                case 'refer':
+                    window.location.href = '/refer';
+                    break;
+                case 'advice':
+                    window.location.href = '/advice';
+                    break;
+                case 'ix':
+                    window.location.href = '/ix';
+                    break;
+                case 'dose':
+                    window.location.href = '/dose';
+                    break;
+                case 'duration':
+                    window.location.href = '/duration';
+                    break;
+                case 'dx':
+                    window.location.href = '/dx';
+                    break;
+                case 'cc':
+                    window.location.href = '/cc';
+                    break;
+                case 'mix':
+                    window.location.href = '/mix';
+                    break;
+                case 'note':
+                    window.location.href = '/note';
+                    break;
+                case 'appoinment':
+                    window.location.href = '/appoinment';
+                    break;
+                case 'databaseTool':
+                    window.location.href = '/databaseTool';
+                    break;
+                case 'checkUpgrade':
+                    window.location.href = '/checkUpgrade';
+                    break;
+                case 'drug':
+                    window.location.href = '/drug';
+                    break;
+            }
+        }
+
+        // On page load, check localStorage for the active menu and apply the active class
+        window.onload = function () {
+            const activeMenu = localStorage.getItem('activeMenu');
+            if (activeMenu) {
+                const menuItem = document.getElementById(activeMenu);
+                if (menuItem) {
+                    menuItem.classList.add('active');
+                }
+            }
+        }
+
+
+
+    </script>
 </head>
 
 <body cz-shortcut-listen="true" id="bodyyy">
@@ -139,7 +230,7 @@
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img src="themeassets/img/avatars/1.png" alt class="h-auto rounded-circle" />
+                                        <img src="themeassets/img/avatars/1.png" alt="IMAGE" class="h-auto rounded-circle" />
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -212,35 +303,125 @@
                     <aside id="layout-menu" class="layout-menu-horizontal menu-horizontal menu bg-menu-theme flex-grow-0">
                         <div class="container-xxl d-flex h-100">
                             <ul class="menu-inner">
-                                <!-- Dashboards -->
-                                <li class="menu-item">
-                                    <a href="javascript:void(0)" class="menu-link menu-toggle">
+                                <li id="dashboard" class="menu-item" onclick="setActiveMenu('dashboard')">
+                                    <a href="javascript:void(0)" class="menu-link">
                                         <i class="menu-icon tf-icons ti ti-smart-home"></i>
                                         <div data-i18n="Dashboards">Dashboards</div>
                                     </a>
+                                </li>
+                                <li id="prescription" class="menu-item" onclick="setActiveMenu('prescription')">
+                                    <a href="javascript:void(0)" class="menu-link">
+                                        <i class="menu-icon tf-icons ti ti-medical-cross"></i>
+                                        <div data-i18n="Prescription">Prescription</div>
+                                    </a>
+                                </li>
+                                <li id="prescription-list" class="menu-item" onclick="setActiveMenu('prescription-list')">
+                                    <a href="javascript:void(0)" class="menu-link">
+                                        <i class="menu-icon tf-icons ti ti-clipboard-list"></i>
+                                        <div data-i18n="Prescription List">Prescription List</div>
+                                    </a>
+                                </li>
+                                <li id="template" class="menu-item" onclick="setActiveMenu('template')">
+                                    <a href="javascript:void(0)" class="menu-link menu-toggle">
+                                        <i class="menu-icon tf-icons ti ti-file"></i>
+                                        <div data-i18n="Template">Template</div>
+                                    </a>
                                     <ul class="menu-sub">
-                                        <li class="menu-item">
+                                        <li id="treatment" class="menu-item" onclick="setActiveMenu('treatment')">
                                             <a href="index.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-chart-pie-2"></i>
-                                                <div data-i18n="Analytics">Analytics</div>
+                                                <i class="menu-icon tf-icons ti ti-rocket"></i>
+                                                <div data-i18n="Treatment">Treatment</div>
                                             </a>
                                         </li>
-                                        <li class="menu-item">
+                                        <li id="favourite" class="menu-item" onclick="setActiveMenu('favourite')">
                                             <a href="dashboards-crm.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-3d-cube-sphere"></i>
-                                                <div data-i18n="CRM">CRM</div>
+                                                <i class="menu-icon tf-icons ti ti-heart"></i>
+                                                <div data-i18n="Favourite">Favourite</div>
                                             </a>
                                         </li>
-                                        <li class="menu-item">
+                                        <li class="menu-item" id="refer" onclick="setActiveMenu('refer')">
                                             <a href="dashboards-ecommerce.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-atom-2"></i>
-                                                <div data-i18n="eCommerce">eCommerce</div>
+                                                <i class="menu-icon tf-icons ti ti-link"></i>
+                                                <div data-i18n="Refer">Refer</div>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" id="advice" onclick="setActiveMenu('advice')">
+                                            <a href="dashboards-ecommerce.html" class="menu-link">
+                                                <i class="menu-icon tf-icons ti ti-link"></i>
+                                                <div data-i18n="Advice">Advice</div>
+                                            </a>
+                                        </li>
+
+                                        <li class="menu-item" id="ix" onclick="setActiveMenu('ix')">
+                                            <a href="dashboards-ecommerce.html" class="menu-link">
+                                                <i class="menu-icon tf-icons ti ti-calculator"></i>
+                                                <div data-i18n="IX">IX</div>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" id="dose" onclick="setActiveMenu('dose')">
+                                            <a href="dashboards-ecommerce.html" class="menu-link">
+                                                <i class="menu-icon tf-icons ti ti-pills"></i>
+                                                <div data-i18n="Dose">Dose</div>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" id="duration" onclick="setActiveMenu('duration')">
+                                            <a href="dashboards-ecommerce.html" class="menu-link">
+                                                <i class="menu-icon tf-icons ti ti-wheelchair"></i>
+                                                <div data-i18n="Duration">Duration</div>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" id="dx" onclick="setActiveMenu('dx')">
+                                            <a href="dashboards-ecommerce.html" class="menu-link">
+                                                <i class="menu-icon tf-icons ti ti-stethoscope"></i>
+                                                <div data-i18n="DX">DX</div>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" id="cc" onclick="setActiveMenu('cc')">
+                                            <a href="dashboards-ecommerce.html" class="menu-link">
+                                                <i class="menu-icon tf-icons ti ti-clipboard"></i>
+                                                <div data-i18n="CC">CC</div>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" id="mix" onclick="setActiveMenu('mix')">
+                                            <a href="dashboards-ecommerce.html" class="menu-link">
+                                                <i class="menu-icon tf-icons ti ti-flask"></i>
+                                                <div data-i18n="MIX">MIX</div>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item" id="note" onclick="setActiveMenu('note')">
+                                            <a href="dashboards-ecommerce.html" class="menu-link">
+                                                <i class="menu-icon tf-icons ti ti-align-left"></i>
+                                                <div data-i18n="Note">Note</div>
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
-
+                                <li class="menu-item" id="appoinment" onclick="setActiveMenu('appoinment')">
+                                    <a href="javascript:void(0)" class="menu-link">
+                                        <i class="menu-icon tf-icons ti ti-calendar"></i>
+                                        <div data-i18n="Appoinment">Appoinment</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item" id="databaseTool" onclick="setActiveMenu('databaseTool')">
+                                    <a href="javascript:void(0)" class="menu-link">
+                                        <i class="menu-icon tf-icons ti ti-database"></i>
+                                        <div data-i18n="Database Tool">Database Tool</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item" id="checkUpgrade" onclick="setActiveMenu('checkUpgrade')">
+                                    <a href="javascript:void(0)" class="menu-link">
+                                        <i class="menu-icon tf-icons ti ti-arrow-up-circle"></i>
+                                        <div data-i18n="Check Upgrade">Check Upgrade</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item" id="drug" onclick="setActiveMenu('drug')">
+                                    <a href="javascript:void(0)" class="menu-link">
+                                        <i class="menu-icon tf-icons ti ti-pills"></i>
+                                        <div data-i18n="Drug">Drug</div>
+                                    </a>
+                                </li>
                             </ul>
+
                         </div>
                     </aside>
                     <!-- / Menu -->
