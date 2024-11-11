@@ -1,7 +1,31 @@
 ﻿@page "/advice"
 @using QuickMed.BaseComponent
+@using QuickMed.DB
 @inherits BaseAdvice
 <h3>Advice</h3>
+
+
+
+@* @code {
+
+    private List<TblPatient> patients = new();
+    private TblPatient model = new();
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            patients = new();
+            patients = await App.Database.GetTableRowsAsync<TblPatient>("TblPatient");
+          
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+
+    }
+} *@
 
 
 

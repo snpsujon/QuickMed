@@ -36,6 +36,8 @@ namespace QuickMed
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
+
+
             ExtractEMService.ExtractEMServices(builder.Services);
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddSingleton<ApplicationDbContext>();

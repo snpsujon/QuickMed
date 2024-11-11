@@ -18,9 +18,8 @@ namespace QuickMed.Services
         public async Task<dynamic> GetAdviceMasterData()
         {
             try
-            {
-                //await _context.InitializeAsync();
-                return await _context.GetTableRowsAsync<TblDose>("TblDose");
+            {            
+                return await _context.GetTableRowsAsync<TblAdviceMaster>("TblAdviceMaster");
             }
             catch (Exception ex)
             {

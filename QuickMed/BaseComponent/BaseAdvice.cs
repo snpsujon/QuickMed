@@ -16,8 +16,8 @@ namespace QuickMed.BaseComponent
         [Inject]
         public IEnumerable<TblAdviceMaster> masterData { get; set; }
         protected override async  Task OnInitializedAsync()
-        {
-            masterData = await _advice.GetAdviceMasterData().Result;
+        {            
+            masterData = await _advice.GetAdviceMasterData();
         }
     }
 }
