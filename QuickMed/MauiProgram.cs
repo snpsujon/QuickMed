@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using QuickMed.DB;
+using QuickMed.RegisterServices;
 using QuickMed.Services;
 
 namespace QuickMed
@@ -35,7 +36,7 @@ namespace QuickMed
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
-
+            ExtractEMService.ExtractEMServices(builder.Services);
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddSingleton<ApplicationDbContext>();
             //builder.Services.AddHostedService<DataSyncService>();

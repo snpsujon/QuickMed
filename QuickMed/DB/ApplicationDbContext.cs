@@ -13,21 +13,48 @@ namespace QuickMed.DB
         private string databaseDirectory = Path.Combine(Microsoft.Maui.Storage.FileSystem.AppDataDirectory, "QuickMedDb");
 
 
+        //public ApplicationDbContext()
+        //{
+        //    InitializeDatabaseConnection().ConfigureAwait(false).GetAwaiter().GetResult(); // To run it synchronously
+        //}
+
+        //public ApplicationDbContext()
+        //{
+        //    // Empty constructor; database initialization moved to InitializeAsync method.
+        //}
+        public async Task InitializeAsync()
+        {
+            await InitializeDatabaseConnection(); // Ensure async initialization completes
+        }
+
+
         public ApplicationDbContext()
         {
             InitializeDatabaseConnection();
         }
 
-        private void InitializeDatabaseConnection()
+
+
+        private async Task InitializeDatabaseConnection()
         {
             if (_dbConnection == null)
             {
                 string databasePath = GetDatabasePath();
                 _dbConnection = new SQLiteAsyncConnection(databasePath, Flags);
-                InitializeDatabase();
+                await InitializeDatabase().ConfigureAwait(false);
             }
         }
 
+        //private async Task InitializeDatabaseConnection()
+        //{
+        //    if (_dbConnection == null)
+        //    {
+        //        string databasePath = GetDatabasePath();
+        //        _dbConnection = new SQLiteAsyncConnection(databasePath, Flags);
+        //        await InitializeDatabase(); 
+        //    }
+        //}
+       
         public string GetDatabasePath()
         {
             if (!Directory.Exists(databaseDirectory))
@@ -39,23 +66,29 @@ namespace QuickMed.DB
         }
 
 
-        private async void InitializeDatabase()
+        private async Task InitializeDatabase()
         {
-            await _dbConnection.CreateTableAsync<TblPatient>();
-            await _dbConnection.CreateTableAsync<TblTreatmentTemplate>();
-            await _dbConnection.CreateTableAsync<TblBrand>();
-            await _dbConnection.CreateTableAsync<TblGeneric>();
-            await _dbConnection.CreateTableAsync<TblCompany>();
-            await _dbConnection.CreateTableAsync<TblPrescription>();
-            await _dbConnection.CreateTableAsync<TblPrescriptionDetails>();
-            await _dbConnection.CreateTableAsync<TblDoctor>();
-            await _dbConnection.CreateTableAsync<TblDose>();
-            await _dbConnection.CreateTableAsync<TblDuration>();
-            await _dbConnection.CreateTableAsync<TblLicenseInfo>();
+            await _dbConnection.CreateTableAsync<TblPatient>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblTreatmentTemplate>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblBrand>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblGeneric>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblCompany>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblPrescription>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblPrescriptionDetails>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblDoctor>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblDose>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblDuration>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblLicenseInfo>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblAdviceMaster>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblAdviceTemplate>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblAdviceTemplateDetails>().ConfigureAwait(false);
 
-            insertSeedDoseData();
-            insertSeedDurationData();
+            // Await the seed data methods to ensure they complete before continuing
+            await insertSeedDoseData().ConfigureAwait(false);
+            await insertSeedDurationData().ConfigureAwait(false);
+            await insertSeedAdviceMasterData().ConfigureAwait(false);
         }
+
 
         public async Task CloseConnectionAsync()
         {
@@ -71,7 +104,7 @@ namespace QuickMed.DB
             {
                 string databasePath = GetDatabasePath();
                 _dbConnection = new SQLiteAsyncConnection(databasePath, Flags);
-                InitializeDatabase(); // Optionally re-create tables or validate schema
+                InitializeDatabase().Wait(); // Optionally re-create tables or validate schema
             }
         }
 
@@ -81,6 +114,18 @@ namespace QuickMed.DB
             try
             {
                 return await _dbConnection.InsertAsync(entity);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        public async Task<int> CreateMultipleAsync<TEntity>(List<TEntity> entity) where TEntity : class
+        {
+            try
+            {
+                return await _dbConnection.InsertAllAsync(entity);
             }
             catch (Exception e)
             {
@@ -156,6 +201,10 @@ namespace QuickMed.DB
         {
             try
             {
+                //await InitializeAsync();
+
+                //await Task.Run(async () => await InitializeAsync().ConfigureAwait(false));
+
                 object[] obj = new object[] { };
                 TableMapping map = new TableMapping(Type.GetType(nameSpace + tableName));
                 string query = "SELECT * FROM [" + tableName + "]";
@@ -179,7 +228,7 @@ namespace QuickMed.DB
             return _dbConnection.QueryAsync(map, query, obj).Result.FirstOrDefault();
         }
 
-        private async void insertSeedDoseData()
+        private async Task insertSeedDoseData()
         {
             // Implement seeding logic for TblDose
             try
@@ -246,7 +295,7 @@ namespace QuickMed.DB
 
         }
 
-        private async void insertSeedDurationData()
+        private async Task insertSeedDurationData()
         {
             // Implement seeding logic for TblDuration
 
@@ -292,6 +341,45 @@ namespace QuickMed.DB
 
 
             };
+
+                    // Insert the initial data into the table
+                    await _dbConnection.InsertAllAsync(initialDoses);
+                }
+            }
+
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        private async Task insertSeedAdviceMasterData()
+        {
+            // Implement seeding logic for TblDuration
+
+            try
+            {
+                var count = await _dbConnection.Table<TblAdviceMaster>().CountAsync();
+
+                // Insert data only if the table is empty
+                if (count == 0)
+                {
+                    // Define initial data
+                    var initialDoses = new List<TblAdviceMaster>
+{
+    new TblAdviceMaster { AdviceName = "নিয়মিত ঔষধ খাবেন।" },
+    new TblAdviceMaster { AdviceName = "পরবর্তী সাক্ষাতে প্রেসক্রিপশন ও এই ফাইলটি সাথে আনবেন।" },
+    new TblAdviceMaster { AdviceName = "জ্বর ১০২ এর বেশি হলে ১টি Napa Suppository (500 mg) পায়ুপথের মাধ্যমে দেবেন।" },
+    new TblAdviceMaster { AdviceName = "ভিটামিন সি যুক্ত ফল বেশি পরিমাণে খাবেন।" },
+    new TblAdviceMaster { AdviceName = "প্রতিদিন অন্তত ৮ গ্লাস পানি পান করবেন।" },
+    new TblAdviceMaster { AdviceName = "চাপের-লেখা উত্তম চিকিৎসকের পরামর্শ ছাড়া বন্ধ করবেন না।" },
+    new TblAdviceMaster { AdviceName = "ধুমপান ও তামাকজাত দ্রব্য ব্যবহার নিষেধ।" },
+    new TblAdviceMaster { AdviceName = "অতিরিক্ত কায়িক পরিশ্রম নিষেধ।" },
+    new TblAdviceMaster { AdviceName = "পান্তা ভাত খাওয়া নিষেধ।" },
+    new TblAdviceMaster { AdviceName = "পাতে আলু, চিপস, ফ্রাইড রাইস ও উচ্চ ক্যালোরিযুক্ত খাবার কম খাবেন।" },
+    new TblAdviceMaster { AdviceName = "প্রতিদিন সকালের ১৫ মিনিটের সময় ৫ মিনিট করে হাঁটবেন।" },
+    new TblAdviceMaster { AdviceName = "সপ্তাহে ২ বার ব্লাড প্রেসার পরীক্ষা করবেন।" }
+};
 
                     // Insert the initial data into the table
                     await _dbConnection.InsertAllAsync(initialDoses);
