@@ -1,62 +1,256 @@
 ﻿@page "/prescription"
+@inject IJSRuntime JS
 
-<div class="card mb-4">
-    <h5 class="card-header">Multi Column with Form Separator</h5>
-    <form class="card-body">
-        <h6>1. Account Details</h6>
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label" for="multicol-username">Username</label>
-                <input type="text" id="multicol-username" class="form-control" placeholder="john.doe" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label" for="multicol-email">Email</label>
-                <div class="input-group input-group-merge">
-                    <input type="text"
-                           id="multicol-email"
-                           class="form-control"
-                           placeholder="john.doe"
-                           aria-label="john.doe"
-                           aria-describedby="multicol-email2" />
-                    <span class="input-group-text" id="multicol-email2">xample.com</span>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-password-toggle">
-                    <label class="form-label" for="multicol-password">Password</label>
-                    <div class="input-group input-group-merge">
-                        <input type="password"
-                               id="multicol-password"
-                               class="form-control"
-                               placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                               aria-describedby="multicol-password2" />
-                        <span class="input-group-text cursor-pointer" id="multicol-password2">
-                            <i class="ti ti-eye-off"></i>
-                        </span>
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                @*
+                <h4 class="card-title">Textual inputs</h4>
+                <p class="text-muted mb-0">
+                Here are examples of <code class="highlighter-rouge">.form-control</code> applied to each
+                textual HTML5 <code class="highlighter-rouge">&lt;input&gt;</code> <code class="highlighter-rouge">type</code>.
+                </p> *@
+            </div><!--end card-header-->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="mb-3 row">
+
+                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Name</label>
+                            <div class="col-sm-3">
+                                <input class="form-control" type="text" value="" id="example-text-input">
+                            </div>
+                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Age</label>
+                            <div class="col-sm-1">
+                                <input class="form-control" type="number" value="" id="example-text-input">
+                            </div>
+                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Sex</label>
+                            <div class="col-sm-1">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected>Select</option>
+                                    <option value="1">M</option>
+                                    <option value="2">F</option>
+                                    <option value="3">O</option>
+                                </select>
+                            </div>
+                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Address</label>
+                            <div class="col-sm-3">
+                                <input class="form-control" type="text" value="" id="example-text-input">
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3 row">
+
+                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Mobile</label>
+                            <div class="col-sm-3">
+                                <input class="form-control" type="text" value="" id="example-text-input">
+                            </div>
+                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Reg No.</label>
+                            <div class="col-sm-1">
+                                <input class="form-control" type="number" value="" id="example-text-input">
+                            </div>
+                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Wt</label>
+                            <div class="col-sm-1">
+                                <input class="form-control" type="number" value="" id="example-text-input">
+                            </div>
+                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Date</label>
+                            <div class="col-sm-3">
+                                <input class="form-control" type="date" value="" id="example-text-input">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-lg-3">
+                        <div class="mb-3 row">
+                            <div class="col-sm-12 text-end">
+                                <button type="button" class="btn btn-outline-info btn-icon-circle btn-icon-circle-sm" title="Preview"><i class="fa fa-expand"></i></button>
+                                <button type="button" class="btn btn-outline-success btn-icon-circle btn-icon-circle-sm" title="Save & Print"><i class="fa fa-print"></i></button>
+                                <button type="button" class="btn btn-outline-danger btn-icon-circle btn-icon-circle-sm" title="Save & Print Without Header"><i class="far fa-file-alt"></i></button>
+                                <button type="button" class="btn btn-outline-primary btn-icon-circle btn-icon-circle-sm" title="Save Only"><i class="far fa-save"></i></button>
+                                <button type="button" class="btn btn-outline-warning btn-icon-circle btn-icon-circle-sm" title="Save as Template"><i class="far fa-bookmark"></i></button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-password-toggle">
-                    <label class="form-label" for="multicol-confirm-password">Confirm Password</label>
-                    <div class="input-group input-group-merge">
-                        <input type="password"
-                               id="multicol-confirm-password"
-                               class="form-control"
-                               placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                               aria-describedby="multicol-confirm-password2" />
-                        <span class="input-group-text cursor-pointer" id="multicol-confirm-password2">
-                            <i class="ti ti-eye-off"></i>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr class="my-4 mx-n4" />
-        
-        <div class="pt-4">
-            <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
-            <button type="reset" class="btn btn-label-secondary">Cancel</button>
-        </div>
-    </form>
-</div>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div><!--end col-->
+</div><!--end row-->
+<div class="row">
+    <div class="col-lg-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                    </div><!--end card-header-->
+                    <div class="card-body">
+                        <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
+                        <div class="table-responsive">
+                            <table class="table  table-bordered table-sm" id="Dxtable">
+                                <thead>
+                                    <tr>
+                                        <th>C/C</th>
+                                        <th>Duration</th>
+                                        <th>D/M</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Default</td>
+                                        <td>Defaultson</td>
+                                        <td>def@somemail.com</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <span class="float-right">
+                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
+                        </span><!--end table-->
+                    </div><!--end card-body-->
+                </div><!--end card-->
+            </div> <!-- end col -->
+
+
+        </div> <!-- end row -->
+
+
+    </div><!--end col-->
+
+    <div class="col-lg-8">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row mb-2">
+                            <div class="col-sm-3 text-center">
+                                
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
+                                    <option selected disabled>Drag Template</option>
+                                    <option value="1">M</option>
+                                    <option value="2">F</option>
+                                    <option value="3">O</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
+                                    <option selected disabled>Treatment Template</option>
+                                    <option value="1">M</option>
+                                    <option value="2">F</option>
+                                    <option value="3">O</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
+                                    <option selected disabled>Prescription Template</option>
+                                    <option value="1">M</option>
+                                    <option value="2">F</option>
+                                    <option value="3">O</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <hr style="border-top: 1px dashed red;" />
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
+                                    <option selected disabled>Select Brand</option>
+                                    <option value="1">M</option>
+                                    <option value="2">F</option>
+                                    <option value="3">O</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
+                                    <option selected disabled>Select Dose</option>
+                                    <option value="1">M</option>
+                                    <option value="2">F</option>
+                                    <option value="3">O</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
+                                    <option selected disabled>Select Instruction</option>
+                                    <option value="1">M</option>
+                                    <option value="2">F</option>
+                                    <option value="3">O</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
+                                    <option selected disabled>Select Duration</option>
+                                    <option value="1">M</option>
+                                    <option value="2">F</option>
+                                    <option value="3">O</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-1 text-end">
+                                <button class="btn btn-success btn-sm" title="Add"><i class="fas fa-plus"></i></button>
+
+                            </div>
+                        </div>
+                        
+                    </div><!--end card-header-->
+                    <div class="card-body">
+                        <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
+                        <div class="table-responsive">
+                            <table class="table  table-bordered table-sm" id="makeEditable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Brand</th>
+                                        <th>Dose</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>fucker1</td>
+                                        <td>def@somemail.com</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>fucker2</td>
+                                        <td>def@somemail.com</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <span class="float-right">
+                            <button id="but_add" class="btn btn-success btn-sm">Add New Row</button>
+                        </span><!--end table-->
+                    </div><!--end card-body-->
+                </div><!--end card-->
+            </div> <!-- end col -->
+
+
+        </div> <!-- end row -->
+
+
+    </div><!--end col-->
+</div><!--end row-->
+
+
+@code{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("setupEditableTable", "Dxtable", "Dxtable_but_add");
+            await JS.InvokeVoidAsync("setupEditableTable", "makeEditable", "but_add");
+            await JS.InvokeVoidAsync("makeTableDragable", "makeEditable");
+            await JS.InvokeVoidAsync("makeSelect2",true);
+        }
+    }
+}

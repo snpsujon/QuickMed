@@ -59,63 +59,6 @@ function setActiveMenu(menuId) {
         localStorage.setItem('activeMenu', menuId);
     }
 
-    //// Redirect to respective pages
-    //switch (menuId) {
-    //    case 'dashboard':
-    //        window.location.href = '/dashboard';
-    //        break;
-    //    case 'prescription':
-    //        window.location.href = '/prescription';
-    //        break;
-    //    case 'prescription-list':
-    //        window.location.href = '/prescription-list';
-    //        break;
-    //    case 'treatment':
-    //        window.location.href = '/treatment';
-    //        break;
-    //    case 'favourite':
-    //        window.location.href = '/favourite';
-    //        break;
-    //    case 'refer':
-    //        window.location.href = '/refer';
-    //        break;
-    //    case 'advice':
-    //        window.location.href = '/advice';
-    //        break;
-    //    case 'ix':
-    //        window.location.href = '/ix';
-    //        break;
-    //    case 'dose':
-    //        window.location.href = '/dose';
-    //        break;
-    //    case 'duration':
-    //        window.location.href = '/duration';
-    //        break;
-    //    case 'dx':
-    //        window.location.href = '/dx';
-    //        break;
-    //    case 'cc':
-    //        window.location.href = '/cc';
-    //        break;
-    //    case 'mix':
-    //        window.location.href = '/mix';
-    //        break;
-    //    case 'note':
-    //        window.location.href = '/note';
-    //        break;
-    //    case 'appoinment':
-    //        window.location.href = '/appoinment';
-    //        break;
-    //    case 'databaseTool':
-    //        window.location.href = '/databaseTool';
-    //        break;
-    //    case 'checkUpgrade':
-    //        window.location.href = '/checkUpgrade';
-    //        break;
-    //    case 'drug':
-    //        window.location.href = '/drug';
-    //        break;
-    //}
 }
 
 // On page load, check localStorage for the active menu and apply the active class
@@ -129,3 +72,41 @@ window.onload = function () {
     }
 }
 
+function setupEditableTable(tableid, buttonid) {
+    $(function () {
+        $('#' + tableid).SetEditable({ $addButton: $('#' + buttonid) });
+
+    });
+}
+
+//make drugable table
+function makeTableDragable(tableid) {
+    $("#" + tableid + " tbody").sortable({
+        helper: function (e, tr) {
+            var $originals = tr.children();
+            var $helper = tr.clone();
+            $helper.children().each(function (index) {
+                // Set helper cell sizes to match the original sizes
+                $(this).width($originals.eq(index).width());
+            });
+            return $helper;
+        },
+        update: function (event, ui) {
+            // Update the index column in all rows after reordering
+            $("#" + tableid + " tbody tr").each(function (index) {
+                $(this).children(":first").text(index + 1);  // Updating the first column to new index + 1
+            });
+        }
+
+    }).disableSelection();
+}
+
+function makeSelect2(isTags) {
+    $(document).ready(function () {
+        $('.select2').select2({
+            width: '100%',
+            tags: isTags,
+        });
+    });
+
+}
