@@ -1,522 +1,237 @@
-<!DOCTYPE html>
 
-<html lang="en"
-      class="light-style layout-menu-fixed"
-      dir="ltr"
-      data-theme="theme-default"
-      data-assets-path="themeassets/"
-      data-template="horizontal-menu-template">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Dastone - Admin & Dashboard Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <title>Academy - Overview - App | Vuexy - Bootstrap Admin Template</title>
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="dastheme/images/favicon.ico">
 
-    <meta name="description" content="" />
+    <!-- jvectormap -->
+    <link href="dastheme/plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="themeassets/img/favicon/favicon.ico" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&ampdisplay=swap"
-          rel="stylesheet" />
-
-    <!-- Icons -->
-    <link rel="stylesheet" href="themeassets/vendor/fonts/fontawesome.css" />
-    <link rel="stylesheet" href="themeassets/vendor/fonts/tabler-icons.css" />
-    <link rel="stylesheet" href="themeassets/vendor/fonts/flag-icons.css" />
-
-    <!-- Core CSS -->
-    <link rel="stylesheet" href="themeassets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="themeassets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="themeassets/css/demo.css" />
-
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="themeassets/vendor/libs/node-waves/node-waves.css" />
-    <link rel="stylesheet" href="themeassets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="themeassets/vendor/libs/typeahead-js/typeahead.css" />
-    <link rel="stylesheet" href="themeassets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" />
-    <link rel="stylesheet" href="themeassets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css" />
-    <link rel="stylesheet" href="themeassets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
-    <link rel="stylesheet" href="themeassets/vendor/libs/apex-charts/apex-charts.css" />
-    <link rel="stylesheet" href="QuickMed.styles.css" />
+    <!-- App css -->
+    <link href="dastheme/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="dastheme/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="dastheme/css/metisMenu.min.css" rel="stylesheet" type="text/css" />
+    <link href="dastheme/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css" />
+    <link href="dastheme/css/app.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="css/app.css" />
 
-    <!-- Vendor -->
-    <link rel="stylesheet" href="themeassets/vendor/libs/@form-validation/umd/styles/index.min.css" />
+    <!-- Plugins css -->
+    <link href="dastheme/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="dastheme/plugins/huebee/huebee.min.css" rel="stylesheet" type="text/css" />
+    <link href="dastheme/plugins/timepicker/bootstrap-material-datetimepicker.css" rel="stylesheet">
+    <link href="dastheme/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
 
-    <!-- Page CSS -->
-    <!-- Page -->
-    <link rel="stylesheet" href="themeassets/vendor/css/pages/page-auth.css" />
-
-    <!-- Page CSS -->
-    <!-- Helpers -->
-    <script src="themeassets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-    <script src="themeassets/vendor/js/template-customizer.js"></script>
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="themeassets/js/config.js"></script>
-    <script>
-
-
-        function setActiveMenu(menuId) {
-            // Remove active class from all menu items
-            const allMenuItems = document.querySelectorAll('.menu-item');
-            allMenuItems.forEach(item => {
-                item.classList.remove('active');
-            });
-
-            // Add active class to the clicked menu item
-            const menuItem = document.getElementById(menuId);
-            if (menuItem) {
-                menuItem.classList.add('active');
-                // Save the active menu item to localStorage
-                localStorage.setItem('activeMenu', menuId);
-            }
-
-            // Redirect to respective pages
-            switch (menuId) {
-                case 'dashboard':
-                    window.location.href = '/dashboard';
-                    break;
-                case 'prescription':
-                    window.location.href = '/prescription';
-                    break;
-                case 'prescription-list':
-                    window.location.href = '/prescription-list';
-                    break;
-                case 'treatment':
-                    window.location.href = '/treatment';
-                    break;
-                case 'favourite':
-                    window.location.href = '/favourite';
-                    break;
-                case 'refer':
-                    window.location.href = '/refer';
-                    break;
-                case 'advice':
-                    window.location.href = '/advice';
-                    break;
-                case 'ix':
-                    window.location.href = '/ix';
-                    break;
-                case 'dose':
-                    window.location.href = '/dose';
-                    break;
-                case 'duration':
-                    window.location.href = '/duration';
-                    break;
-                case 'dx':
-                    window.location.href = '/dx';
-                    break;
-                case 'cc':
-                    window.location.href = '/cc';
-                    break;
-                case 'mix':
-                    window.location.href = '/mix';
-                    break;
-                case 'note':
-                    window.location.href = '/note';
-                    break;
-                case 'appoinment':
-                    window.location.href = '/appoinment';
-                    break;
-                case 'databaseTool':
-                    window.location.href = '/databaseTool';
-                    break;
-                case 'checkUpgrade':
-                    window.location.href = '/checkUpgrade';
-                    break;
-                case 'drug':
-                    window.location.href = '/drug';
-                    break;
-            }
-        }
-
-        // On page load, check localStorage for the active menu and apply the active class
-        window.onload = function () {
-            const activeMenu = localStorage.getItem('activeMenu');
-            if (activeMenu) {
-                const menuItem = document.getElementById(activeMenu);
-                if (menuItem) {
-                    menuItem.classList.add('active');
-                }
-            }
-        }
-
-
-
-    </script>
 </head>
 
-<body cz-shortcut-listen="true" id="bodyyy">
-    <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-navbar-full layout-horizontal layout-without-menu">
-        <div class="layout-container">
-            <!-- Navbar -->
+<body data-layout="horizontal" class="dark-topbar" id="bodyyy">
 
-            <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
-                <div class="container-xxl">
-                    <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
-                        <a href="index.html" class="app-brand-link gap-2">
-                            <span class="app-brand-logo demo">
-                                <svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                          clip-rule="evenodd"
-                                          d="M0.00172773 0V6.85398C0.00172773 6.85398 -0.133178 9.01207 1.98092 10.8388L13.6912 21.9964L19.7809 21.9181L18.8042 9.88248L16.4951 7.17289L9.23799 0H0.00172773Z"
-                                          fill="#7367F0" />
-                                    <path opacity="0.06"
-                                          fill-rule="evenodd"
-                                          clip-rule="evenodd"
-                                          d="M7.69824 16.4364L12.5199 3.23696L16.5541 7.25596L7.69824 16.4364Z"
-                                          fill="#161616" />
-                                    <path opacity="0.06"
-                                          fill-rule="evenodd"
-                                          clip-rule="evenodd"
-                                          d="M8.07751 15.9175L13.9419 4.63989L16.5849 7.28475L8.07751 15.9175Z"
-                                          fill="#161616" />
-                                    <path fill-rule="evenodd"
-                                          clip-rule="evenodd"
-                                          d="M7.77295 16.3566L23.6563 0H32V6.88383C32 6.88383 31.8262 9.17836 30.6591 10.4057L19.7824 22H13.6938L7.77295 16.3566Z"
-                                          fill="#7367F0" />
-                                </svg>
-                            </span>
-                            <span class="app-brand-text demo menu-text fw-bold">Vuexy</span>
-                        </a>
-
-                        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
-                            <i class="ti ti-x ti-sm align-middle"></i>
-                        </a>
-                    </div>
-
-                    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-                        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-                            <i class="ti ti-menu-2 ti-sm"></i>
-                        </a>
-                    </div>
-
-                    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-                        <ul class="navbar-nav flex-row align-items-center ms-auto">
-
-                            <!-- Style Switcher -->
-                            <li class="nav-item dropdown-style-switcher dropdown me-2 me-xl-0">
-                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                    <i class="ti ti-md"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end dropdown-styles">
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-theme="light">
-                                            <span class="align-middle"><i class="ti ti-sun me-2"></i>Light</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-theme="dark">
-                                            <span class="align-middle"><i class="ti ti-moon me-2"></i>Dark</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-theme="system">
-                                            <span class="align-middle"><i class="ti ti-device-desktop me-2"></i>System</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- / Style Switcher-->
-                            <!-- User -->
-                            <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                    <div class="avatar avatar-online">
-                                        <img src="themeassets/img/avatars/1.png" alt="IMAGE" class="h-auto rounded-circle" />
-                                    </div>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a class="dropdown-item" href="pages-account-settings-account.html">
-                                            <div class="d-flex">
-                                                <div class="flex-shrink-0 me-3">
-                                                    <div class="avatar avatar-online">
-                                                        <img src="themeassets/img/avatars/1.png" alt class="h-auto rounded-circle" />
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1">
-                                                    <span class="fw-medium d-block">John Doe</span>
-                                                    <small class="text-muted">Admin</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="dropdown-divider"></div>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="pages-profile-user.html">
-                                            <i class="ti ti-user-check me-2 ti-sm"></i>
-                                            <span class="align-middle">My Profile</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="pages-account-settings-account.html">
-                                            <i class="ti ti-settings me-2 ti-sm"></i>
-                                            <span class="align-middle">Settings</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="dropdown-divider"></div>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="pages-faq.html">
-                                            <i class="ti ti-help me-2 ti-sm"></i>
-                                            <span class="align-middle">FAQ</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="dropdown-divider"></div>
-                                    </li>
-
-                                </ul>
-                            </li>
-                            <!--/ User -->
-                        </ul>
-                    </div>
-
-                    <!-- Search Small Screens -->
-                    <div class="navbar-search-wrapper search-input-wrapper container-xxl d-none">
-                        <input type="text"
-                               class="form-control search-input border-0"
-                               placeholder="Search..."
-                               aria-label="Search..." />
-                        <i class="ti ti-x ti-sm search-toggler cursor-pointer"></i>
-                    </div>
-                </div>
-            </nav>
-
-            <!-- / Navbar -->
-            <!-- Layout container -->
-            <div class="layout-page">
-                <!-- Content wrapper -->
-                <div class="content-wrapper">
-                    <!-- Menu -->
-                    <aside id="layout-menu" class="layout-menu-horizontal menu-horizontal menu bg-menu-theme flex-grow-0">
-                        <div class="container-xxl d-flex h-100">
-                            <ul class="menu-inner">
-                                <li id="dashboard" class="menu-item" onclick="setActiveMenu('dashboard')">
-                                    <a href="javascript:void(0)" class="menu-link">
-                                        <i class="menu-icon tf-icons ti ti-smart-home"></i>
-                                        <div data-i18n="Dashboards">Dashboards</div>
-                                    </a>
-                                </li>
-                                <li id="prescription" class="menu-item" onclick="setActiveMenu('prescription')">
-                                    <a href="javascript:void(0)" class="menu-link">
-                                        <i class="menu-icon tf-icons ti ti-medical-cross"></i>
-                                        <div data-i18n="Prescription">Prescription</div>
-                                    </a>
-                                </li>
-                                <li id="prescription-list" class="menu-item" onclick="setActiveMenu('prescription-list')">
-                                    <a href="javascript:void(0)" class="menu-link">
-                                        <i class="menu-icon tf-icons ti ti-clipboard-list"></i>
-                                        <div data-i18n="Prescription List">Prescription List</div>
-                                    </a>
-                                </li>
-                                <li id="template" class="menu-item" onclick="setActiveMenu('template')">
-                                    <a href="javascript:void(0)" class="menu-link menu-toggle">
-                                        <i class="menu-icon tf-icons ti ti-file"></i>
-                                        <div data-i18n="Template">Template</div>
-                                    </a>
-                                    <ul class="menu-sub">
-                                        <li id="treatment" class="menu-item" onclick="setActiveMenu('treatment')">
-                                            <a href="index.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-rocket"></i>
-                                                <div data-i18n="Treatment">Treatment</div>
-                                            </a>
-                                        </li>
-                                        <li id="favourite" class="menu-item" onclick="setActiveMenu('favourite')">
-                                            <a href="dashboards-crm.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-heart"></i>
-                                                <div data-i18n="Favourite">Favourite</div>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" id="refer" onclick="setActiveMenu('refer')">
-                                            <a href="dashboards-ecommerce.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-link"></i>
-                                                <div data-i18n="Refer">Refer</div>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" id="advice" onclick="setActiveMenu('advice')">
-                                            <a href="dashboards-ecommerce.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-link"></i>
-                                                <div data-i18n="Advice">Advice</div>
-                                            </a>
-                                        </li>
-
-                                        <li class="menu-item" id="ix" onclick="setActiveMenu('ix')">
-                                            <a href="dashboards-ecommerce.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-calculator"></i>
-                                                <div data-i18n="IX">IX</div>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" id="dose" onclick="setActiveMenu('dose')">
-                                            <a href="dashboards-ecommerce.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-pills"></i>
-                                                <div data-i18n="Dose">Dose</div>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" id="duration" onclick="setActiveMenu('duration')">
-                                            <a href="dashboards-ecommerce.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-wheelchair"></i>
-                                                <div data-i18n="Duration">Duration</div>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" id="dx" onclick="setActiveMenu('dx')">
-                                            <a href="dashboards-ecommerce.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-stethoscope"></i>
-                                                <div data-i18n="DX">DX</div>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" id="cc" onclick="setActiveMenu('cc')">
-                                            <a href="dashboards-ecommerce.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-clipboard"></i>
-                                                <div data-i18n="CC">CC</div>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" id="mix" onclick="setActiveMenu('mix')">
-                                            <a href="dashboards-ecommerce.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-flask"></i>
-                                                <div data-i18n="MIX">MIX</div>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item" id="note" onclick="setActiveMenu('note')">
-                                            <a href="dashboards-ecommerce.html" class="menu-link">
-                                                <i class="menu-icon tf-icons ti ti-align-left"></i>
-                                                <div data-i18n="Note">Note</div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item" id="appoinment" onclick="setActiveMenu('appoinment')">
-                                    <a href="javascript:void(0)" class="menu-link">
-                                        <i class="menu-icon tf-icons ti ti-calendar"></i>
-                                        <div data-i18n="Appoinment">Appoinment</div>
-                                    </a>
-                                </li>
-                                <li class="menu-item" id="databaseTool" onclick="setActiveMenu('databaseTool')">
-                                    <a href="javascript:void(0)" class="menu-link">
-                                        <i class="menu-icon tf-icons ti ti-database"></i>
-                                        <div data-i18n="Database Tool">Database Tool</div>
-                                    </a>
-                                </li>
-                                <li class="menu-item" id="checkUpgrade" onclick="setActiveMenu('checkUpgrade')">
-                                    <a href="javascript:void(0)" class="menu-link">
-                                        <i class="menu-icon tf-icons ti ti-arrow-up-circle"></i>
-                                        <div data-i18n="Check Upgrade">Check Upgrade</div>
-                                    </a>
-                                </li>
-                                <li class="menu-item" id="drug" onclick="setActiveMenu('drug')">
-                                    <a href="javascript:void(0)" class="menu-link">
-                                        <i class="menu-icon tf-icons ti ti-pills"></i>
-                                        <div data-i18n="Drug">Drug</div>
-                                    </a>
-                                </li>
-                            </ul>
-
-                        </div>
-                    </aside>
-                    <!-- / Menu -->
-                    <!-- Content -->
-
-                    <div class="container-xxl flex-grow-1 container-p-y">
-                        <div class="status-bar-safe-area"></div>
-
-                        <div id="app">Loading...</div>
-
-
-
-                        <div id="blazor-error-ui">
-                            An unhandled error has occurred.
-                            <a href="" class="reload">Reload</a>
-                            <a class="dismiss">🗙</a>
-                        </div>
-
-                        <script src="_framework/blazor.webview.js" autostart="false"></script>
-
-                        <!-- Course datatable End -->
-                    </div>
-                    <!--/ Content -->
-                    <!-- Footer -->
-                    <footer class="content-footer footer bg-footer-theme">
-                        <div class="container-xxl">
-                            <div class="footer-container d-flex align-items-center justify-content-between py-2 flex-md-row flex-column">
-                                <div>
-                                    ©
-                                    <script>
-                                        document.write(new Date().getFullYear());
-                                    </script>
-                                    , Crafted with ❤️ by <a href="https://techstdio.com" target="_blank" class="fw-medium">Tech Stdio</a>
-                                </div>
-                                <div class="d-none d-lg-inline-block">
-                                    <a href="https://themeforest.net/licenses/standard" class="footer-link me-4" target="_blank">License</a>
-                                    <a href="https://1.envato.market/pixinvent_portfolio" target="_blank" class="footer-link me-4">More Apps</a>
-
-                                    <a href="https://demos.pixinvent.com/vuexy-html-admin-template/documentation/"
-                                       target="_blank"
-                                       class="footer-link me-4">Documentation</a>
-
-                                    <a href="https://pixinvent.ticksy.com/" target="_blank" class="footer-link d-none d-sm-inline-block">Support</a>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- / Footer -->
-
-                    <div class="content-backdrop fade"></div>
-                </div>
-                <!--/ Content wrapper -->
-            </div>
-
-            <!--/ Layout container -->
+    <!-- Top Bar Start -->
+    <div class="topbar">
+        <!-- LOGO -->
+        <div class="brand">
+            <a href="index.html" class="logo">
+                <span>
+                    <img src="dastheme/images/logo-sm.png" alt="logo-small" class="logo-sm">
+                </span>
+                <span>
+                    <img src="dastheme/images/logo.png" alt="logo-large" class="logo-lg logo-light">
+                    <img src="dastheme/images/logo-dark.png" alt="logo-large" class="logo-lg logo-dark">
+                </span>
+            </a>
         </div>
+        <!--end logo-->
+        <!-- Navbar -->
+        <nav class="navbar-custom">
+            <ul class="list-unstyled topbar-nav float-end mb-0">
+
+                <li class="dropdown">
+                    <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-bs-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="false" aria-expanded="false">
+                        <span class="ms-1 nav-user-name hidden-sm">Nick</span>
+                        <img src="dastheme/images/users/user-5.jpg" alt="profile-user" class="rounded-circle thumb-sm" />
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="#"><i data-feather="user" class="align-self-center icon-xs icon-dual me-1"></i> Profile</a>
+                        <a class="dropdown-item" href="#"><i data-feather="settings" class="align-self-center icon-xs icon-dual me-1"></i> Settings</a>
+                        <div class="dropdown-divider mb-0"></div>
+                        <a class="dropdown-item" href="#"><i data-feather="power" class="align-self-center icon-xs icon-dual me-1"></i> Logout</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <!-- Mobile menu toggle-->
+                    <a class="navbar-toggle nav-link" id="mobileToggle">
+                        <div class="lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </a><!-- End mobile menu toggle-->
+                </li> <!--end menu item-->
+            </ul><!--end topbar-nav-->
+
+            <div class="navbar-custom-menu">
+                <div id="navigation">
+                    <!-- Navigation Menu-->
+                    <ul class="navigation-menu">
+
+                        <li class="has-submenu mymenu-item" id="dashboard">
+                            <a href="dashboard" onclick="setActiveMenu('dashboard')">
+                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Dashboard</span>
+                            </a>
+                        </li><!--end has-submenu-->
+                        <li class="has-submenu mymenu-item" id="prescription">
+                            <a href="prescription" onclick="setActiveMenu('prescription')">
+                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Prescription</span>
+                            </a>
+                        </li><!--end has-submenu-->
+                        <li class="has-submenu mymenu-item" id="prescription-list">
+                            <a href="prescription-list" onclick="setActiveMenu('prescription-list')">
+                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Prescription List</span>
+                            </a>
+                        </li><!--end has-submenu-->
+
+                        <li class="has-submenu" id="template">
+                            <a href="#" onclick="setActiveMenu('template')">
+                                <span><i data-feather="home" class="align-self-center hori-menu-icon"></i>Template</span>
+                            </a>
+                            <ul class="submenu">
+                                <li id="treatment" class="mymenu-item"><a href="horizontal-index.html" onclick="setActiveMenu('treatment')"><i class="ti ti-minus"></i>Treatment</a></li>
+                                <li id="favourite" class="mymenu-item"><a href="horizontal-index.html" onclick="setActiveMenu('favourite')"><i class="ti ti-minus"></i>Favourite</a></li>
+                                <li id="refer" class="mymenu-item"><a href="horizontal-index.html" onclick="setActiveMenu('refer')"><i class="ti ti-minus"></i>Refer</a></li>
+                                <li id="advice" class="mymenu-item"><a href="horizontal-index.html" onclick="setActiveMenu('advice')"><i class="ti ti-minus"></i>Advice</a></li>
+                                <li id="ix" class="mymenu-item"><a href="horizontal-index.html" onclick="setActiveMenu('ix')"><i class="ti ti-minus"></i>IX</a></li>
+                                <li id="dose" class="mymenu-item"><a href="horizontal-index.html" onclick="setActiveMenu('dose')"><i class="ti ti-minus"></i>Dose</a></li>
+                                <li id="duration" class="mymenu-item"><a href="horizontal-index.html" onclick="setActiveMenu('duration')"><i class="ti ti-minus"></i>Duration</a></li>
+                                <li id="dx" class="mymenu-item"><a href="horizontal-index.html" onclick="setActiveMenu('dx')"><i class="ti ti-minus"></i>DX</a></li>
+                                <li id="cc" class="mymenu-item"><a href="horizontal-index.html" onclick="setActiveMenu('cc')"><i class="ti ti-minus"></i>CC</a></li>
+                                <li id="mix" class="mymenu-item"><a href="horizontal-index.html" onclick="setActiveMenu('mix')"><i class="ti ti-minus"></i>Mix</a></li>
+                                <li id="note" class="mymenu-item"><a href="horizontal-index.html" onclick="setActiveMenu('note')"><i class="ti ti-minus"></i>Note</a></li>
+                            </ul><!--end submenu-->
+                        </li><!--end has-submenu-->
+
+                        <li class="has-submenu mymenu-item" id="appoinment">
+                            <a href="appoinment" onclick="setActiveMenu('appoinment')">
+                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Appoinment</span>
+                            </a>
+                        </li><!--end has-submenu-->
+                        <li class="has-submenu mymenu-item" id="databaseTool">
+                            <a href="databaseTool" onclick="setActiveMenu('databaseTool')">
+                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Database Tools</span>
+                            </a>
+                        </li><!--end has-submenu-->
+                        <li class="has-submenu mymenu-item" id="checkUpgrade">
+                            <a href="checkUpgrade" onclick="setActiveMenu('checkUpgrade')">
+                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Check Upgrade</span>
+                            </a>
+                        </li><!--end has-submenu-->
+                        <li class="has-submenu mymenu-item" id="drug">
+                            <a href="drug" onclick="setActiveMenu('drug')">
+                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Drug</span>
+                            </a>
+                        </li><!--end has-submenu-->
+
+
+
+                    </ul><!-- End navigation menu -->
+                </div> <!-- end navigation -->
+            </div>
+            <!-- Navbar -->
+        </nav>
+        <!-- end navbar-->
     </div>
+    <!-- Top Bar End -->
+    <div class="page-wrapper">
+        <!-- Page Content-->
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- Page-Title -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                        </div><!--end page-title-box-->
+                    </div><!--end col-->
+                </div><!--end row-->
+                <!-- main Body Start Here -->
+                <!-- end page title end breadcrumb -->
 
-    <!-- Overlay -->
-    <div class="layout-overlay layout-menu-toggle"></div>
+                <div class="container-xxl flex-grow-1 container-p-y">
+                    <div class="status-bar-safe-area"></div>
 
-    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-    <div class="drag-target"></div>
+                    <div id="app">Loading...</div>
 
-    <!--/ Layout wrapper -->
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
 
-    <script src="themeassets/vendor/libs/jquery/jquery.js"></script>
 
-    <script src="themeassets/vendor/libs/popper/popper.js"></script>
-    <script src="themeassets/vendor/js/bootstrap.js"></script>
-    <script src="themeassets/vendor/libs/node-waves/node-waves.js"></script>
-    <script src="themeassets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="themeassets/vendor/libs/hammer/hammer.js"></script>
-    <script src="themeassets/vendor/libs/i18n/i18n.js"></script>
-    <script src="themeassets/vendor/libs/typeahead-js/typeahead.js"></script>
-    <script src="themeassets/vendor/js/menu.js"></script>
+                    <div id="blazor-error-ui">
+                        An unhandled error has occurred.
+                        <a href="" class="reload">Reload</a>
+                        <a class="dismiss">🗙</a>
+                    </div>
 
-    <!-- endbuild -->
-    <!-- Vendors JS -->
-    <script src="themeassets/vendor/libs/moment/moment.js"></script>
-    <script src="themeassets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
-    <script src="themeassets/vendor/libs/apex-charts/apexcharts.js"></script>
+                    <script src="_framework/blazor.webview.js" autostart="false"></script>
 
-    <!-- Main JS -->
-    <script src="themeassets/js/main.js"></script>
+                    <!-- Course datatable End -->
+                </div>
 
-    <!-- Vendors JS -->
-    <script src="themeassets/vendor/libs/@form-validation/umd/bundle/popular.min.js"></script>
-    <script src="themeassets/vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js"></script>
-    <script src="themeassets/vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js"></script>
 
-    <script src="themeassets/js/pages-auth.js"></script>
+
+
+
+
+
+            </div><!-- container -->
+        </div>
+        <!-- end page content -->
+    </div>
+    <!-- end page-wrapper -->
+    <footer class="footer text-center text-sm-start">
+        <div class="boxed-footer">
+            ©
+            <script>
+                document.write(new Date().getFullYear())
+            </script> Quickmed
+            <span class="text-muted d-none d-sm-inline-block float-end">Crafted with <i class="mdi mdi-heart text-danger"></i> by TechStdio</span>
+        </div>
+    </footer>
+
+
+    <!-- jQuery  -->
+    <script src="dastheme/js/jquery.min.js"></script>
+    <script src="dastheme/js/bootstrap.bundle.min.js"></script>
+    <script src="dastheme/js/metismenu.min.js"></script>
+    <script src="dastheme/js/waves.js"></script>
+    <script src="dastheme/js/feather.min.js"></script>
+    <script src="dastheme/js/simplebar.min.js"></script>
+    <script src="dastheme/js/moment.js"></script>
+    <script src="dastheme/plugins/daterangepicker/daterangepicker.js"></script>
+
+    <script src="dastheme/plugins/apex-charts/apexcharts.min.js"></script>
+    <script src="dastheme/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="dastheme/plugins/jvectormap/jquery-jvectormap-us-aea-en.js"></script>
+    <script src="dastheme/pages/jquery.analytics_dashboard.init.js"></script>
+
+    <!-- Plugins js -->
+
+    <script src="dastheme/plugins/select2/select2.min.js"></script>
+    <script src="dastheme/plugins/huebee/huebee.pkgd.min.js"></script>
+    <script src="dastheme/plugins/timepicker/bootstrap-material-datetimepicker.js"></script>
+    <script src="dastheme/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="dastheme/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+
+    <script src="dastheme/pages/jquery.forms-advanced.js"></script>
+
+    <!-- App js -->
+    <script src="dastheme/js/app.js"></script>
     <script src="js/app.js"></script>
 
 </body>
+
 </html>

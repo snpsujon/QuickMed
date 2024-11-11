@@ -1,83 +1,53 @@
-﻿<div class="authentication-wrapper authentication-cover authentication-bg">
-    <div class="authentication-inner row">
-        <!-- /Left Text -->
-        <div class="d-none d-lg-flex col-lg-7 p-0">
-            <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
-                <img src="themeassets/img/illustrations/auth-login-illustration-light.png"
-                     alt="auth-login-cover"
-                     class="img-fluid my-5 auth-illustration"
-                     data-app-light-img="illustrations/auth-login-illustration-light.png"
-                     data-app-dark-img="illustrations/auth-login-illustration-dark.png" />
+﻿
+<div class="account-body accountbg">
+    <!-- Lock screen page -->
+    <div class="container">
+        <div class="row vh-100 d-flex justify-content-center">
+            <div class="col-12 align-self-center">
+                <div class="row">
+                    <div class="col-lg-5 mx-auto">
+                        <div class="card">
+                            <div class="card-body p-0 auth-header-box">
+                                <div class="text-center p-3">
+                                    <a href="index.html" class="logo logo-admin">
+                                        <img src="assets/images/logo-sm-dark.png" height="50" alt="logo" class="auth-logo">
+                                    </a>
+                                    <h4 class="mt-3 mb-1 fw-semibold text-white font-18">Enter Password And Use Dastone</h4>
+                                    <p class="text-muted  mb-0">Hello Mark, enter your password to unlock the screen !</p>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-horizontal auth-form" action="index.html">
 
-                <img src="themeassets/img/illustrations/bg-shape-image-light.png"
-                     alt="auth-login-cover"
-                     class="platform-bg"
-                     data-app-light-img="illustrations/bg-shape-image-light.png"
-                     data-app-dark-img="illustrations/bg-shape-image-dark.png" />
-            </div>
-        </div>
-        <!-- /Left Text -->
-        <!-- License Key Form -->
-        <div class="d-flex col-12 col-lg-5 align-items-center p-sm-5 p-4">
-            <div class="w-px-400 mx-auto">
-                <!-- Logo -->
-                <div class="app-brand mb-4">
-                    <a href="index.html" class="app-brand-link gap-2">
-                        <span class="app-brand-logo demo">
-                            <svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                      clip-rule="evenodd"
-                                      d="M0.00172773 0V6.85398C0.00172773 6.85398 -0.133178 9.01207 1.98092 10.8388L13.6912 21.9964L19.7809 21.9181L18.8042 9.88248L16.4951 7.17289L9.23799 0H0.00172773Z"
-                                      fill="#7367F0" />
-                                <path opacity="0.06"
-                                      fill-rule="evenodd"
-                                      clip-rule="evenodd"
-                                      d="M7.69824 16.4364L12.5199 3.23696L16.5541 7.25596L7.69824 16.4364Z"
-                                      fill="#161616" />
-                                <path opacity="0.06"
-                                      fill-rule="evenodd"
-                                      clip-rule="evenodd"
-                                      d="M8.07751 15.9175L13.9419 4.63989L16.5849 7.28475L8.07751 15.9175Z"
-                                      fill="#161616" />
-                                <path fill-rule="evenodd"
-                                      clip-rule="evenodd"
-                                      d="M7.77295 16.3566L23.6563 0H32V6.88383C32 6.88383 31.8262 9.17836 30.6591 10.4057L19.7824 22H13.6938L7.77295 16.3566Z"
-                                      fill="#7367F0" />
-                            </svg>
-                        </span>
-                    </a>
-                </div>
-                <!-- /Logo -->
-                <h3 class="mb-1 fw-bold">Welcome to QuickMed 👋</h3>
-                <p class="mb-4">Please enter your license key to access the application.</p>
+                                    <div class="form-group mb-2">
+                                        <label class="form-label" for="username">Password</label>
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" id="password" placeholder="Enter password">
+                                        </div>
+                                    </div><!--end form-group-->
 
-                <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
-                    <div class="mb-3">
-                        <label for="license-key" class="form-label">License Key</label>
-                        <input type="text"
-                               class="form-control"
-                               id="license-key"
-                               name="license-key"
-                               placeholder="Enter your license key"
-                               autofocus />
-                    </div>
+                                    <div class="form-group mb-0 row">
+                                        <div class="col-12">
+                                            <button class="btn btn-primary w-100 waves-effect waves-light" type="button" onclick="unlock()">Unlock <i class="fas fa-sign-in-alt ms-1"></i></button>
+                                        </div><!--end col-->
+                                    </div> <!--end form-group-->
+                                </form><!--end form-->
+                                <!--<p class="text-muted mb-0 mt-3">Not you ? return  <a href="auth-register.html" class="text-primary ms-2">Sign In</a></p>-->
+                            </div>
+                            <div class="card-body bg-light-alt text-center">
+                                <span class="text-muted d-none d-sm-inline-block">
+                                    Mannatthemes ©
+                                    <script>
+                                        document.write(new Date().getFullYear())
+                                    </script>
+                                </span>
+                            </div>
+                        </div><!--end card-->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+    <!-- End lock screen page -->
 
-                    <button onclick="submitBtn()" class="btn btn-primary d-grid w-100">Submit</button>
-                </form>
-
-                <div class="divider my-4">
-                    <div class="divider-text">or</div>
-                </div>
-
-                <!-- Optional: Add link to contact or support if needed -->
-                <p class="text-center mb-0">
-                    If you don't have a license key, please <a href="contact.html">contact support</a>.
-                </p>
-            </div>
-        </div>
-        <!-- /License Key Form -->
-    </div>
 </div>
-
-
-
