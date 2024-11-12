@@ -110,3 +110,20 @@ function makeSelect2(isTags) {
     });
 
 }
+
+function makeDataTable(tableid) {
+    $(document).ready(function () {
+        
+        //Buttons examples
+        var table = $('#' + tableid).DataTable({
+            lengthChange: false,
+            buttons: ['excel', 'pdf']
+        });
+
+        table.buttons().container()
+            .appendTo('.dataTables_wrapper .col-md-6:eq(0)');
+
+
+    });
+
+}
