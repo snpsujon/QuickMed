@@ -34,7 +34,7 @@ namespace QuickMed.Services
         {
             try
             {
-                return true;
+                return await _context.GetTableRowsAsync<TblAdviceTemplate>("TblAdviceTemplate");
             }
             catch (Exception ex)
             {

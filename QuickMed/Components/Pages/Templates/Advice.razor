@@ -13,7 +13,7 @@
                         <div class="col-sm-12 d-flex">
                             <label for="example-text-input" class="col-sm-1 form-label  mb-lg-0">Template Name</label>
                             <div class="col-sm-4">
-                                <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                <input class="form-control form-control-sm" type="text" id="example-text-input" @bind-value=adviceTemplate.AdviceTemplateName>
                             </div>
 
                         </div>
@@ -23,9 +23,10 @@
                         <div class="col-sm-3">
                             <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
                                 <option selected disabled>Select Advice</option>
-                                <option value="1">M</option>
-                                <option value="2">F</option>
-                                <option value="3">O</option>
+                                @foreach (var item in masterData)
+                                {
+                                    <option value="@item.AdviceName">@item.AdviceName</option>
+                                }
                             </select>
                         </div>
                     </div>
@@ -43,6 +44,10 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach (var item in templateDetails)
+                                {
+                                    
+                                }
                                 <tr>
                                     <td>1</td>
                                     <td>fucker1</td>
@@ -58,7 +63,7 @@
                         </table>
                     </div>
                     <span class="float-right">
-                        <button id="but_add" class="btn btn-primary btn-sm">Add New Row</button>
+                        <button id="but_add" class="btn btn-primary btn-sm"  >Add New Row</button>
                     </span><!--end table-->
 
 
@@ -116,26 +121,7 @@
 
 
 </div><!--end row-->
-@* @code {
 
-    private List<TblPatient> patients = new();
-    private TblPatient model = new();
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            patients = new();
-            patients = await App.Database.GetTableRowsAsync<TblPatient>("TblPatient");
-
-        }
-        catch (Exception ex)
-        {
-
-            throw;
-        }
-
-    }
-} *@
 
 
 
