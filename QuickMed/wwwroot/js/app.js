@@ -77,11 +77,28 @@ function setupEditableTable(tableid, buttonid) {
 
     });
 }
+function initializeButtonClick() {
+    document.getElementById("but_add").addEventListener("click", addNewRowOnTable);
+}
+function addNewRowOnTable() {
+    debugger;
+    const table = document.getElementById("mainTable-advice").getElementsByTagName("tbody")[0];
+    var rowsLength = table.rows.length;
+    rowsLength = rowsLength + 1;
+    const newRow = table.insertRow();
 
+    // Add cells with the specified content
+    const cell1 = newRow.insertCell(0);
+    cell1.innerHTML = rowsLength;
+
+    const cell2 = newRow.insertCell(1);
+    cell2.innerHTML = " ";
+    setupEditableTableWithoutButton('mainTable-advice');
+}
 
 function setupEditableTableWithoutButton(tableid) {
     $(function () {
-        $('#' + tableid).editableTableWidget().numericInputExample().find('td:first').focus();
+        $('#' + tableid).editableTableWidget().find('td:first').focus();
 
     });
 }
