@@ -45,8 +45,6 @@ namespace QuickMed
             builder.Services.AddSingleton<DataSyncService>();
             builder.Services.AddSingleton(new HttpClient());
 
-
-
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
             builder.Logging.AddDebug();

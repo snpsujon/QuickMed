@@ -42,16 +42,10 @@
             && !currentPage.Contains("/databaseTool")
             && !currentPage.Contains("/checkUpgrade")
             && !currentPage.Contains("/drug")
-
-
-
         )
         {
             await JS.InvokeVoidAsync("clearLocalStorage");
             await JS.InvokeVoidAsync("LoadPage", "11");
-        }
-
-        
-       
+        }   
     }
 }
