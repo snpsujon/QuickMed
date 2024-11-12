@@ -26,6 +26,8 @@ namespace QuickMed.BaseComponent
         protected override async  Task OnInitializedAsync()
         {            
             masterData = await _advice.GetAdviceMasterData();
+            await JS.InvokeVoidAsync("onInitTable", "mainTable-advice",masterData);
+            await JS.InvokeVoidAsync("initializeButtonClick",masterData);
             templateListData = await _advice.GetAdviceTemplateData();
         }
 
@@ -34,11 +36,12 @@ namespace QuickMed.BaseComponent
             if (firstRender)
             {
                 // await JS.InvokeVoidAsync("setupEditableTable", "mainTable-advice", "but_add");
-                //await JS.InvokeVoidAsync("makeTableDragable", "mainTable-advice");
-                await JS.InvokeVoidAsync("onInitTable", "mainTable-advice");
-                await JS.InvokeVoidAsync("setupEditableTableWithoutButton", "mainTable-advice");
+                await JS.InvokeVoidAsync("makeTableDragable", "mainTable-advice");
+
+                //await JS.InvokeVoidAsync("setupEditableTableWithoutButton", "mainTable-advice");
                 await JS.InvokeVoidAsync("makeSelect2", true);
-                await JS.InvokeVoidAsync("initializeButtonClick");
+
+                StateHasChanged();
             }
         }
        
