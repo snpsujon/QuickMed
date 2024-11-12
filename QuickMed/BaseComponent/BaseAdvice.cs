@@ -15,7 +15,8 @@ namespace QuickMed.BaseComponent
     {
         [Inject]
         public IAdvice _advice { get; set; }
-        [Inject]
+        public TblAdviceTemplate adviceTemplate = new();
+        public List<TblAdviceTemplateDetails> templateDetails = new List<TblAdviceTemplateDetails>();
         public IEnumerable<TblAdviceMaster> masterData { get; set; }
 
         [Inject]
@@ -36,5 +37,7 @@ namespace QuickMed.BaseComponent
                 await JS.InvokeVoidAsync("makeSelect2", true);
             }
         }
+       
+
     }
 }
