@@ -4,6 +4,9 @@
 @inherits BaseAdvice
 
 <h3 class="text-success"> <i class="dripicons-document"></i> &nbsp;&nbsp;  Advice Form</h3>
+
+
+
 <div class="col-lg-12">
     <div class="row">
         <div class="col-12">
@@ -23,10 +26,14 @@
                         <div class="col-sm-3">
                             <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
                                 <option selected disabled>Select Advice</option>
-                                @foreach (var item in masterData)
+                                @if (templateListData != null)
                                 {
-                                    <option value="@item.AdviceName">@item.AdviceName</option>
+                                    @foreach (var item in templateListData)
+                                    {
+                                        <option value="@item.Id">@item.AdviceTemplateName</option>
+                                    }
                                 }
+                                
                             </select>
                         </div>
                     </div>
@@ -35,30 +42,52 @@
                 <div class="card-body">
                     <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
                     <div class="table-responsive">
-                        <table class="table  table-bordered table-sm" id="makeEditable">
+                        <table id="mainTable-advice" class="table table-striped  mb-0">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Brand</th>
-                                    <th>Dose</th>
+                                    <th>Name</th>
+                                    <th>Cost</th>
+                                    <th>Profit</th>
+                                    <th>Fun</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in templateDetails)
-                                {
-                                    
-                                }
                                 <tr>
                                     <td>1</td>
-                                    <td>fucker1</td>
-                                    <td>def@somemail.com</td>
+                                    <td>Car</td>
+                                    <td>100</td>
+                                    <td>200</td>
+                                    <td>0</td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
-                                    <td>fucker2</td>
-                                    <td>def@somemail.com</td>
+                                    <td>Bike</td>
+                                    <td>330</td>
+                                    <td>240</td>
+                                    <td>1</td>
                                 </tr>
-
+                                <tr>
+                                    <td>3</td>
+                                    <td>Plane</td>
+                                    <td>430</td>
+                                    <td>540</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Yacht</td>
+                                    <td>100</td>
+                                    <td>200</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>Segway</td>
+                                    <td>330</td>
+                                    <td>240</td>
+                                    <td>1</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -69,7 +98,7 @@
 
                     <hr />
                     <span class="float-right">
-                        <button id="but_add" class="btn btn-success btn-sm float-end">Save</button>
+                        <button  class="btn btn-success btn-sm float-end">Save</button>
                     </span>
 
                 </div><!--end card-body-->

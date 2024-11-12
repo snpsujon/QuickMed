@@ -3,7 +3,6 @@
         fetch('login.html')
             .then(response => response.text())
             .then(html => {
-                debugger;
                 document.getElementById('bodyyy').innerHTML = "";
                 document.getElementById('bodyyy').innerHTML = html;
             })
@@ -75,6 +74,14 @@ window.onload = function () {
 function setupEditableTable(tableid, buttonid) {
     $(function () {
         $('#' + tableid).SetEditable({ $addButton: $('#' + buttonid) });
+
+    });
+}
+
+
+function setupEditableTableWithoutButton(tableid) {
+    $(function () {
+        $('#' + tableid).editableTableWidget().numericInputExample().find('td:first').focus();
 
     });
 }
