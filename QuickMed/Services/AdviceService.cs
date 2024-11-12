@@ -28,6 +28,8 @@ namespace QuickMed.Services
             }
         }
 
+       
+
         public async Task<dynamic> GetAdviceTemplateData()
         {
             try
