@@ -71,11 +71,12 @@ window.onload = function () {
     }
 }
 
-function setupEditableTable(tableid, buttonid) {
-    $(function () {
+function setupEditableTable(tableid, buttonid = null) {
+    if (buttonid == null) {
+        $('#' + tableid).SetEditable();
+    } else {
         $('#' + tableid).SetEditable({ $addButton: $('#' + buttonid) });
-
-    });
+    }
 }
 
 
@@ -113,7 +114,7 @@ function makeSelect2(isTags) {
         $('.select2').select2({
             width: '100%',
             tags: isTags,
-            allowClear: true  
+            allowClear: true
         });
     });
 
@@ -121,7 +122,7 @@ function makeSelect2(isTags) {
 
 function makeDataTable(tableid) {
     $(document).ready(function () {
-        
+
         //Buttons examples
         var table = $('#' + tableid).DataTable({
             lengthChange: false,
@@ -132,8 +133,8 @@ function makeDataTable(tableid) {
             .appendTo('.dataTables_wrapper .col-md-6:eq(0)');
 
 
-    
-        });
+
+    });
 
 }
 
