@@ -60,10 +60,14 @@
                                 <tr>
                                     <td>@(item.index + 1)</td> <!-- Display serial number (index + 1) -->
                                     <td>@item.value.Name</td>
+                                   
+
                                     <td class="text-end">
-                                        <button class="btn btn-soft-primary" @onclick="() => OnEditClick(item.value)" title="Edit"><i class="dripicons-pencil"></i></button>
-                                        <button class="btn btn-soft-danger" @onclick="() => OnDeleteClick(item.value.Id)" title="Delete"><i class="dripicons-trash"></i></button>
+                                        <span class="text-primary mx-1 cursor-pointer" @onclick="() => OnEditClick(item.value)"><i class="dripicons-pencil"></i></span>
+                                        <span class="text-danger mx-1 cursor-pointer" @onclick="() => OnDeleteClick(item.value.Id)"><i class="dripicons-trash"></i></span>
                                     </td>
+
+
                                 </tr>
                             }
 
