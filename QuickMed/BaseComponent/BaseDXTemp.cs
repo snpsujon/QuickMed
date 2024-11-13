@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Helpers.HtmlToPdf;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using QuickMed.DB;
 using QuickMed.Interface;
@@ -9,6 +10,8 @@ namespace QuickMed.BaseComponent
     {
         [Inject]
         public IDXTemp _dXTemp { get; set; }
+
+        public HtmlToPdfConverter hy = new();
 
         public TblDXTemplate model = new();
         public IEnumerable<TblDXTemplate>? models { get; set; }
@@ -29,6 +32,19 @@ namespace QuickMed.BaseComponent
             await JS.InvokeVoidAsync("makeDataTable", "datatable-dxTemp");
         }
 
+        protected async Task Btn()
+        {
+            // Call HtmlTopdf to get the PDF as a byte array
+            var pdfBytes = await hy.HtmlTopdf();
+
+            // Trigger download using JavaScript
+            await DownloadFile("html_saved.pdf", pdfBytes);
+        }
+        private async Task DownloadFile(string fileName, byte[] fileContent)
+        {
+            var base64File = Convert.ToBase64String(fileContent);
+            await JS.InvokeVoidAsync("downloadFileFromBytes", fileName, base64File);
+        }
 
 
         protected async Task OnSaveBtnClick()
