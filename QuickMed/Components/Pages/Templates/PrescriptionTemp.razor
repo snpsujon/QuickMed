@@ -345,6 +345,39 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Start I/R table -->
+                            <div class="accordion-item">
+                                <h5 class="accordion-header m-0" id="headingIR">
+                                    <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIR" aria-expanded="false" aria-controls="collapseIR">
+                                        <h4 class="card-title text-primary"> <i class="dripicons-information"></i> &nbsp;&nbsp;	I/X (Investigations)</h4>
+                                    </button>
+                                </h5>
+                                <div id="collapseIR" class="accordion-collapse collapse" aria-labelledby="headingIR" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="table-responsive">
+                                            <table class="table  table-borde#f1f5fa table-sm" id="DxtableIR">
+                                                <thead>
+                                                    <tr>
+                                                        <th>C/C</th>
+                                                        <th>Duration</th>
+                                                        <th>D/M</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Default</td>
+                                                        <td>Defaultson</td>
+                                                        <td>def@somemail.com</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <span class="float-right">
+                                            <button id="Dxtable_but_add_ir" class="btn btn-success btn-sm">Add New Row</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
 
 
 
@@ -504,7 +537,7 @@
         </div> <!-- end row -->
 
         <div class="row">
-            <div class="col-6">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-header bg-warning">
                         <div class="row">
@@ -558,403 +591,7 @@
                     </div><!--end card-body-->
                 </div><!--end card-->
             </div> <!-- end col -->
-            <div class="col-6">
-                <div class="card">
-                    <div class="card-header bg-warning">
-                        <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;পরবর্তী সাক্ষাৎ</h3>
-                    </div><!--end card-header-->
-
-                    
-                    <div class="card-body">
-                        <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
-                        <div class="table-responsive">
-                            <table class="table  table-borde#f1f5fa table-sm" id="makeEditable">
-                                <thead>
-                                    <tr>
-                                        <th>পরবর্তী সাক্ষাৎ</th>
-                                        <td>
-                                            <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                                                <option selected disabled>Select Instruction</option>
-                                                <option value="1">M</option>
-                                                <option value="2">F</option>
-                                                <option value="3">O</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>তারিখ</td>
-                                        <td>১২/০২/২০২৪</td>
-                                    </tr>
-                                    <tr>
-                                        <td>পেমেন্ট</td>
-                                        <td><input type="text" name="name" value="" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>রেফার্ড বাই </td>
-                                        <td><input type="text" name="name" value="" /></td>
-                                    </tr>
-
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!--end card-body-->
-                </div><!--end card-->
-            </div> <!-- end col -->
-
-
         </div> <!-- end row -->
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header bg-warning">
-                       <div class="row">
-                            <div class="col-sm-3">
-                                <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Reffer</h3>
-                            </div>
-
-                            <div class="col-sm-8">
-                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                                    <option selected disabled>Reffer Template</option>
-                                    <option value="1">M</option>
-                                    <option value="2">F</option>
-                                    <option value="3">O</option>
-                                </select>
-                            </div>
-                       </div>
-                        
-                    </div><!--end card-header-->
-
-                    <div class="card-body">
-                        <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
-                        <div class="table-responsive">
-                            <table class="table  table-borde#f1f5fa table-sm" id="makeEditable">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Report Namer</th>
-                                        <th>Result/Value</th>
-                                        <th>Unit</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>12-10-2024</td>
-                                        <td>CBC</td>
-                                        <td>24</td>
-                                        <td>mmol/L</td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <span class="float-right">
-                            <button id="but_add" class="btn btn-success btn-sm">Add New Row</button>
-                        </span><!--end table-->
-                    </div><!--end card-body-->
-                </div><!--end card-->
-            </div> <!-- end col -->
-
-
-        </div> <!-- end row -->
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header bg-warning">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Reffer</h3>
-                            </div>
-
-                            <div class="col-sm-8">
-                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                                    <option selected disabled>Reffer Template</option>
-                                    <option value="1">M</option>
-                                    <option value="2">F</option>
-                                    <option value="3">O</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        
-                    </div><!--end card-header-->
-
-                    
-                    <div class="card-body">
-                        <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
-                        <div class="table-responsive">
-                            <table class="table  table-borde#f1f5fa table-sm" id="makeEditable">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Brand</th>
-                                        <th>Dose</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>fucker1</td>
-                                        <td>def@somemail.com</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>fucker2</td>
-                                        <td>def@somemail.com</td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <span class="float-right">
-                            <button id="but_add" class="btn btn-success btn-sm">Add New Row</button>
-                        </span><!--end table-->
-                    </div><!--end card-body-->
-                </div><!--end card-->
-            </div> <!-- end col -->
-           
-
-
-        </div> <!-- end row -->
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header bg-warning">
-                        <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Report Entry</h3>
-                    </div><!--end card-header-->
-
-                    <div class="card-body">
-                        <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
-                        <div class="table-responsive">
-                            <table class="table  table-borde#f1f5fa table-sm" id="makeEditable">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Report Namer</th>
-                                        <th>Result/Value</th>
-                                        <th>Unit</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>12-10-2024</td>
-                                        <td>CBC</td>
-                                        <td>24</td>
-                                        <td>mmol/L</td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <span class="float-right">
-                            <button id="but_add" class="btn btn-success btn-sm">Add New Row</button>
-                        </span><!--end table-->
-                    </div><!--end card-body-->
-                </div><!--end card-->
-            </div> <!-- end col -->
-
-
-        </div> <!-- end row -->
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-
-                    <div class="card-header bg-warning">
-                        <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Some Other Info</h3>
-                    </div><!--end card-header-->
-
-
-                    <div class="card-body">
-
-                        <!-- Nav tabs -->
-                        <div class="nav-tabs-custom text-center">
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link text-center active" data-bs-toggle="tab" href="#cu_bmi" role="tab" aria-selected="false">BMI</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_insulin" role="tab" aria-selected="false">Insulin</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_score" role="tab" aria-selected="true">Z-Score</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_bmr" role="tab" aria-selected="true">BMR</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_edd" role="tab" aria-selected="true">EDD</a>
-                                </li>
-
-                            </ul>
-                        </div>
-
-
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                            <div class="tab-pane p-3 active" id="cu_bmi" role="tabpanel">
-
-                                <div class="mb-3 row">
-
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Ft)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Inch)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">BMI</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Class</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Idle Weight</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane p-3" id="cu_insulin" role="tabpanel">
-                                <div class="mb-3 row">
-
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Unit/Kg</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Time(Inch)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Total Unit</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Dose</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="tab-pane p-3" id="cu_score" role="tabpanel">
-                                <div class="mb-3 row">
-
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Date Of Birth</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Gender</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight(Kg)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Result</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Age</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="tab-pane p-3" id="cu_bmr" role="tabpanel">
-
-                                <div class="mb-3 row">
-
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight(KG)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Ft)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Inch)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Gender</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Age</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Activity</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">BMR</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Calorie Need</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="tab-pane p-3" id="cu_edd" role="tabpanel">
-
-                                <div class="mb-3 row">
-
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">LMP</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Gestational Age (LMP)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">EDD (LMP)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-
-
-                        </div> <!--end tab-content-->
-                    </div>
-                </div><!--end card-->
-            </div> <!-- end col -->
-
-
-        </div> <!-- end row -->
-
-
-
 
     </div><!--end col-->
 
