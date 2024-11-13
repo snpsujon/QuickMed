@@ -8,7 +8,7 @@ namespace QuickMed.Interface
         Task<dynamic> SaveCCTemplate(TblCCTemplate data);
         Task<dynamic> UpdateCCTemplate(TblCCTemplate data);
         Task<dynamic> DeleteAsync(Guid id);  // New method for deleting
-        Task<dynamic> GetCCTempById(Guid id);
+
 
     }
 }
