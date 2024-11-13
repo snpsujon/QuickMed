@@ -96,4 +96,34 @@ function addNewRowOnTable(data) {
         placeholder: "Select One",
         allowClear: true 
     });
+
+ 
+
+
+}
+function GetTableData(tableId) {
+
+    const selectedValues = [];
+    const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
+
+    // Loop through each row in the table
+    for (let i = 0; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        const select = row.cells[1].querySelector(".select2"); // Get the select element in the second cell
+
+        if (select) {
+            selectedValues.push(select.value); // Add the selected value to the array
+        }
+    }
+
+    console.log(selectedValues); // Output selected values for debugging
+    return selectedValues;
+}
+
+function clearTable(tableId) {
+    debugger;
+    const table = document.getElementById(tableId).getElementsByTagName("tbody");
+    while (table.rows.length > 0) {
+        table.deleteRow(0); 
+    }
 }

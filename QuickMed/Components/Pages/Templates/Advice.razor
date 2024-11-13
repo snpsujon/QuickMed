@@ -62,7 +62,7 @@
 
                     <hr />
                     <span class="float-right">
-                        <button  class="btn btn-success btn-sm float-end">Save</button>
+                        <button  class="btn btn-success btn-sm float-end" @onclick=onAdviceSave>Save</button>
                     </span>
 
                 </div><!--end card-body-->
@@ -90,20 +90,30 @@
                             </tr><!--end tr-->
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><a href="" class="text-primary">Organic search</a></td>
-                                <td class="float-end">
-                                    <small class="text-muted">
-                                        <button class="btn btn-soft-success btn-sm">
-                                            <i class="dripicons-pencil"></i>
-                                        </button>
-                                        <button class="btn btn-soft-danger btn-sm">
-                                            <i class="dripicons-trash"></i>
-                                        </button>
+                            @{
+                                if(templateListData != null)
+                                {
+                                    foreach(var item in templateListData)
+                                    {
+                                        <tr>
 
-                                    </small>
-                                </td>
-                            </tr><!--end tr-->
+                                            <td>@item.AdviceTemplateName</td>
+                                            <td class="float-end">
+                                                <small class="text-muted">
+                                                    <button class="btn btn-soft-success btn-sm">
+                                                        <i class="dripicons-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-soft-danger btn-sm">
+                                                        <i class="dripicons-trash"></i>
+                                                    </button>
+
+                                                </small>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                           <!--end tr-->
 
                         </tbody>
                     </table> <!--end table-->

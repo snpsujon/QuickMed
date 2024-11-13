@@ -44,7 +44,35 @@ namespace QuickMed.BaseComponent
                 StateHasChanged();
             }
         }
-       
+       protected async Task onAdviceSave()
+        {
+          var tableSelectedValue=   await JS.InvokeAsync<List<string>>("GetTableData", "mainTable-advice");
+            if (adviceTemplate.Id == Guid.Empty)
+            {
+                adviceTemplate.Id = Guid.NewGuid();
+                var isSave = await _advice.SaveAdviceTemplate(adviceTemplate);
+                if (isSave == true)
+                {
+                    foreach(var item in tableSelectedValue)
+                    {
+                        var detailsData = new TblAdviceTemplateDetails()
+                        {
+                            Id = Guid.NewGuid(),
+                            AdviceTemplateId = adviceTemplate.Id,
+                            Advice = item
+                        };
+                        templateDetails.Add(detailsData);
+                    }
+                    var saveDetails = await _advice.SaveAdviceTemplateDetails(templateDetails);
+                    await JS.InvokeVoidAsync("clearTable", "mainTable-advice");
+                    await JS.InvokeVoidAsync("onInitTable", "mainTable-advice", masterData);
+                    templateDetails= new List<TblAdviceTemplateDetails>();
+                    adviceTemplate = new();
+                    OnInitializedAsync();
+                    StateHasChanged();
+                }
+            }
+        }
 
     }
 }
