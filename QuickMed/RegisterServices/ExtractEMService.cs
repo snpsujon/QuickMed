@@ -10,7 +10,8 @@ namespace QuickMed.RegisterServices
             services.AddScoped<IBase, BaseServices>();
             services.AddScoped<IAdvice, AdviceService>();
             services.AddScoped<ILicense, LicenseServices>();
-                
+            services.AddScoped<ICCTemp, CCServices>();
+
         }
 
     }
