@@ -1,5 +1,94 @@
-﻿<h3>ReferTemp</h3>
+﻿@page "/referTemp"
+@using QuickMed.BaseComponent
+@using QuickMed.DB
+@inherits BaseAdvice
 
+<h4 class="text-success"> <i class="dripicons-document"></i> &nbsp;&nbsp;  C/C Form</h4>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Tinymce wysihtml5</h4>
+                <p class="text-muted mb-0">
+                    Bootstrap-wysihtml5 is a javascript
+                    plugin that makes it easy to create simple, beautiful wysiwyg editors
+                    with the help of wysihtml5 and Twitter Bootstrap.
+                </p>
+            </div><!--end card-header-->
+            <div class="card-body">
+                <form method="post">
+                        <!-- Quill Editor Container -->
+                        <div id="editors" style="min-height:250px; min-width:100%"></div>
+                    <textarea id="basic-conf-referTemp">Hello, World!</textarea>
+                </form>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div> <!-- end col -->
+</div> <!-- end row     -->
+
+
+
+
+
+
+<h4 class="text-primary"> <i class="dripicons-view-list"></i> &nbsp;&nbsp;  C/C List</h4>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <table id="datatable-ccTemp" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0">Name</th>
+                            <th class="border-top-0">Value</th>
+                            <th class="border-top-0 text-end">Action</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+                        <tr>
+                            <td>2C</td>
+                            <td>২ চামচ দিনে ৩ বার </td>
+                            <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
+                        </tr><!--end tr-->
+
+                        <tr>
+                            <td>2C</td>
+                            <td>২ চামচ দিনে ৩ বার </td>
+                            <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
+                        </tr><!--end tr-->
+
+                        <tr>
+                            <td>2C</td>
+                            <td>২ চামচ দিনে ৩ বার </td>
+                            <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
+                        </tr><!--end tr-->
+
+                        <tr>
+                            <td>2C</td>
+                            <td>২ চামচ দিনে ৩ বার </td>
+                            <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
+                        </tr><!--end tr-->
+
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div> <!-- end row -->
 @code {
-
+    @code {
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await JS.InvokeVoidAsync("makeTextEditor", "basic-conf-referTemp");
+            }
+        }
+    }
 }

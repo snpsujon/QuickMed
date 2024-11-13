@@ -1,24 +1,5 @@
 ﻿
 
-//using QuickMed.DB;
-
-//namespace QuickMed
-//{
-//    public partial class App : Application
-//    {
-//        public App()
-//        {
-//            InitializeComponent();
-
-//            Database = new ApplicationDbContext();
-
-//            MainPage = new MainPage();
-
-//        }
-//        public static ApplicationDbContext Database { get; private set; }
-//    }
-//}
-
 using QuickMed.DB;
 using QuickMed.Services;
 
@@ -45,6 +26,10 @@ namespace QuickMed
         {
             var window = base.CreateWindow(activationState);
             window.Title = "QuickMed - Prescribe Effectively";
+           
+
+            
+
             return window;
         }
 

@@ -1,0 +1,33 @@
+﻿@page "/checkUpgrade";
+@inject IJSRuntime JS
+
+<div class="row mt-4">
+    <div class="col-xl-12 d-flex">
+        <div class="card w-100">
+            <div class="card-header bg-light text-center">
+                <h4 class="card-title mb-0 fs-4">Check Your Data</h4>
+                <p class="text-muted mb-0">
+                    You must have to turn on Internet Connection.
+                </p>
+            </div><!--end card-header-->
+            <div class="card-body d-flex justify-content-center align-items-center">
+                <i id="downloadIcon" class="dripicons-time-reverse display-3" style="color: red;" onclick="toggleLoadingIcon()"></i>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div><!--end col-->
+</div><!--end row-->
+
+<script>
+    function toggleLoadingIcon() {
+        const icon = document.getElementById('downloadIcon');
+
+        // Immediately show loading icon with rotation effect
+        icon.className = 'dripicons-loading display-3 refreshing'; // Replace with loading icon class
+
+        // Set a 3-second timeout to revert back to the original icon
+        setTimeout(() => {
+            icon.className = 'dripicons-time-reverse display-3'; // Revert to original icon
+            icon.style.color = 'red';
+        }, 3000); // 3-second loading time
+    }
+</script>

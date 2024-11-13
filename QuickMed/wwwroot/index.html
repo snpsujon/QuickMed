@@ -36,6 +36,7 @@
 
     <link href="dastheme/plugins/timepicker/bootstrap-material-datetimepicker.css" rel="stylesheet">
     <link href="dastheme/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+    <link href="dastheme/plugins/dropify/css/dropify.min.css" rel="stylesheet">
 
 
 
@@ -65,7 +66,7 @@
                 <li class="dropdown">
                     <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-bs-toggle="dropdown" href="#" role="button"
                        aria-haspopup="false" aria-expanded="false">
-                        <span class="ms-1 nav-user-name hidden-sm" style="font-size: 1rem;">Dr.Saleh Ahmed Shaheen </span>
+                        <!--<span class="ms-1 nav-user-name hidden-sm" style="font-size: 1rem;">Dr.Saleh Ahmed Shaheen </span>-->
                         <img src="dastheme/images/users/user-5.jpg" alt="profile-user" class="rounded-circle thumb-sm" />
                     </a>
                     <!--<div class="dropdown-menu dropdown-menu-end">
@@ -94,23 +95,23 @@
 
                         <li class="has-submenu mymenu-item" id="dashboard">
                             <a href="dashboard" onclick="setActiveMenu('dashboard')">
-                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Dashboard</span>
+                                <span><i class="dripicons-home align-self-center hori-menu-icon fs-5"></i>Dashboard</span>
                             </a>
                         </li><!--end has-submenu-->
                         <li class="has-submenu mymenu-item" id="prescription">
                             <a href="prescription" onclick="setActiveMenu('prescription')">
-                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Prescription</span>
+                                <span><i class="dripicons-medical align-self-center hori-menu-icon fs-5"></i>Prescription</span>
                             </a>
                         </li><!--end has-submenu-->
                         <li class="has-submenu mymenu-item" id="prescription-list">
                             <a href="prescription-list" onclick="setActiveMenu('prescription-list')">
-                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Prescription List</span>
+                                <span><i class="dripicons-checklist align-self-center hori-menu-icon fs-5"></i>Prescription List</span>
                             </a>
                         </li><!--end has-submenu-->
 
                         <li class="has-submenu" id="template">
                             <a href="#" onclick="setActiveMenu('template')">
-                                <span><i data-feather="home" class="align-self-center hori-menu-icon"></i>Template</span>
+                                <span><i class="dripicons-store align-self-center hori-menu-icon fs-5"></i>Template</span>
                             </a>
                             <ul class="submenu">
                                 <li id="treatment" class="mymenu-item"><a href="treatmentTemp" onclick="setActiveMenu('treatment')"><i class="ti ti-minus"></i>Treatment</a></li>
@@ -130,22 +131,22 @@
 
                         <li class="has-submenu mymenu-item" id="appoinment">
                             <a href="appoinment" onclick="setActiveMenu('appoinment')">
-                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Appoinment</span>
+                                <span><i class="dripicons-user-group align-self-center hori-menu-icon fs-5"></i>Appoinment</span>
                             </a>
                         </li><!--end has-submenu-->
                         <li class="has-submenu mymenu-item" id="databaseTool">
                             <a href="databaseTool" onclick="setActiveMenu('databaseTool')">
-                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Database Tools</span>
+                                <span><i class="dripicons-stack align-self-center hori-menu-icon fs-5"></i>Database Tools</span>
                             </a>
                         </li><!--end has-submenu-->
                         <li class="has-submenu mymenu-item" id="checkUpgrade">
                             <a href="checkUpgrade" onclick="setActiveMenu('checkUpgrade')">
-                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Check Upgrade</span>
+                                <span><i class="dripicons-retweet align-self-center hori-menu-icon fs-5"></i>Check Upgrade</span>
                             </a>
                         </li><!--end has-submenu-->
                         <li class="has-submenu mymenu-item" id="drug">
                             <a href="drug" onclick="setActiveMenu('drug')">
-                                <span><i data-feather="layers" class="align-self-center hori-menu-icon"></i>Drug</span>
+                                <span><i class="dripicons-pill align-self-center hori-menu-icon fs-5"></i>Drug</span>
                             </a>
                         </li><!--end has-submenu-->
 
@@ -265,8 +266,13 @@
     <!-- Responsive examples -->
     <script src="dastheme/plugins/datatables/dataTables.responsive.min.js"></script>
     <script src="dastheme/plugins/datatables/responsive.bootstrap4.min.js"></script>
-    <script src="assets/pages/jquery.datatable.init.js"></script>
+    <script src="dastheme/assets/pages/jquery.datatable.init.js"></script>
 
+    <script src="dastheme/assets/pages/jquery.datatable.init.js"></script>
+
+    <script src="dastheme/plugins/dropify/js/dropify.min.js"></script>
+
+    <script src="dastheme/plugins/tinymce/tinymce.min.js"></script>
 
 
     <!-- App js -->
