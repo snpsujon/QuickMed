@@ -9,6 +9,8 @@ namespace QuickMed.Services
         {
         }
 
+
+
         public async Task<dynamic> GetCCTempData()
         {
             try
@@ -35,5 +37,51 @@ namespace QuickMed.Services
                 throw;
             }
         }
+
+        public async Task<dynamic> UpdateCCTemplate(TblCCTemplate data)
+        {
+            try
+            {
+                int rowsAffected = await _context.UpdateAsync(data);
+                return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while updating the template.", ex);
+            }
+        }
+        public async Task<dynamic> DeleteAsync(Guid id)
+        {
+            try
+            {
+                var q = $"DELETE FROM TblCCTemplate WHERE Id = '{id}'";
+
+                var deleteResult = await _context.ExecuteSqlQueryFirstorDefultAsync<TblCCTemplate>(q);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        public async Task<dynamic> GetCCTempById(Guid id)
+        {
+            try
+            {
+                // Assuming the table name is "TblCCTemplates" and column is "Id"
+                var result = await _context.GetTableRowAsync("TblCCTemplate", "Id", id.ToString());
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // It's better to log the exception or wrap it in a more specific exception
+                throw new Exception("An error occurred while fetching the template", ex);
+            }
+        }
+
     }
 }

@@ -54,7 +54,7 @@ namespace QuickMed.DB
         //        await InitializeDatabase(); 
         //    }
         //}
-       
+
         public string GetDatabasePath()
         {
             if (!Directory.Exists(databaseDirectory))
@@ -82,6 +82,7 @@ namespace QuickMed.DB
             await _dbConnection.CreateTableAsync<TblAdviceMaster>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblAdviceTemplate>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblAdviceTemplateDetails>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblCCTemplate>().ConfigureAwait(false);
 
             // Await the seed data methods to ensure they complete before continuing
             await insertSeedDoseData().ConfigureAwait(false);
@@ -219,14 +220,37 @@ namespace QuickMed.DB
             }
         }
 
-        public object GetTableRow(string tableName, string column, string value)
+        public async Task<object> GetTableRowAsync(string tableName, string column, string value)
         {
-            object[] obj = new object[] { };
-            TableMapping map = new TableMapping(Type.GetType(nameSpace + tableName));
-            string query = "SELECT * FROM " + tableName + " WHERE " + column + "='" + value + "'";
+            try
+            {
+                // Assuming `TableMapping` and `_dbConnection` are set up properly
+                object[] obj = new object[] { };
+                TableMapping map = new TableMapping(Type.GetType(nameSpace + tableName));
 
-            return _dbConnection.QueryAsync(map, query, obj).Result.FirstOrDefault();
+                // Use a named parameter instead of anonymous object
+                var parameters = new { value };
+
+                // Async query execution
+                string query = $"SELECT * FROM {tableName} WHERE {column} = {value}";  // Use parameterized query to avoid SQL injection
+                var result = await _dbConnection.QueryAsync(map, query, parameters);
+
+                return result.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
+
+
+
+
+
+
+
+
+
 
         private async Task insertSeedDoseData()
         {
@@ -393,4 +417,7 @@ namespace QuickMed.DB
             }
         }
     }
+
+
+
 }

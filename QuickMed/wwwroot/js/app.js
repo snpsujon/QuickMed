@@ -119,24 +119,40 @@ function makeSelect2(isTags) {
     });
 
 }
-
-function makeDataTable(tableid) {
+function makeDataTable(tableid, newData = []) {
+    debugger;
     $(document).ready(function () {
+        // Check if the DataTable is already initialized
+        if (!$.fn.dataTable.isDataTable('#' + tableid)) {
+            // Initialize the DataTable
+            var table = $('#' + tableid).DataTable({
+                lengthChange: false,
+                buttons: ['excel', 'pdf']
+            });
 
-        //Buttons examples
-        var table = $('#' + tableid).DataTable({
-            lengthChange: false,
-            buttons: ['excel', 'pdf']
-        });
+            // Append the DataTable buttons to the container
+            table.buttons().container()
+                .appendTo('.dataTables_wrapper .col-md-6:eq(0)');
+        } else {
+            // If DataTable is already initialized, just get the existing table instance
+            var table = $('#' + tableid).DataTable();
+        }
 
-        table.buttons().container()
-            .appendTo('.dataTables_wrapper .col-md-6:eq(0)');
+        // Check if new data is provided and add it to the table
+        if (newData.length > 0) {
+            // Clear the existing table
+            table.clear();
 
+            // Add the new data to the table
+            table.rows.add(newData);
 
-
+            // Redraw the table to refresh the state and remove "No data available" message
+            table.draw();
+        }
     });
-
 }
+
+
 
 function makeTextEditor(inputId) {
     $(document).ready(function () {
@@ -207,3 +223,4 @@ function makeFileUpload() {
         })
     });
 }
+
