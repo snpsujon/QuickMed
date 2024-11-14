@@ -3,9 +3,9 @@ using QuickMed.Interface;
 
 namespace QuickMed.Services
 {
-    public class CCServices : BaseServices, ICCTemp
+    public class DXTempServices : BaseServices, IDXTemp
     {
-        public CCServices(ApplicationDbContext context) : base(context)
+        public DXTempServices(ApplicationDbContext context) : base(context)
         {
         }
 
@@ -15,7 +15,7 @@ namespace QuickMed.Services
         {
             try
             {
-                return await _context.GetTableRowsAsync<TblCCTemplate>("TblCCTemplate");
+                return await _context.GetTableRowsAsync<TblDXTemplate>("TblDXTemplate");
             }
             catch (Exception ex)
             {
@@ -24,11 +24,11 @@ namespace QuickMed.Services
             }
         }
 
-        public async Task<dynamic> SaveCCTemplate(TblCCTemplate data)
+        public async Task<dynamic> SaveCCTemplate(TblDXTemplate data)
         {
             try
             {
-                var saveTemplate = await _context.CreateAsync<TblCCTemplate>(data);
+                var saveTemplate = await _context.CreateAsync<TblDXTemplate>(data);
                 return true;
             }
             catch (Exception ex)
@@ -38,7 +38,7 @@ namespace QuickMed.Services
             }
         }
 
-        public async Task<dynamic> UpdateCCTemplate(TblCCTemplate data)
+        public async Task<dynamic> UpdateCCTemplate(TblDXTemplate data)
         {
             try
             {
@@ -54,9 +54,9 @@ namespace QuickMed.Services
         {
             try
             {
-                var q = $"DELETE FROM TblCCTemplate WHERE Id = '{id}'";
+                var q = $"DELETE FROM TblDXTemplate WHERE Id = '{id}'";
 
-                var deleteResult = await _context.ExecuteSqlQueryFirstorDefultAsync<TblCCTemplate>(q);
+                var deleteResult = await _context.ExecuteSqlQueryFirstorDefultAsync<TblDXTemplate>(q);
 
                 return true;
             }

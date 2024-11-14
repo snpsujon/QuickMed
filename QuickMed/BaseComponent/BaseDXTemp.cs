@@ -5,13 +5,14 @@ using QuickMed.Interface;
 
 namespace QuickMed.BaseComponent
 {
-    public class BaseCCTemp : ComponentBase
+    public class BaseDXTemp : ComponentBase
     {
         [Inject]
-        public ICCTemp _cCTemp { get; set; }
+        public IDXTemp _dXTemp { get; set; }
 
-        public TblCCTemplate tblCCTemplate = new();
-        public IEnumerable<TblCCTemplate>? tblCCTemplates { get; set; }
+
+        public TblDXTemplate model = new();
+        public IEnumerable<TblDXTemplate>? models { get; set; }
 
 
         [Inject]
@@ -20,43 +21,49 @@ namespace QuickMed.BaseComponent
         protected override async Task OnInitializedAsync()
         {
             await InitializeDataTable();
-            tblCCTemplates = await _cCTemp.GetCCTempData();
+            models = await _dXTemp.GetCCTempData();
 
         }
 
         private async Task InitializeDataTable()
         {
-            await JS.InvokeVoidAsync("makeDataTable", "datatable-ccTemp");
+            await JS.InvokeVoidAsync("makeDataTable", "datatable-dxTemp");
         }
 
+        private async Task DownloadFile(string fileName, byte[] fileContent)
+        {
+            var base64File = Convert.ToBase64String(fileContent);
+            await JS.InvokeVoidAsync("downloadFileFromBytes", fileName, base64File);
+        }
 
 
         protected async Task OnSaveBtnClick()
         {
-            if (tblCCTemplate.Id == Guid.Empty) // Check if the GUID is uninitialized
+            if (model.Id == Guid.Empty) // Check if the GUID is uninitialized
             {
-                tblCCTemplate.Id = Guid.NewGuid(); // This line will be redundant as the default is already set
-                await _cCTemp.SaveCCTemplate(tblCCTemplate); // Create the new template
+                model.Id = Guid.NewGuid(); // This line will be redundant as the default is already set
+                await _dXTemp.SaveCCTemplate(model); // Create the new template
                 await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
             }
             else
             {
-                await _cCTemp.UpdateCCTemplate(tblCCTemplate); // Update the existing template
+                await _dXTemp.UpdateCCTemplate(model); // Update the existing template
                 await JS.InvokeVoidAsync("showAlert", "Update Successful", "Record has been successfully Updated.", "success", "swal-info");
             }
 
             // Reset the model for future input
-            tblCCTemplate = new TblCCTemplate(); // Creates a new instance with a new GUID
+            model = new TblDXTemplate(); // Creates a new instance with a new GUID
 
             // Fetch updated data
-            tblCCTemplates = await _cCTemp.GetCCTempData();
-            await InitializeDataTable();  // Re-initialize DataTable after data change
+            //models = await _dXTemp.GetCCTempData();
+            await OnInitializedAsync();
+
             StateHasChanged();  // Update the UI
         }
-        protected async Task OnEditClick(TblCCTemplate data)
+        protected async Task OnEditClick(TblDXTemplate data)
         {
-            tblCCTemplate = data;
-            StateHasChanged(); // Re-render the component with the updated tblCCTemplate
+            model = data;
+            StateHasChanged(); // Re-render the component with the updated model
         }
         protected async Task OnDeleteClick(Guid id)
         {
@@ -64,15 +71,14 @@ namespace QuickMed.BaseComponent
 
             if (isConfirmed)
             {
-                var isDeleted = await _cCTemp.DeleteAsync(id);
+                var isDeleted = await _dXTemp.DeleteAsync(id);
                 if (isDeleted)
                 {
                     // Show success alert with red color
                     await JS.InvokeVoidAsync("showAlert", "Delete Successful", "Record has been successfully deleted.", "success", "swal-danger");
 
                     // Refresh the list after deletion
-                    tblCCTemplates = await _cCTemp.GetCCTempData();
-                    await InitializeDataTable();  // Re-initialize DataTable after deletion
+                    await OnInitializedAsync();
                     StateHasChanged();  // Update the UI after deletion
                 }
                 else
