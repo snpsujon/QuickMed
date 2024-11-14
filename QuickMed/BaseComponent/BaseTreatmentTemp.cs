@@ -31,13 +31,32 @@ namespace QuickMed.BaseComponent
                 await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpTbl", null);
                 await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpAdviceTbl", "add_Advice");
                 await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpTbl");
+                await JS.InvokeVoidAsync("makeSelect2", true);
             }
         }
         public async Task OsudAddbtn()
         {
             try
             {
-                var data = await JS.InvokeAsync<dynamic>("OsudAddbtn");
+                // Retrieve data from JavaScript
+                var result = await JS.InvokeAsync<object>("OsudAddbtn");
+
+                // Check if result is an array; if not, wrap it in an array
+                object[] dataArray;
+                if (result is object[] array)
+                {
+                    dataArray = array; // Already an array
+                }
+                else
+                {
+                    dataArray = new object[] { result }; // Wrap single object in an array
+                }
+
+                // Pass the data array to JavaScript
+                await JS.InvokeVoidAsync("populateTreatmentTable", dataArray);
+
+
+
 
             }
             catch (Exception ex)
