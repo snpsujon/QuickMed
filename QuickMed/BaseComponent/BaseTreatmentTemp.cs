@@ -15,6 +15,9 @@ namespace QuickMed.BaseComponent
         public TblAdviceTemplate adviceTemplate = new();
         public List<TblAdviceTemplateDetails> adviceDetails = new List<TblAdviceTemplateDetails>();
         public TblAdviceTemplateDetails TblAdviceTemplate = new();
+        public List<TblBrand> Brands = new List<TblBrand>();
+        public List<TblDose> Dose = new List<TblDose>();
+        public List<TblDuration> Duration = new List<TblDuration>();
 
         [Inject]
         public IJSRuntime JS { get; set; }
@@ -22,7 +25,13 @@ namespace QuickMed.BaseComponent
 
         protected override async Task OnInitializedAsync()
         {
-            await JS.InvokeVoidAsync("makeSelect2", true);
+            //await JS.InvokeVoidAsync("makeSelect2", true);
+            Brands = new();
+            Brands = await App.Database.GetTableRowsAsync<TblBrand>("TblBrand");
+            Dose = new();
+            Dose = await App.Database.GetTableRowsAsync<TblDose>("TblDose");
+            Duration = new();
+            Duration = await App.Database.GetTableRowsAsync<TblDuration>("TblDuration");
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
