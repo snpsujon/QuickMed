@@ -31,6 +31,7 @@ namespace QuickMed.BaseComponent
                 await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpTbl", null);
                 await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpAdviceTbl", "add_Advice");
                 await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpTbl");
+                await JS.InvokeVoidAsync("makeSelect2", true);
             }
         }
         public async Task OsudAddbtn()

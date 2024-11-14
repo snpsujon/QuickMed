@@ -110,13 +110,11 @@ function makeTableDragable(tableid) {
 }
 
 function makeSelect2(isTags) {
-    $(document).ready(function () {
         $('.select2').select2({
             width: '100%',
             tags: isTags,
             allowClear: true
         });
-    });
 
 }
 function makeDataTable(tableid, newData = []) {

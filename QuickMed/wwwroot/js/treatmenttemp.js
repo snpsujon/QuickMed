@@ -134,20 +134,21 @@ function populateTreatmentTable(dataArray) {
     });
 }
 
-function tretmentDelete(but) {
+function tretmentDelete(but, tableid) {
     const row = $(but).closest('tr')[0];
+    const table = $(but).closest('table')[0];
 
     console.log("Row found:", row);
 
     if (row && row.hasAttribute("data-value")) {
-        const treatmentIndex = parseInt(row.getAttribute("data-value"), 10); 
+        const treatmentIndex = parseInt(row.getAttribute("data-value"), 10);
 
         console.log("Treatment index to remove:", treatmentIndex);
 
         const treatmentToRemoveIndex = treatments.findIndex(t => t.index === treatmentIndex);
 
         if (treatmentToRemoveIndex !== -1) {
-            treatments.splice(treatmentToRemoveIndex, 1);  
+            treatments.splice(treatmentToRemoveIndex, 1);
             console.log("Updated treatments array:", treatments);
         } else {
             console.warn("No matching treatment found in the array.");
@@ -163,6 +164,10 @@ function tretmentDelete(but) {
     params.onBeforeDelete($row);
     $row.remove();
     params.onDelete();
+
+    $("#TretmentTmpTbl tbody tr").each(function (index) {
+        $(this).children(":first").text(index + 1);  // Updating the first column to new index + 1
+    });
 
     //var rows = $(but).closest('tr');
 
