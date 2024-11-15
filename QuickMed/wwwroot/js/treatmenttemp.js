@@ -42,7 +42,7 @@ function OsudAddbtn() {
 }
 
 
-function populateTreatmentTable(dataArray) {
+function populateTreatmentTable(dataArray, tblId) {
     console.log("Data received:", dataArray);
 
     // Convert to array if it is an object with array properties
@@ -55,9 +55,8 @@ function populateTreatmentTable(dataArray) {
         return;
     }
 
+    const tableBody = $("#" + tblId + " tbody")[0];
 
-
-    const tableBody = document.getElementById("TretmentTmpTbl").getElementsByTagName("tbody")[0];
 
     tableBody.innerHTML = "";
 
@@ -65,13 +64,16 @@ function populateTreatmentTable(dataArray) {
         const newRow = document.createElement("tr");
         newRow.setAttribute("data-value", data.index);
 
+
+        //data.brand?.value == 0 ? "N/A" : data.brand?.text || "N/A"
         const cells = [
             { text: index + 1, value: index + 1 },
-            { text: data.brand.text, value: data.brand.value },
-            { text: data.dose.text, value: data.dose.value },
-            { text: data.instruction.text, value: data.instruction.value },
-            { text: data.duration.text, value: data.duration.value }
+            { text: data.brand?.value == 0 ? "N/A" : data.brand?.text || "N/A", value: data.brand?.value || "" },
+            { text: data.dose?.value == 0 ? "N/A" : data.dose?.text || "N/A", value: data.dose?.value || "" },
+            { text: data.instruction?.value == 0 ? "N/A" : data.instruction?.text || "N/A", value: data.instruction?.value || "" },
+            { text: data.duration?.value == 0 ? "N/A" : data.duration?.text || "N/A", value: data.duration?.value || "" }
         ];
+
 
         cells.forEach(cellData => {
             const cell = document.createElement("td");
@@ -165,11 +167,74 @@ function tretmentDelete(but, tableid) {
     $row.remove();
     params.onDelete();
 
-    $("#TretmentTmpTbl tbody tr").each(function (index) {
-        $(this).children(":first").text(index + 1);  // Updating the first column to new index + 1
+    $(table).find('tbody tr').each(function (index) {
+        $(this).children(":first").text(index + 1); // Update the first column with the new index
+    });
+}
+
+function getAdviceValue(e) {
+    const adviceSelect = document.getElementById("adviceSelect");
+    if (!adviceSelect) {
+        console.error("Advice select element not found in the DOM.");
+        return null;
+    }
+    return adviceSelect.value;
+}
+
+function populateAdviceTable(dataArray, tblId) {
+
+    if (!Array.isArray(dataArray) && typeof dataArray === 'object') {
+        dataArray = Object.values(dataArray);
+    }
+
+    if (!Array.isArray(dataArray)) {
+        console.error("Expected an array but received:", dataArray);
+        return;
+    }
+
+    const tableBody = $("#" + tblId + " tbody")[0];
+
+    tableBody.innerHTML = "";
+    dataArray.forEach((data, index) => {
+        const newRow = document.createElement("tr");
+        newRow.setAttribute("data-value", index + 1);
+
+        const cells = [
+            { text: index + 1, value: index + 1 },
+            { text: data?.advice || "N/A", value: data?.id || "" }
+        ];
+
+        cells.forEach(cellData => {
+            const cell = document.createElement("td");
+            cell.textContent = cellData.text;
+            cell.setAttribute("data-value", cellData.value);
+            newRow.appendChild(cell);
+        });
+
+        var buttonCell = document.createElement("td");
+        buttonCell.setAttribute("name", "buttons");
+
+        buttonCell.innerHTML = deletebun;
+        newRow.appendChild(buttonCell);
+        tableBody.appendChild(newRow);
+    });
+}
+
+function GetTretmentTempData() {
+    const tableBody = $("#TretmentTmpAdviceTbl tbody")[0];
+    const secondColumnData = [];
+    const tempname = $("#TempName").val();
+    $(tableBody).find("tr").each(function () {
+        const secondCell = $(this).children("td").eq(1);
+        const cellData = secondCell.text().trim();
+        secondColumnData.push(cellData);
     });
 
-    //var rows = $(but).closest('tr');
-
-
+    var data = {
+        templateName: tempname == '' ? 'TreatmentTemp_' + getRandomInteger(1, 9999) : tempname,
+        treatment: treatments,
+        advice: secondColumnData,
+    };
+    return data;
 }
+
