@@ -14,15 +14,25 @@ namespace QuickMed.BaseComponent
         public IJSRuntime JS { get; set; }
 
 
-        protected List<PatientVM> models = new();
-        protected PatientVM model = new();
+
+        public PatientVM model = new();
+        public IEnumerable<PatientVM>? models { get; set; }
+
 
 
         protected override async Task OnInitializedAsync()
         {
-            await InitializeDataTable();
-            models = await _appoinment.GetAsync();
+            models = await _appoinment.GetAsync(); // Load the initial data
         }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await InitializeDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
+            }
+        }
+
         protected async Task InitializeDataTable()
         {
             await JS.InvokeVoidAsync("makeDataTable", "datatable-patientList");
