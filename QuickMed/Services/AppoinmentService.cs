@@ -14,8 +14,8 @@ namespace QuickMed.Services
         {
             try
             {
-                var query = $"Select Name, Age, Address, Mobile, AdmissionDate,\r\nCASE When Gender = 1 THEN 'M' \r\n\tWhen Gender = 2 THEN 'F'\r\n\tElse 'O' \r\nEND as GenderName\r\n From TblPatient";
-                var result = await _context.ExecuteSqlQueryFirstorDefultAsync<PatientVM>(query);
+                var query = $"Select Id, Name, Age, Address, Mobile, AdmissionDate,\r\nCASE When Gender = 1 THEN 'M' \r\n\tWhen Gender = 2 THEN 'F'\r\n\tElse 'O' \r\nEND as GenderName\r\n From TblPatient";
+                var result = await _context.ExecuteSqlQueryAsync<PatientVM>(query);
                 return result;
 
             }
@@ -31,6 +31,7 @@ namespace QuickMed.Services
             {
                 TblPatient tblData = new()
                 {
+                    Id = Guid.NewGuid(),
                     Name = data.Name,
                     Age = data.Age,
                     Gender = data.Gender,
