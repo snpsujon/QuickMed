@@ -64,15 +64,35 @@ namespace QuickMed.BaseComponent
                         templateDetails.Add(detailsData);
                     }
                     var saveDetails = await _advice.SaveAdviceTemplateDetails(templateDetails);
-                    await JS.InvokeVoidAsync("clearTable", "mainTable-advice");
                     await JS.InvokeVoidAsync("onInitTable", "mainTable-advice", masterData);
                     templateDetails= new List<TblAdviceTemplateDetails>();
                     adviceTemplate = new();
-                    OnInitializedAsync();
+                    templateListData = await _advice.GetAdviceTemplateData();
                     StateHasChanged();
                 }
             }
         }
-
+       protected async Task onDataDelete(Guid id)
+        {
+            var Sql = $"DELETE FROM TblAdviceTemplate WHERE Id = '{id}'";
+            if(id != Guid.Empty)
+            {
+                var isDelete = await _advice.DeleteAdviceTemplete(Sql);
+                if (isDelete == true)
+                {
+                    var SqlDetails = $"DELETE FROM TblAdviceTemplateDetails WHERE AdviceTemplateId = '{id}'";
+                    var isDeleteDetails = await _advice.DeleteAdviceDetails(SqlDetails);
+                    templateListData = await _advice.GetAdviceTemplateData();
+                    StateHasChanged();
+                }
+            }
+        }
+        [JSInvokable]
+        public static Task OnDataDelete(int id)
+        {
+            Console.WriteLine($"Deleting data with ID: {id}");
+            // Perform your deletion logic here
+            return Task.CompletedTask;
+        }
     }
 }

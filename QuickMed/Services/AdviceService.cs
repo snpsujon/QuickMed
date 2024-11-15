@@ -42,6 +42,32 @@ namespace QuickMed.Services
                 throw;
             }
         }
+        public async Task<dynamic> DeleteAdviceTemplete(string sql)
+        {
+            try
+            {
+                 await _context.ExecuteSqlQueryAsync<TblAdviceTemplate>(sql);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public async Task<dynamic> DeleteAdviceDetails(string sql)
+        {
+            try
+            {
+                 await _context.ExecuteSqlQueryAsync<TblAdviceTemplateDetails>(sql);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
 
         public async Task<dynamic> SaveAdviceTemplate(TblAdviceTemplate data)
         {

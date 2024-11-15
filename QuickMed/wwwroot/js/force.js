@@ -2,7 +2,11 @@ function onInitTable(tableId, data) {
     $(document).ready(function () { // Ensure DOM is fully loaded
         const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
 
-        for (var i = 0; i <= 5; i++) {
+        // Clear the table first
+        clearTable(tableId);
+
+        // Now, insert the new rows
+        for (var i = 0; i < 5; i++) {  // Note: Change to `i < 6` to add exactly 6 rows
             const newRow = table.insertRow();
 
             const cell1 = newRow.insertCell(0);
@@ -37,11 +41,28 @@ function onInitTable(tableId, data) {
             $(select).select2({
                 width: "100%",
                 placeholder: "Select One", // Ensures placeholder text is shown
-                allowClear: true           // Enables clear button
+                allowClear: true,
+                tags: true// Enables clear button
             });
+            const cell3 = newRow.insertCell(2);
+
+            // Create a button dynamically
+            let deleteButton = document.createElement("button");
+            deleteButton.className = "btn btn-soft-danger btn-sm";
+            deleteButton.innerHTML = '<i class="dripicons-trash"></i>';
+            deleteButton.onclick = function () {
+                debugger;
+                const row = this.closest('tr'); // Find the closest row
+                const index = row.rowIndex - 1;
+                table.deleteRow(index);
+            };
+
+            // Append the button to cell3
+            cell3.appendChild(deleteButton);
         }
     });
 }
+
 
 
 function initializeButtonClick(data) {
@@ -94,10 +115,25 @@ function addNewRowOnTable(data) {
     $(select).select2({
         width: "100%",
         placeholder: "Select One",
-        allowClear: true 
+        allowClear: true,
+        tags:true
     });
 
- 
+    const cell3 = newRow.insertCell(2);
+
+    // Create a button dynamically
+    let deleteButton = document.createElement("button");
+    deleteButton.className = "btn btn-soft-danger btn-sm";
+    deleteButton.innerHTML = '<i class="dripicons-trash"></i>';
+    deleteButton.onclick = function () {
+        debugger;
+        const row = this.closest('tr'); // Find the closest row
+        const index = row.rowIndex - 1;
+        table.deleteRow(index);
+    };
+
+    // Append the button to cell3
+    cell3.appendChild(deleteButton);
 
 
 }
@@ -122,8 +158,10 @@ function GetTableData(tableId) {
 
 function clearTable(tableId) {
     debugger;
-    const table = document.getElementById(tableId).getElementsByTagName("tbody");
-    while (table.rows.length > 0) {
-        table.deleteRow(0); 
+    const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
+
+    // Deleting rows from the last one to the first
+    for (let i = table.rows.length - 1; i >= 0; i--) {
+        table.deleteRow(i);
     }
 }

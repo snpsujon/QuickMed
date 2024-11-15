@@ -13,5 +13,7 @@ namespace QuickMed.Interface
         Task<dynamic> GetAdviceTemplateData();
         Task<dynamic> SaveAdviceTemplate(TblAdviceTemplate data);
         Task<dynamic> SaveAdviceTemplateDetails(List<TblAdviceTemplateDetails> data);
+        Task<dynamic> DeleteAdviceTemplete(string sql);
+        Task<dynamic> DeleteAdviceDetails(string sql);
     }
 }

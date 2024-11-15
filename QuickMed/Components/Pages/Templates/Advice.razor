@@ -45,8 +45,9 @@
                         <table id="mainTable-advice" class="table table-striped  mb-0">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Advice Name</th>
+                                    <th class="border-top-0">#</th>
+                                    <th class="border-top-0">Advice Name</th>
+                                    <th class="border-top-0">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,7 +86,7 @@
                     <table class="table mb-0">
                         <thead class="thead-light">
                             <tr>
-                                <th class="border-top-0">Channel</th>
+                                <th class="border-top-0">Template Name</th>
                                 <th class="border-top-0">Action</th>
                             </tr><!--end tr-->
                         </thead>
@@ -103,7 +104,7 @@
                                                     <button class="btn btn-soft-success btn-sm">
                                                         <i class="dripicons-pencil"></i>
                                                     </button>
-                                                    <button class="btn btn-soft-danger btn-sm">
+                                                    <button class="btn btn-soft-danger btn-sm"@onclick="() => onDataDelete(item.Id)">
                                                         <i class="dripicons-trash"></i>
                                                     </button>
 
