@@ -84,11 +84,13 @@ namespace QuickMed.DB
             await _dbConnection.CreateTableAsync<TblAdviceTemplateDetails>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblCCTemplate>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblDXTemplate>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblInstruction>().ConfigureAwait(false);
 
             // Await the seed data methods to ensure they complete before continuing
             await insertSeedDoseData().ConfigureAwait(false);
             await insertSeedDurationData().ConfigureAwait(false);
             await insertSeedAdviceMasterData().ConfigureAwait(false);
+            await insertSeedInstructiomData().ConfigureAwait(false);
         }
 
 
@@ -304,6 +306,43 @@ namespace QuickMed.DB
                         new TblDose { Id = Guid.NewGuid(), Name = "১+১+১+১" },
                         new TblDose { Id = Guid.NewGuid(), Name = "হাফ চামুচ দিনে ১ বার" },
                         new TblDose { Id = Guid.NewGuid(), Name = "হাফ চামুচ দিনে ২ বার" }
+
+                    };
+
+                    // Insert the initial data into the table
+                    await _dbConnection.InsertAllAsync(initialDoses);
+                }
+            }
+
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+        }
+
+        private async Task insertSeedInstructiomData()
+        {
+            // Implement seeding logic for TblDose
+            try
+            {
+                var count = await _dbConnection.Table<TblInstruction>().CountAsync();
+
+                // Insert data only if the table is empty
+                if (count == 0)
+                {
+                    // Define initial data
+                    var initialDoses = new List<TblInstruction>
+                    {
+
+                        new TblInstruction { Id = Guid.NewGuid(), Name = "খাবার আগে" },
+                        new TblInstruction { Id = Guid.NewGuid(), Name = "খাবার পরে" },
+                        new TblInstruction { Id = Guid.NewGuid(), Name = "গোসলের আগে" },
+                        new TblInstruction { Id = Guid.NewGuid(), Name = "গোসলের পরে" }
+
+
+
 
                     };
 

@@ -1,4 +1,6 @@
-﻿function LoadPage(ff) {
+﻿var deletebun = '<button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button>';
+
+function LoadPage(ff) {
     if (ff == '1') {
         fetch('login.html')
             .then(response => response.text())
@@ -75,9 +77,115 @@ function setupEditableTable(tableid, buttonid = null) {
     if (buttonid == null) {
         $('#' + tableid).SetEditable();
     } else {
-        $('#' + tableid).SetEditable({ $addButton: $('#' + buttonid) });
+        $('#' + tableid).MySetEditable({ $addButton: $('#' + buttonid) });
     }
 }
+
+$.fn.MySetEditable = function (options) {
+    var defaults = {
+        columnsEd: null,         //Index to editable columns. If null all td editables. Ex.: "1,2,3,4,5"
+        $addButton: null,        //Jquery object of "Add" button
+        onEdit: function () { },   //Called after edition
+        onBeforeDelete: function () { }, //Called before deletion
+        onDelete: function () { }, //Called after deletion
+        onAdd: function () { }     //Called when added a new row
+    };
+    params = $.extend(defaults, options);
+    //this.find('thead tr').append('<th name="buttons"></th>');  //encabezado vacío
+    //this.find('tbody tr').append(colEdicHtml);
+    var $tabedi = this;   //Read reference to the current table, to resolve "this" here.
+    //Process "addButton" parameter
+    if (params.$addButton != null) {
+        //Se proporcionó parámetro
+        params.$addButton.click(function () {
+            myrowAddNew($tabedi.attr("id"));
+        });
+    }
+    //Process "columnsEd" parameter
+    if (params.columnsEd != null) {
+        //Extract felds
+        colsEdi = params.columnsEd.split(',');
+    }
+};
+
+
+
+function myrowAddNew(tabId) {  // Adds a new row to the specified table.
+    var $tab_en_edic = $("#" + tabId);  // Table to edit
+    var $filas = $tab_en_edic.find('tbody tr');
+
+    if ($filas.length == 0) {
+        // No data rows; create a complete new row
+        var $row = $tab_en_edic.find('thead tr');  // Header row
+        var $cols = $row.find('th');  // Read columns
+        var htmlDat = '';
+
+        $cols.each(function () {
+            if ($(this).attr('name') === 'buttons') {
+                // Buttons column
+                htmlDat += '<td name="buttons"></td>';
+            } else {
+                htmlDat += '<td></td>';
+            }
+        });
+
+        $tab_en_edic.find('tbody').append('<tr>' + htmlDat + '</tr>');
+    } else {
+        // Clone the last row, but create an empty new row to avoid issues
+        var $newRow = $('<tr></tr>');  // Create new row
+        var $cols = $tab_en_edic.find('thead th');  // Read columns from the header
+
+        $cols.each(function (index) {
+            if (index === 0) {
+                // First column is for the SL number
+                $newRow.append('<td></td>');
+            } else if ($(this).attr('name') === 'buttons') {
+                // Append a buttons cell if specified
+                $newRow.append('<td name="buttons"></td>');
+            } else {
+                // Append input cell for other columns
+                var div = '<div style="display: none;"></div>';  // Store content
+                var input = '<input class="form-control input-sm" value="">';
+                $newRow.append('<td>' + div + input + '</td>');
+            }
+        });
+
+        // Append the newly created row to the table
+        $tab_en_edic.find('tbody').append($newRow);
+    }
+    // Remove any row with the name attribute "bogichogi"
+    $tab_en_edic.find('tr[name="bogichogi"]').remove();
+    // Update SL numbers for all rows to keep them in ascending order
+    $tab_en_edic.find('tbody tr').each(function (index) {
+        $(this).find('td').first().text(index + 1);  // Set SL in the first column
+    });
+
+    $tab_en_edic.find('tr:last').find('td:last').html(deletebun);
+
+    // Trigger the onAdd callback function if defined
+    if (typeof params !== 'undefined' && typeof params.onAdd === 'function') {
+        params.onAdd();
+    }
+}
+
+
+function Qdeleterow(but) {
+    var $row = $(but).parents('tr');  //accede a la fila
+    var $table = $row.closest('table');
+
+    params.onBeforeDelete($row);
+    $row.remove();
+    params.onDelete();
+
+    $table.find('tbody tr').each(function (index) {
+        $(this).children(":first").text(index + 1);  // Update the first column with new index + 1
+    });
+}
+
+
+
+
+
 
 
 function setupEditableTableWithoutButton(tableid) {
@@ -110,11 +218,11 @@ function makeTableDragable(tableid) {
 }
 
 function makeSelect2(isTags) {
-        $('.select2').select2({
-            width: '100%',
-            tags: isTags,
-            allowClear: true
-        });
+    $('.select2').select2({
+        width: '100%',
+        tags: isTags,
+        allowClear: true
+    });
 
 }
 function makeDataTable(tableid, newData = []) {
