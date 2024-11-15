@@ -224,10 +224,9 @@ function makeSelect2(isTags) {
         allowClear: true
     });
 
-}
-function makeSelect2withoutTags() {
     $('.select2W').select2({
         width: '100%',
+        tags: false,
         allowClear: true
     });
 
