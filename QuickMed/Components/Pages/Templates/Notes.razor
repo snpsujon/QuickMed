@@ -13,9 +13,9 @@
                             <i class="dripicons-information"></i>&nbsp;&nbsp;Note Form
                         </h4>
                     </div>
-                    <div>
-                        <select class="select2W  form-control custom-select" aria-label="Default select example">
-                            <option selected disabled>Select Advice Template</option>
+                    <div style="min-width: 500px;">
+                        <select class="select2W  form-control custom-select" aria-label="Default select example" >
+                            <option selected disabled>Select Template</option>
                             @if (models != null && models.Any())
                             {
                                 @foreach (var item in models)
@@ -36,7 +36,7 @@
                         <div class="col-sm-12 d-flex">
                             <label for="example-text-input" class="col-sm-1 form-label  mb-lg-0">Template Name</label>
                             <div class="col-sm-4">
-                                <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                <input class="form-control form-control-sm" type="text">
                             </div>
 
                         </div>
@@ -56,7 +56,7 @@
                 <!--end card-header-->
                 <div class="card-body">
                     <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
-                    <div class="table-responsive">
+                   @*  <div class="table-responsive">
                         <table class="table  table-bordered table-sm" id="makeEditable">
                             <thead>
                                 <tr>
@@ -72,15 +72,35 @@
 
                             </tbody>
                         </table>
+                    </div> *@
+                    <div class="table-responsive">
+                        <table class="table  table-bordered table-sm" id="TretmentTmpAdviceTbl">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr name="bogichogi">
+                                    <td>
+                                    </td>
+                                    <td class="text-center text-blue">No data Available</td>
+                                    <td name="buttons" class="text-center text-blue"></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
                     </div>
                     <span class="float-right">
-                        <button id="but_add" class="btn btn-primary btn-sm">Add New Row</button>
+                        <button id="add_Advice" class="btn btn-primary btn-sm">Add New Row</button>
                     </span><!--end table-->
 
 
                     <hr />
                     <span class="float-right">
-                        <button id="but_add" class="btn btn-success btn-sm float-end">Save</button>
+                        <button id="but_add" class="btn btn-success btn-sm float-end" @onclick="OnSaveBtnClick">Save</button>
                     </span>
 
                 </div><!--end card-body-->
@@ -145,17 +165,6 @@
         </div>
     </div> <!-- end col -->
 </div> <!-- end row -->
-@code {
-    @code {
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                await JS.InvokeVoidAsync("makeDataTable", "datatable-noteTemp");
-            }
-        }
-    }
-}
 
 
 

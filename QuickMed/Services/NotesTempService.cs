@@ -27,5 +27,32 @@ namespace QuickMed.Services
                 throw;
             }
         }
+
+        public async Task<dynamic> SaveAsync(TblNotesTemplate data)
+        {
+            try
+            {
+                var saveTemplate = await _context.CreateAsync<TblNotesTemplate>(data);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<dynamic> UpdateAsync(TblNotesTemplate data)
+        {
+            try
+            {
+                int rowsAffected = await _context.UpdateAsync(data);
+                return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while updating the template.", ex);
+            }
+        }
     }
 }
