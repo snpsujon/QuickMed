@@ -165,3 +165,7 @@ function clearTable(tableId) {
         table.deleteRow(i);
     }
 }
+function GeneTable(tableId,masterDataList,selectedDataList) {
+    const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
+    clearTable(tableId)
+}
