@@ -225,6 +225,15 @@ function makeSelect2(isTags) {
     });
 
 }
+function makeSelect2withoutTags() {
+    $('.select2W').select2({
+        width: '100%',
+        allowClear: true
+    });
+
+}
+
+
 function makeDataTable(tableid, newData = []) {
     debugger;
     $(document).ready(function () {
