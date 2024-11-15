@@ -14,14 +14,29 @@ namespace QuickMed.Services
         {
             try
             {
-                var query = $"Select Id, Name, Age, Address, Mobile, AdmissionDate,\r\nCASE When Gender = 1 THEN 'M' \r\n\tWhen Gender = 2 THEN 'F'\r\n\tElse 'O' \r\nEND as GenderName\r\n From TblPatient";
+                var query = @"
+            SELECT 
+                Id,
+                Code,
+                Weight,
+                Name,
+                Age,
+                Address,
+                Mobile,
+                AdmissionDate,
+                CASE 
+                    WHEN Gender = 1 THEN 'M'
+                    WHEN Gender = 2 THEN 'F'
+                    ELSE 'O'
+                END AS GenderName
+            FROM 
+                TblPatient";
+
                 var result = await _context.ExecuteSqlQueryAsync<PatientVM>(query);
                 return result;
-
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
@@ -39,7 +54,7 @@ namespace QuickMed.Services
                     Mobile = data.Mobile,
                     AdmissionDate = data.AdmissionDate,
                     Weight = data.Weight,
-                    Code = data.Code
+                    Code = await AutoGenCode()
                 };
                 var saveTemplate = await _context.CreateAsync<TblPatient>(tblData);
                 return true;
@@ -80,6 +95,40 @@ namespace QuickMed.Services
             }
 
         }
+
+        private async Task<string> AutoGenCode()
+        {
+            var result = await GetAsync();
+            // Ensure the result is enumerable
+            var patients = result as IEnumerable<dynamic>;
+            string generatedCode;
+
+            if (patients != null)
+            {
+                // Take the last item or default
+                var lastPatient = patients.LastOrDefault();
+
+                // Initialize lastCode to a default value
+                int lastCode = 0;
+                if (lastPatient != null && int.TryParse(lastPatient.Code.ToString(), out lastCode))
+                {
+                    generatedCode = (lastCode + 1).ToString();
+                }
+                else
+                {
+                    generatedCode = DateTime.Now.Year + "0001";
+                }
+            }
+            else
+            {
+                generatedCode = DateTime.Now.Year + "0001";
+            }
+
+            return generatedCode;
+        }
+
+
+
 
 
     }

@@ -42,17 +42,22 @@ namespace QuickMed.BaseComponent
 
         protected async Task OnSaveBtnClick()
         {
-            if (model.Id == Guid.Empty) // Check if the GUID is uninitialized
-            {
-                model.Id = Guid.NewGuid(); // This line will be redundant as the default is already set
-                await _appoinment.SaveAsync(model); // Create the new template
-                await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
-            }
-            else
-            {
-                await _appoinment.UpdateAsync(model); // Update the existing template
-                await JS.InvokeVoidAsync("showAlert", "Update Successful", "Record has been successfully Updated.", "success", "swal-info");
-            }
+
+            model.Id = Guid.NewGuid(); // This line will be redundant as the default is already set
+            await _appoinment.SaveAsync(model); // Create the new template
+            await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
+
+            //if (model.Id == Guid.Empty) // Check if the GUID is uninitialized
+            //{
+            //    model.Id = Guid.NewGuid(); // This line will be redundant as the default is already set
+            //    await _appoinment.SaveAsync(model); // Create the new template
+            //    await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
+            //}
+            //else
+            //{
+            //    await _appoinment.UpdateAsync(model); // Update the existing template
+            //    await JS.InvokeVoidAsync("showAlert", "Update Successful", "Record has been successfully Updated.", "success", "swal-info");
+            //}
 
             // Reset the model for future input
             model = new PatientVM(); // Creates a new instance with a new GUID
@@ -82,6 +87,7 @@ namespace QuickMed.BaseComponent
 
                     // Refresh the list after deletion
                     await OnInitializedAsync();
+                    await InitializeDataTable();
                     StateHasChanged();  // Update the UI after deletion
                 }
                 else

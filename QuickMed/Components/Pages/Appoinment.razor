@@ -43,11 +43,7 @@
                             <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Mobile</label>
                             <div class="col-sm-3">
                                 <input class="form-control form-select-sm" type="text" @bind-value="model.Mobile">
-                            </div>
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Reg No.</label>
-                            <div class="col-sm-1">
-                                <input class="form-control form-select-sm" type="number" @bind-value="model.Code">
-                            </div>
+                            </div>                           
                             <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Wt</label>
                             <div class="col-sm-1">
                                 <input class="form-control form-select-sm" type="number" @bind-value="model.Weight">
@@ -103,7 +99,7 @@
                                         <td>@item.value.Mobile</td>
                                         <td>@item.value.Address</td>
                                         <td class="text-end">
-                                            <span class="text-primary mx-1 cursor-pointer" @onclick="() => OnEditClick(item.value)"><i class="dripicons-pencil"></i></span>
+                                            <span class="text-primary mx-1 cursor-pointer" @onclick="() => OnEditClick(item.value)"><i class="dripicons-plus"></i></span>
                                             <span class="text-danger mx-1 cursor-pointer" @onclick="() => OnDeleteClick(item.value.Id)"><i class="dripicons-trash"></i></span>
                                         </td>
 
