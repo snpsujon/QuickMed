@@ -12,7 +12,7 @@
             <div class="card">
 
                 <!--end card-header-->
-                <div class="card-body">
+                @*<div class="card-body">
                     <div class="mb-3 row">
                         <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Name</label>
                         <div class="col-sm-5">
@@ -24,6 +24,17 @@
                     <span class="float-right">
                         <button id="but_add" class="btn btn-success btn-sm float-end" @onclick="OnSaveBtnClick">Save</button>
                     </span>
+                </div>*@
+
+                <div class="card-header bg-warning d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title  text-light">
+                            <i class="dripicons-information"></i>&nbsp;&nbsp;Investigation Template Form
+                        </h4>
+                    </div>
+                    <div>
+                        <input class="form-control form-control-sm" type="text" placeholder="Template Name">
+                    </div>
                 </div>
             </div><!--end card-->
         </div> <!-- end col -->
