@@ -15,6 +15,7 @@ namespace QuickMed.RegisterServices
             services.AddScoped<IDXTemp, DXTempServices>();
             services.AddScoped<IAppoinment, AppoinmentService>();
             services.AddScoped<IIXTemp, IXTempService>();
+            services.AddScoped<INotesTemp, NotesTempService>();
 
         }
 
