@@ -145,8 +145,8 @@ function myrowAddNew(tabId) {  // Adds a new row to the specified table.
             } else {
                 // Append input cell for other columns
                 var div = '<div style="display: none;"></div>';  // Store content
-                var input = '<input class="form-control input-sm" value="">';
-                $newRow.append('<td>' + div + input + '</td>');
+                var input = '<select class="form-control customselect2 custom-select" value=""></select>';
+                $newRow.append('<td class="Qcutomselect">' + div + input + '</td>');
             }
         });
 
@@ -161,11 +161,20 @@ function myrowAddNew(tabId) {  // Adds a new row to the specified table.
     });
 
     $tab_en_edic.find('tr:last').find('td:last').html(deletebun);
-
+    customSelect2(true);
     // Trigger the onAdd callback function if defined
     if (typeof params !== 'undefined' && typeof params.onAdd === 'function') {
         params.onAdd();
     }
+}
+
+function customSelect2(isTags) {
+    $('.customselect2').select2({
+        width: '100%',
+        tags: isTags
+    });
+
+    $('.Qcutomselect').find('.select2-selection__arrow').hide();
 }
 
 
@@ -182,7 +191,12 @@ function Qdeleterow(but) {
     });
 }
 
-
+function OnChangeEvent(elementId, myfunction, dotNetHelper) {
+    $("#" + elementId).on('change', function () {
+        var selectedValue = $(this).val();
+        dotNetHelper.invokeMethodAsync(myfunction, selectedValue);
+    });
+}
 
 
 
@@ -345,4 +359,7 @@ function downloadFileFromBytes(fileName, base64Content) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+function getRandomInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }

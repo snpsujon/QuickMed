@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-header bg-warning d-flex justify-content-between">
                     <div>
-                        <h4 class="card-title  text-light">
+                        <h4 class="card-title  text-light fw-bold">
                             <i class="dripicons-information"></i>&nbsp;&nbsp;Note Form
                         </h4>
                     </div>
@@ -32,11 +32,11 @@
                 </div><!--end card-header--> *@
 
                 <div class="card-header">
-                    <div class="row mb-2">
+                    <div class="row mb-2 bg-light py-3">
                         <div class="col-sm-12 d-flex">
-                            <label for="example-text-input" class="col-sm-1 form-label  mb-lg-0">Template Name</label>
+                            <label for="example-text-input" class="col-sm-1 form-label  mb-lg-0 me-3 fw-bold">Template Name  </label>
                             <div class="col-sm-4">
-                                <input class="form-control form-control-sm" type="text">
+                                <input class="form-control form-control-sm border-dark" type="text" @bind-value=model.Name>
                             </div>
 
                         </div>
@@ -74,7 +74,7 @@
                         </table>
                     </div> *@
                     <div class="table-responsive">
-                        <table class="table  table-bordered table-sm" id="TretmentTmpAdviceTbl">
+                        <table class="table   table-bordered table-sm" id="notesMainTbl">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -94,7 +94,7 @@
                         </table>
                     </div>
                     <span class="float-right">
-                        <button id="add_Advice" class="btn btn-primary btn-sm">Add New Row</button>
+                        <button id="add_new_notes" class="btn btn-primary btn-sm">Add New Row</button>
                     </span><!--end table-->
 
 
@@ -133,29 +133,27 @@
 
 
                     <tbody>
-                        <tr>
-                            <td>2C</td>
-                            <td>২ চামচ দিনে ৩ বার </td>
-                            <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
-                        </tr><!--end tr-->
+                        @if (models != null && models.Any())
+                        {
+                            @foreach (var item in models.Select((value, index) => new { value, index }))
+                            {
+                                <tr>
+                                    <td>@(item.index + 1)</td> <!-- Display serial number (index + 1) -->
+                                    <td>@item.value.Name</td>
 
-                        <tr>
-                            <td>2C</td>
-                            <td>২ চামচ দিনে ৩ বার </td>
-                            <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
-                        </tr><!--end tr-->
 
-                        <tr>
-                            <td>2C</td>
-                            <td>২ চামচ দিনে ৩ বার </td>
-                            <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
-                        </tr><!--end tr-->
+                                    <td class="text-end">
+                                        <span class="text-primary mx-1 cursor-pointer" @onclick="() => OnEditClick(item.value)"><i class="dripicons-pencil"></i></span>
+                                        <span class="text-danger mx-1 cursor-pointer" @onclick="() => OnDeleteClick(item.value.Id)"><i class="dripicons-trash"></i></span>
+                                    </td>
 
-                        <tr>
-                            <td>2C</td>
-                            <td>২ চামচ দিনে ৩ বার </td>
-                            <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
-                        </tr><!--end tr-->
+
+                                </tr>
+                            }
+
+
+                        }
+                        
 
 
 

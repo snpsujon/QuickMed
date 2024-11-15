@@ -27,6 +27,49 @@ namespace QuickMed.Services
                 throw;
             }
         }
+        public async Task<dynamic> GetDetailsAsync()
+        {
+            try
+            {
+                return await _context.GetTableRowsAsync<TblNotesTempDetails>("TblNotesTempDetails");
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public async Task<dynamic> DeleteAsync(Guid id)
+        {
+            try
+            {
+                var q = $"DELETE FROM TblNotesTemplate WHERE Id = '{id}'";
+
+                var deleteResult = await _context.ExecuteSqlQueryFirstorDefultAsync<TblNotesTemplate>(q);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        public async Task<dynamic> SaveTemplateDetails(List<TblNotesTempDetails> data)
+        {
+            try
+            {
+                var saveDetails = await _context.CreateMultipleAsync<TblNotesTempDetails>(data);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
 
         public async Task<dynamic> SaveAsync(TblNotesTemplate data)
         {
