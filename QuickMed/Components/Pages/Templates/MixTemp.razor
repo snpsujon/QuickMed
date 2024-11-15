@@ -3,11 +3,14 @@
 @using QuickMed.DB
 @inherits BaseAdvice
 
-<h4 class="text-success"> <i class="dripicons-document"></i> &nbsp;&nbsp;  Mix Mediciation</h4>
+@*<h4 class="text-success"> <i class="dripicons-document"></i> &nbsp;&nbsp;  Mix Mediciation</h4>*@
 <div class="col-lg-12">
     <div class="row">
         <div class="col-12">
             <div class="card">
+                <div class="card-header bg-warning ">
+                    <h4 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Mix Mediciation</h4>
+                </div><!--end card-header-->
                 <div class="card-header">
                     <div class="row mb-2">
                         <div class="col-sm-12 d-flex">
@@ -86,13 +89,13 @@
                                                         <option value="2">F</option>
                                                         <option value="3">O</option>
                                                     </select>
-                                                </div> 
-                                                
+                                                </div>
+
 
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Notes</label>
-                                                <div class="col-sm-5">                                                    
+                                                <div class="col-sm-5">
                                                     <textarea id="textarea" class="form-control" maxlength="225" rows="3" placeholder="This textarea has a limit of 225 chars." spellcheck="false" data-ms-editor="true"></textarea>
                                                 </div>
                                             </div>
@@ -123,10 +126,13 @@
 </div><!--end col-->
 
 
-<h4 class="text-primary"> <i class="dripicons-view-list"></i> &nbsp;&nbsp;  Mix Mediciation List</h4>
+@*<h4 class="text-primary"> <i class="dripicons-view-list"></i> &nbsp;&nbsp;  Mix Mediciation List</h4>*@
 <div class="row">
     <div class="col-12">
         <div class="card">
+            <div class="card-header bg-warning ">
+                <h4 class="card-title text-light"> <i class="dripicons-view-list"></i> &nbsp;&nbsp;Mix Mediciation List</h4>
+            </div><!--end card-header-->
             <div class="card-body">
                 <table id="datatable-doseTemp" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
