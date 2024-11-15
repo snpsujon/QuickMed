@@ -18,6 +18,8 @@ namespace QuickMed.BaseComponent
         public List<TblBrand> Brands = new List<TblBrand>();
         public List<TblDose> Dose = new List<TblDose>();
         public List<TblDuration> Duration = new List<TblDuration>();
+        public List<TblInstruction> Instructions = new List<TblInstruction>();
+        public List<TblAdviceTemplate> adviceMasters = new List<TblAdviceTemplate>();
 
         [Inject]
         public IJSRuntime JS { get; set; }
@@ -32,14 +34,19 @@ namespace QuickMed.BaseComponent
             Dose = await App.Database.GetTableRowsAsync<TblDose>("TblDose");
             Duration = new();
             Duration = await App.Database.GetTableRowsAsync<TblDuration>("TblDuration");
+            Instructions = new();
+            Instructions = await App.Database.GetTableRowsAsync<TblInstruction>("TblInstruction");
+            adviceMasters = new();
+            adviceMasters = await App.Database.GetTableRowsAsync<TblAdviceTemplate>("TblAdviceTemplate");
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpTbl", null);
+                //await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpTbl", null);
                 await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpAdviceTbl", "add_Advice");
                 await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpTbl");
+                await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpAdviceTbl");
                 await JS.InvokeVoidAsync("makeSelect2", true);
             }
         }

@@ -45,7 +45,7 @@
                                         <div class="col-sm-3">
                                             <select class="select2 form-control mb-3 custom-select" id="instructionSelect" aria-label="Default select example">
                                                 <option selected value="0" disabled>Select Instruction</option>
-                                                @foreach (var item in Brands)
+                                                @foreach (var item in Instructions)
                                                 {
                                                     <option value="@item.Id">@item.Name</option>
                                                 }
@@ -102,9 +102,10 @@
                                 <div class="col-sm-3">
                                     <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
                                         <option selected disabled>Select Advice Template</option>
-                                        <option value="1">M</option>
-                                        <option value="2">F</option>
-                                        <option value="3">O</option>
+                                        @foreach (var item in adviceMasters)
+                                        {
+                                            <option value="@item.Id">@item.AdviceTemplateName</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -114,12 +115,16 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>2C</td>
+                                        <tr name="bogichogi">
+                                            <td>
+
+                                            </td>
+                                            <td  class="text-center text-blue">No data Available</td>
+                                            <td name="buttons" class="text-center text-blue"></td>
                                         </tr>
 
                                     </tbody>
