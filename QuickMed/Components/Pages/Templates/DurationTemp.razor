@@ -16,12 +16,12 @@
                     <div class="mb-3 row">
                         <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Name</label>
                         <div class="col-sm-5">
-                            <input class="form-control form-control-sm" type="text" />
+                            <input class="form-control form-control-sm" type="text" @bind-value="model.Name"/>
                         </div>
                     </div>
                     <hr />
                     <span class="float-right">
-                        <button id="but_add" class="btn btn-success btn-sm float-end">Save</button>
+                        <button id="but_add" class="btn btn-success btn-sm float-end" @onclick="OnSaveBtnClick">Save</button>
                     </span>
 
                 </div><!--end card-body-->
@@ -54,7 +54,26 @@
 
 
                     <tbody>
-                       
+                        @if (models != null && models.Any())
+                        {
+                            @foreach (var item in models.Select((value, index) => new { value, index }))
+                            {
+                                <tr>
+                                    <td>@(item.index + 1)</td> <!-- Display serial number (index + 1) -->
+                                    <td>@item.value.Name</td>
+
+
+                                    <td class="text-end">
+                                        <span class="text-primary mx-1 cursor-pointer" @onclick="() => OnEditClick(item.value)"><i class="dripicons-pencil"></i></span>
+                                        <span class="text-danger mx-1 cursor-pointer" @onclick="() => OnDeleteClick(item.value.Id)"><i class="dripicons-trash"></i></span>
+                                    </td>
+
+
+                                </tr>
+                            }
+
+
+                        }
                     </tbody>
                 </table>
             </div>
