@@ -40,7 +40,7 @@ namespace QuickMed.Services
             {
 
                 throw;
-            }
+            }   
         }
         public async Task<dynamic> DeleteAdviceTemplete(string sql)
         {
