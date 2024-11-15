@@ -17,7 +17,7 @@
                                     <div class="row mb-2">
                                         <label for="example-text-input" class="col-sm-2 form-label  mb-lg-0">Template Name</label>
                                         <div class="col-sm-5">
-                                            <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                            <input class="form-control form-control-sm" type="text" value="" id="TempName">
                                         </div>
                                     </div>
 
@@ -25,7 +25,7 @@
 
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <select class="select2 form-control mb-3 custom-select" id="brandSelect" aria-label="Default select example">
+                                            <select class="select2 form-control mb-3 custom-select" id="brandSelect" aria-label="Default select example" style="appearance: none;">
                                                 <option selected value="0" disabled>Select Brand</option>
                                                 @foreach (var item in Brands)
                                                 {
@@ -99,8 +99,10 @@
 
                             <h4 class="text-success"> <i class="dripicons-document"></i> &nbsp;&nbsp; Advice Form</h4>
                             <div class="row">
-                                <div class="col-sm-3">
-                                    <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
+                                <div class="col-sm-3 mb-3">
+                                    <select class="select2W form-control mb-3 custom-select"
+                                            id="adviceSelect"
+                                            aria-label="Default select example">
                                         <option selected disabled>Select Advice Template</option>
                                         @foreach (var item in adviceMasters)
                                         {
@@ -137,7 +139,7 @@
 
                             <hr />
                             <span class="float-right">
-                                <button id="but_add" class="btn btn-success btn-sm float-end">Save</button>
+                                <button @onclick="SaveTemplate" class="btn btn-success btn-sm float-end">Save</button>
                             </span>
 
 
@@ -160,7 +162,7 @@
 
 
 
-        <h4 class="text-primary"> <i class="dripicons-view-list"></i> &nbsp;&nbsp;  Investigation Template List</h4>
+        <h4 class="text-primary"> <i class="dripicons-view-list"></i> &nbsp;&nbsp;  Treatment Template List</h4>
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -175,26 +177,17 @@
 
 
                             <tbody>
-                                <tr>
-                                    <td>2C</td>
-                                    <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
-                                </tr><!--end tr-->
 
-                                <tr>
-                                    <td>2C</td>
-                                    <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
-                                </tr><!--end tr-->
 
-                                <tr>
-                                    <td>2C</td>
-                                    <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
-                                </tr><!--end tr-->
+                                @foreach (var item in templates)
+                                {
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td class="text-end">@*  <i class="dripicons-pencil btn btn-soft-primary"></i> *@<i class="dripicons-trash btn btn-soft-danger" @onclick="() => Delete(item.Id.ToString())"></i></td>
+                                    </tr>
+                                }
 
-                                <tr>
-                                    <td>2C</td>
-                                    <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
-                                </tr><!--end tr-->
-
+                                
 
 
                             </tbody>
