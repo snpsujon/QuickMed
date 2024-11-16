@@ -47,5 +47,23 @@ namespace QuickMed.Services
                 throw new Exception("An error occurred while updating the template.", ex);
             }
         }
+
+        public async Task<dynamic> DeleteAsync(Guid id)
+        {
+            try
+            {
+                var q = $"DELETE FROM TblDose WHERE Id = '{id}'";
+
+                var deleteResult = await _context.ExecuteSqlQueryFirstorDefultAsync<TblDose>(q);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
     }
 }
