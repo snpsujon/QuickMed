@@ -47,7 +47,7 @@ namespace QuickMed.BaseComponent
         {
             await JS.InvokeVoidAsync("setupEditableTable", "MixTempTbl", "add_MixTemp");
             await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpTbl");
-            await JS.InvokeVoidAsync("makeSelect2", true);
+            await JS.InvokeVoidAsync("makeSelect2", false);
 
         }
 
