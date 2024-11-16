@@ -11,49 +11,51 @@
                 <div class="card-header bg-warning ">
                     <h4 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Drug / Favourite Form</h4>
                 </div><!--end card-header-->
-                <div class="card-header">
-                    <div class="row mb-2">
+                <div class="card-header bg-light">
+                    <div class="row mb-2  py-3">
                         <div class="col-sm-12 d-flex">
-                            <label for="example-text-input" class="col-sm-1 form-label  mb-lg-0">Template Name</label>
+                            <label for="example-text-input" class="col-sm-1 form-label  mb-lg-0 me-3 fw-bold">Template Name  </label>
                             <div class="col-sm-4">
-                                <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                <input class="form-control form-control-sm border-dark" type="text" id="TempName">
                             </div>
+
+                        </div>
+                    </div>
+                    <hr style="border-top: 1px dashed #f1f5fa;" />
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <select class="select2 form-control mb-3 custom-select" id="brandSelect" aria-label="Default select example" style="appearance: none;">
+                                <option selected value="0" disabled>Select Brand</option>
+
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <select class="select2 form-control mb-3 custom-select" id="doseSelect" aria-label="Default select example">
+                                <option selected value="0" disabled>Select Dose</option>
+
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <select class="select2 form-control mb-3 custom-select" id="instructionSelect" aria-label="Default select example">
+                                <option selected value="0" disabled>Select Instruction</option>
+
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <select class="select2 form-control mb-3 custom-select" id="durationSelect" aria-label="Default select example">
+                                <option selected value="0" disabled>Select Duration</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-sm-1 text-end">
+                            <button class="btn btn-success btn-sm" title="Add"><i class="fas fa-plus"></i></button>
 
                         </div>
                     </div>
                 </div>
                 <!--end card-header-->
                 <div class="card-body">
-                    <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
-                    <div class="table-responsive">
-                        <table class="table  table-bordered table-sm" id="makeEditable">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Brand</th>
-                                    <th>Dose</th>
-                                    <th>Instruction</th>
-                                    <th>Duration</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Tab. Napa Extend</td>
-                                    <td>1 + 0 + 1</td>
-                                    <td>খাবার পরে</td>
-                                    <td>৩ মাস</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <span class="float-right">
-                        <button id="but_add" class="btn btn-primary btn-sm">Add New Row</button>
-                    </span><!--end table-->
-
-
-                    <hr />
                     <span class="float-right">
                         <button id="but_add" class="btn btn-success btn-sm float-end">Save</button>
                     </span>
