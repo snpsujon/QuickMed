@@ -14,7 +14,7 @@
                         </h4>
                     </div>
                     <div style="min-width: 500px;">
-                        <select class="select2W  form-control custom-select" aria-label="Default select example" >
+                        <select class="select2W  form-control custom-select" aria-label="Default select example" id="notesTempSelect" >
                             <option selected disabled>Select Template</option>
                             @if (models != null && models.Any())
                             {
@@ -36,7 +36,7 @@
                         <div class="col-sm-12 d-flex">
                             <label for="example-text-input" class="col-sm-1 form-label  mb-lg-0 me-3 fw-bold">Template Name  </label>
                             <div class="col-sm-4">
-                                <input class="form-control form-control-sm border-dark" type="text" @bind-value=model.Name>
+                                <input class="form-control form-control-sm border-dark" type="text" id="TempName" @bind-value=model.Name>
                             </div>
 
                         </div>

@@ -7,7 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using static SQLite.SQLite3;
 
 namespace QuickMed.BaseComponent
 {
@@ -47,64 +49,96 @@ namespace QuickMed.BaseComponent
 
         protected async Task InitializeJS()
         {
-            await JS.InvokeVoidAsync("setupEditableTable", "notesMainTbl", "add_new_notes");
+            var objRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("setupEditableTable", "notesMainTbl", "add_new_notes",false);
             await JS.InvokeVoidAsync("makeSelect2", false);
+            await JS.InvokeVoidAsync("OnChangeEvent", "notesTempSelect", "NotesTempChange", objRef);
+            await JS.InvokeVoidAsync("makeTableDragable", "notesMainTbl");
+        }
+        [JSInvokable]
+        public async Task NotesTempChange(string selectedData)
+        {
+            try
+            {
+                //var selectedData = await JS.InvokeAsync<string>("getAdviceValue");
+                if (selectedData is not null)
+                {
+                    templateDetails = await _notes.GetDataById(selectedData);
+                    await JS.InvokeVoidAsync("populateNotesTable", templateDetails, "notesMainTbl");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         protected async Task OnSaveBtnClick()
         {
-            var tableSelectedValue = await JS.InvokeAsync<List<string>>("GetTableData", "notesMainTbl");
-            if (model.Id == Guid.Empty) // Check if the GUID is uninitialized
+            var result = await JS.InvokeAsync<JsonElement>("GetNotesTempData");
+            if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
             {
-                model.Id = Guid.NewGuid();              
-
-                var isSave = await _notes.SaveAsync(model); 
-
-                if (isSave == true)
+                if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
                 {
-                    foreach (var item in tableSelectedValue)
+                   var templateName = templateNameElement.GetString();
+                    model = new()
                     {
-                        var detailsData = new TblNotesTempDetails()
-                        {
-                            Id = Guid.NewGuid(),
-                            TblNotesTempMasterId = model.Id,
-                            Name = item
-                        };
-                        templateDetails.Add(detailsData);
-                    }
-                    var saveDetails = await _notes.SaveTemplateDetails(templateDetails);
+                        Id = Guid.NewGuid(),
+                        Name = templateName
+                    };
+                    await _notes.SaveAsync(model);
 
-                    await InitializeDataTable();
-
-                    await OnInitializedAsync();
-
-                    model = new();
-                    
-                    StateHasChanged();
                 }
 
-                await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
+                if (result.TryGetProperty("tempData", out JsonElement jsonelement))
+                {
+                    if (jsonelement.ValueKind == JsonValueKind.Array)
+                    {
+                        var ListData = jsonelement.EnumerateArray()
+                            .Select(item => item.GetString())
+                            .ToList();
+
+                        if (ListData.Count() > 0)
+                        {                           
+                           
+                           templateDetails = new List<TblNotesTempDetails>();
+                            foreach (var item in ListData)
+                            {
+                                templateDetails.Add(new TblNotesTempDetails
+                                {
+                                    Id = Guid.NewGuid(),
+                                    TblNotesTempMasterId = model.Id,
+                                    Name = item
+                                });
+                            }
+                            var saveDetails = await _notes.SaveTemplateDetails(templateDetails);
+                            await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("templateName not found.");
+                }
+
+                await InitializeDataTable();
+
+                await OnInitializedAsync();               
+
+                StateHasChanged();
+
+
             }
-            else
-            {
-                await _notes.UpdateAsync(model); // Update the existing template
-                await JS.InvokeVoidAsync("showAlert", "Update Successful", "Record has been successfully Updated.", "success", "swal-info");
-            }
-
-            // Reset the model for future input
-            model = new TblNotesTemplate(); // Creates a new instance with a new GUID
-
-            // Fetch updated data
-            //models = await _dXTemp.GetCCTempData();
-            await OnInitializedAsync();
-
-            StateHasChanged();  // Update the UI
+        
+        
+        
         }
 
 
         protected async Task OnEditClick(TblNotesTemplate data)
         {
             model = data;
+            await NotesTempChange(data.Id.ToString());
             StateHasChanged(); // Re-render the component with the updated model
         }
         protected async Task OnDeleteClick(Guid id)

@@ -73,15 +73,15 @@ window.onload = function () {
     }
 }
 
-function setupEditableTable(tableid, buttonid = null) {
+function setupEditableTable(tableid, buttonid = null, isSelect2 = true) {
     if (buttonid == null) {
         $('#' + tableid).SetEditable();
     } else {
-        $('#' + tableid).MySetEditable({ $addButton: $('#' + buttonid) });
+        $('#' + tableid).MySetEditable({ $addButton: $('#' + buttonid) }, isSelect2);
     }
 }
 
-$.fn.MySetEditable = function (options) {
+$.fn.MySetEditable = function (options, isSelect2) {
     var defaults = {
         columnsEd: null,         //Index to editable columns. If null all td editables. Ex.: "1,2,3,4,5"
         $addButton: null,        //Jquery object of "Add" button
@@ -98,7 +98,7 @@ $.fn.MySetEditable = function (options) {
     if (params.$addButton != null) {
         //Se proporcionó parámetro
         params.$addButton.click(function () {
-            myrowAddNew($tabedi.attr("id"));
+            myrowAddNew($tabedi.attr("id"), isSelect2);
         });
     }
     //Process "columnsEd" parameter
@@ -110,7 +110,7 @@ $.fn.MySetEditable = function (options) {
 
 
 
-function myrowAddNew(tabId) {  // Adds a new row to the specified table.
+function myrowAddNew(tabId, isSelect2 = true) {  // Adds a new row to the specified table.
     var $tab_en_edic = $("#" + tabId);  // Table to edit
     var $filas = $tab_en_edic.find('tbody tr');
 
@@ -145,7 +145,15 @@ function myrowAddNew(tabId) {  // Adds a new row to the specified table.
             } else {
                 // Append input cell for other columns
                 var div = '<div style="display: none;"></div>';  // Store content
-                var input = '<select class="form-control customselect2 custom-select" value=""></select>';
+                var input = '';
+                if (isSelect2) {
+                    input = '<select class="form-control customselect2 custom-select" value=""></select>';
+
+                } else {
+                    var input = '<input class="form-control" value="" />';
+                }
+                
+                
                 $newRow.append('<td class="Qcutomselect">' + div + input + '</td>');
             }
         });

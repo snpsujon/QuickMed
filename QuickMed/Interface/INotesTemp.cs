@@ -15,5 +15,6 @@ namespace QuickMed.Interface
         Task<dynamic> UpdateAsync(TblNotesTemplate data);
         Task<dynamic> SaveTemplateDetails(List<TblNotesTempDetails> data);
         Task<dynamic> DeleteAsync(Guid id);
+        Task<dynamic> GetDataById(string id);
     }
 }

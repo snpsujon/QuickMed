@@ -39,13 +39,29 @@ namespace QuickMed.Services
                 throw;
             }
         }
+        public async Task<dynamic> GetDataById(string Id)
+        {
+            try
+            {
+                var sql = $"SELECT * FROM TblNotesTempDetails WHERE TblNotesTempMasterId = '{Id}'";
+                var data = await _context.ExecuteSqlQueryAsync<TblNotesTempDetails>(sql);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
         public async Task<dynamic> DeleteAsync(Guid id)
         {
             try
             {
-                var q = $"DELETE FROM TblNotesTemplate WHERE Id = '{id}'";
+                var master = $"DELETE FROM TblNotesTemplate WHERE Id = '{id}'";
+                var details = $"DELETE FROM TblNotesTempDetails WHERE TblNotesTempMasterId = '{id}'";
 
-                var deleteResult = await _context.ExecuteSqlQueryFirstorDefultAsync<TblNotesTemplate>(q);
+                 await _context.ExecuteSqlQueryFirstorDefultAsync<TblNotesTemplate>(master);
+                 await _context.ExecuteSqlQueryFirstorDefultAsync<TblNotesTempDetails>(master);
 
                 return true;
             }

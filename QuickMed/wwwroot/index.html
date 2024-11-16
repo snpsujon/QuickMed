@@ -148,21 +148,35 @@
                                 <span><i class="dripicons-user-group align-self-center hori-menu-icon fs-5"></i>Appoinment</span>
                             </a>
                         </li><!--end has-submenu-->
-                        <li class="has-submenu mymenu-item" id="databaseTool">
+                        <!--<li class="has-submenu mymenu-item" id="databaseTool">
                             <a href="databaseTool" onclick="setActiveMenu('databaseTool')">
                                 <span><i class="dripicons-stack align-self-center hori-menu-icon fs-5"></i>Database Tools</span>
                             </a>
+                        </li>--><!--end has-submenu-->
+
+                        <li class="has-submenu" id="template">
+                            <a href="#" onclick="setActiveMenu('tools')">
+                                <span><i class="dripicons-store align-self-center hori-menu-icon fs-5"></i>Tools</span>
+                            </a>
+                            <ul class="submenu">
+                                <li id="databaseTool" class="mymenu-item"><a href="databaseTool" onclick="setActiveMenu('databaseTool')"><i class="ti ti-minus"></i>Database</a></li>
+                                <li id="checkUpgrade" class="mymenu-item"><a href="checkUpgrade" onclick="setActiveMenu('checkUpgrade')"><i class="ti ti-minus"></i>Upgrade</a></li>
+                                <li id="drug" class="mymenu-item"><a href="drug" onclick="setActiveMenu('drug')"><i class="ti ti-minus"></i>Drug</a></li>
+                            </ul><!--end submenu-->
                         </li><!--end has-submenu-->
-                        <li class="has-submenu mymenu-item" id="checkUpgrade">
+
+
+
+                        <!--<li class="has-submenu mymenu-item" id="checkUpgrade">
                             <a href="checkUpgrade" onclick="setActiveMenu('checkUpgrade')">
                                 <span><i class="dripicons-retweet align-self-center hori-menu-icon fs-5"></i>Check Upgrade</span>
                             </a>
-                        </li><!--end has-submenu-->
-                        <li class="has-submenu mymenu-item" id="drug">
+                        </li>--><!--end has-submenu-->
+                        <!--<li class="has-submenu mymenu-item" id="drug">
                             <a href="drug" onclick="setActiveMenu('drug')">
                                 <span><i class="dripicons-pill align-self-center hori-menu-icon fs-5"></i>Drug</span>
                             </a>
-                        </li><!--end has-submenu-->
+                        </li>--><!--end has-submenu-->
 
 
 
@@ -301,6 +315,7 @@
     <script src="js/alert.js"></script>
     <script src="js/treatmenttemp.js"></script>
     <script src="js/sweetalert.min.js"></script>
+    <script src="js/NotesTemp.js"></script>
 
 
 
