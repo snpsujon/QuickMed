@@ -26,19 +26,12 @@ namespace QuickMed.BaseComponent
             if (firstRender)
             {
                 await InitializeDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
-                await InitializeJS();
             }
         }
 
         protected async Task InitializeDataTable()
         {
             await JS.InvokeVoidAsync("makeDataTable", "datatable-patientList");
-        }
-
-        protected async Task InitializeJS()
-        {
-            await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpAdviceTbl", "add_Advice");
-            await JS.InvokeVoidAsync("setupEditableTable", "datatable-patientList");
         }
 
         protected async Task OnSaveBtnClick()
@@ -63,6 +56,35 @@ namespace QuickMed.BaseComponent
             await OnInitializedAsync();
 
             StateHasChanged();  // Update the UI
+        }
+
+        protected async Task OnEditClick(TblDose data)
+        {
+            model = data;
+            StateHasChanged(); // Re-render the component with the updated model
+        }
+        protected async Task OnDeleteClick(Guid id)
+        {
+            bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
+
+            if (isConfirmed)
+            {
+                var isDeleted = await _dose.DeleteAsync(id);
+                if (isDeleted)
+                {
+                    // Show success alert with red color
+                    await JS.InvokeVoidAsync("showAlert", "Delete Successful", "Record has been successfully deleted.", "success", "swal-danger");
+
+                    // Refresh the list after deletion
+                    await OnInitializedAsync();
+                    StateHasChanged();  // Update the UI after deletion
+                }
+                else
+                {
+                    // Handle failure case and show an error alert if necessary
+                    Console.WriteLine("Failed to delete record from the database.");
+                }
+            }
         }
     }
 }

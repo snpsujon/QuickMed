@@ -7,5 +7,6 @@ namespace QuickMed.Interface
         Task<dynamic> GetAsync();
         Task<dynamic> SaveAsync(TblDose data);
         Task<dynamic> UpdateAsync(TblDose data);
+        Task<dynamic> DeleteAsync(Guid id);
     }
 }
