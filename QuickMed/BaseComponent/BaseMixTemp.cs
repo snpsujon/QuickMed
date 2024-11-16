@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using QuickMed.DB;
 using QuickMed.Interface;
+using System.Text.Json;
 
 namespace QuickMed.BaseComponent
 {
@@ -15,11 +16,17 @@ namespace QuickMed.BaseComponent
 
 
         public TblMixTemplate model = new();
+        public TblBrand brnad = new();
+        public TblDose dose = new();
         public IEnumerable<TblMixTemplate>? models { get; set; }
+        public IEnumerable<TblBrand>? brands { get; set; }
+        public IEnumerable<TblDose>? doses { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            models = await _mix.GetAsync(); // Load the initial data
+            models = await App.Database.GetTableRowsAsync<TblMixTemplate>("TblMixTemplate");
+            brands = await App.Database.GetTableRowsAsync<TblBrand>("TblBrand");
+            doses = await App.Database.GetTableRowsAsync<TblDose>("TblDose");
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -39,7 +46,30 @@ namespace QuickMed.BaseComponent
         protected async Task InitializeJS()
         {
             await JS.InvokeVoidAsync("setupEditableTable", "MixTempTbl", "add_MixTemp");
-            await JS.InvokeVoidAsync("setupEditableTable", "datatable-patientList");
+            await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpTbl");
+            await JS.InvokeVoidAsync("makeSelect2", true);
+
+        }
+
+        public async Task AddNewPlusBtn()
+        {
+            try
+            {
+                var result = await JS.InvokeAsync<object>("AddNewPlusBtn");
+                if (result is not null)
+                {
+                    var jsonString = result.ToString();
+
+                    var treatments = JsonSerializer.Deserialize<List<TblDose>>(jsonString);
+                    await JS.InvokeVoidAsync("populateTreatmentTable", treatments, "TretmentTmpTbl");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
         }
     }
 }

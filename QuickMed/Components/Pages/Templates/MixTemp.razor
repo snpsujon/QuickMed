@@ -10,15 +10,51 @@
                 <div class="card-header bg-warning ">
                     <h4 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Mix Mediciation</h4>
                 </div><!--end card-header-->
-                <div class="card-header">
+                <div class="card-header bg-light">
                     <div class="row mb-2">
                         <div class="col-sm-12 d-flex">
-                            <label for="example-text-input" class="col-sm-1 form-label  mb-lg-0">Template Name</label>
+                            <label for="example-text-input" class="col-sm-1 me-3 form-label  mb-lg-0 fw-bold">Template Name</label>
                             <div class="col-sm-4">
-                                <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                <input class="border-dark form-control form-control-sm" type="text" id="TempName" @bind-value=model.Name>
                             </div>
 
                         </div>
+                    </div>
+                    <hr />
+                    <div class="row mb-2">
+                      
+                        <div class="col-sm-6">
+                            <select class="select2W  form-control custom-select" aria-label="Default select example" id="brandTempSelect" >
+                            <option selected disabled>Select Template</option>
+                            @if (brands != null && brands.Any())
+                            {
+                                @foreach (var item in brands)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+
+                            }
+                            </select>
+                        </div>
+                        <div class="col-sm-5">
+                            <select class="select2W  form-control custom-select" aria-label="Default select example" id="doseTempSelect" >
+                            <option selected disabled>Select Template</option>
+                            @if (doses != null && doses.Any())
+                            {
+                                @foreach (var item in doses)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+
+                            }
+                            </select>
+                        </div>
+                        
+                        <div class="col-sm-1 text-end">
+                            <button class="btn btn-success btn-sm" @onclick="AddNewPlusBtn" title="Add"><i class="fas fa-plus"></i></button>
+
+                        </div>
+
                     </div>
                 </div>
                 <!--end card-header-->
