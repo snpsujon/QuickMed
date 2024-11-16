@@ -16,6 +16,7 @@ namespace QuickMed.BaseComponent
         [Inject]
         public IAdvice _advice { get; set; }
         public TblAdviceTemplate adviceTemplate = new();
+        public string saveOrUpdateContent { get; set; } = "Save";
         public List<TblAdviceTemplateDetails> templateDetails = new List<TblAdviceTemplateDetails>();
         public IEnumerable<TblAdviceMaster>? masterData { get; set; }
         public IEnumerable<TblAdviceTemplate> templateListData { get; set; }
@@ -47,30 +48,42 @@ namespace QuickMed.BaseComponent
        protected async Task onAdviceSave()
         {
           var tableSelectedValue=   await JS.InvokeAsync<List<string>>("GetTableData", "mainTable-advice");
+            templateDetails = new List<TblAdviceTemplateDetails>();
+            foreach (var item in tableSelectedValue)
+            {
+                var detailsData = new TblAdviceTemplateDetails()
+                {
+                    Id = Guid.NewGuid(),
+                    AdviceTemplateId = adviceTemplate.Id,
+                    Advice = item
+                };
+                templateDetails.Add(detailsData);
+            }
             if (adviceTemplate.Id == Guid.Empty)
             {
                 adviceTemplate.Id = Guid.NewGuid();
-                var isSave = await _advice.SaveAdviceTemplate(adviceTemplate);
-                if (isSave == true)
+                if(adviceTemplate.AdviceTemplateName == null)
                 {
-                    foreach(var item in tableSelectedValue)
-                    {
-                        var detailsData = new TblAdviceTemplateDetails()
-                        {
-                            Id = Guid.NewGuid(),
-                            AdviceTemplateId = adviceTemplate.Id,
-                            Advice = item
-                        };
-                        templateDetails.Add(detailsData);
-                    }
-                    var saveDetails = await _advice.SaveAdviceTemplateDetails(templateDetails);
-                    await JS.InvokeVoidAsync("onInitTable", "mainTable-advice", masterData);
-                    templateDetails= new List<TblAdviceTemplateDetails>();
-                    adviceTemplate = new();
-                    templateListData = await _advice.GetAdviceTemplateData();
-                    StateHasChanged();
+                    adviceTemplate.AdviceTemplateName = await JS.InvokeAsync<string>("GenerateAdviceTemplateName");
                 }
+                var isSave = await _advice.SaveAdviceTemplate(adviceTemplate);
             }
+            else
+            {
+                var updateTemplate = await _advice.UpdateAdviceTemplate(adviceTemplate);
+                if(updateTemplate == true)
+                {
+                    var SqlDetails = $"DELETE FROM TblAdviceTemplateDetails WHERE AdviceTemplateId = '{adviceTemplate.Id}'";
+                    var isDeleteDetails = await _advice.DeleteAdviceDetails(SqlDetails);
+                }
+
+            }
+            var saveDetails = await _advice.SaveAdviceTemplateDetails(templateDetails);
+            await JS.InvokeVoidAsync("onInitTable", "mainTable-advice", masterData);
+            templateDetails = new List<TblAdviceTemplateDetails>();
+            adviceTemplate = new();
+            templateListData = await _advice.GetAdviceTemplateData();
+            StateHasChanged();
         }
        protected async Task onDataDelete(Guid id)
         {
@@ -87,12 +100,29 @@ namespace QuickMed.BaseComponent
                 }
             }
         }
-        [JSInvokable]
-        public static Task OnDataDelete(int id)
+        protected async Task onDataEdit(Guid id)
         {
-            Console.WriteLine($"Deleting data with ID: {id}");
-            // Perform your deletion logic here
-            return Task.CompletedTask;
+            try
+            {
+                var Sql = $"SELECT *  FROM TblAdviceTemplate WHERE Id = '{id}'";
+                if (id != Guid.Empty)
+                {
+                    adviceTemplate = await _advice.GetTemplateById(Sql);
+
+                    var SqlDetails = $"SELECT * FROM TblAdviceTemplateDetails WHERE AdviceTemplateId = '{id}'";
+                   templateDetails = await _advice.GetTemplateDetailsById(SqlDetails);
+                    await JS.InvokeVoidAsync("GeneTable", "mainTable-advice",masterData,templateDetails);
+                    StateHasChanged();
+
+                }
+                saveOrUpdateContent = "Update";
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
         }
     }
 }
