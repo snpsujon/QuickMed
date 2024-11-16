@@ -87,18 +87,25 @@ namespace QuickMed.BaseComponent
         }
        protected async Task onDataDelete(Guid id)
         {
-            var Sql = $"DELETE FROM TblAdviceTemplate WHERE Id = '{id}'";
-            if(id != Guid.Empty)
+            bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
+
+            if (isConfirmed)
             {
-                var isDelete = await _advice.DeleteAdviceTemplete(Sql);
-                if (isDelete == true)
+               
+                if (id != Guid.Empty)
                 {
-                    var SqlDetails = $"DELETE FROM TblAdviceTemplateDetails WHERE AdviceTemplateId = '{id}'";
-                    var isDeleteDetails = await _advice.DeleteAdviceDetails(SqlDetails);
-                    templateListData = await _advice.GetAdviceTemplateData();
-                    StateHasChanged();
+                    var Sql = $"DELETE FROM TblAdviceTemplate WHERE Id = '{id}'";
+                    var isDelete = await _advice.DeleteAdviceTemplete(Sql);
+                    if (isDelete == true)
+                    {
+                        var SqlDetails = $"DELETE FROM TblAdviceTemplateDetails WHERE AdviceTemplateId = '{id}'";
+                        var isDeleteDetails = await _advice.DeleteAdviceDetails(SqlDetails);
+                        templateListData = await _advice.GetAdviceTemplateData();
+                        StateHasChanged();
+                    }
                 }
             }
+            
         }
         protected async Task onDataEdit(Guid id)
         {
