@@ -24,18 +24,19 @@
                     <hr style="border-top: 1px dashed red;" />
                     <div class="row">
                         <div class="col-sm-3">
-                            <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
+                            <select class="select2 form-control mb-3 custom-select"
+                                    aria-label="Default select example"
+                                     >
                                 <option selected disabled>Select Advice</option>
                                 @if (templateListData != null)
                                 {
-                                    @foreach (var item in templateListData)
+                                    foreach (var item in templateListData)
                                     {
                                         <option value="@item.Id">@item.AdviceTemplateName</option>
                                     }
                                 }
-                                
                             </select>
-                        </div>
+                        </div>  
                     </div>
                 </div>
                 <!--end card-header-->
