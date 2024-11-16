@@ -43,6 +43,7 @@ function OsudAddbtn() {
 
 
 function populateTreatmentTable(dataArray, tblId) {
+    getOusudData();
     console.log("Data received:", dataArray);
 
     // Convert to array if it is an object with array properties
@@ -75,10 +76,13 @@ function populateTreatmentTable(dataArray, tblId) {
         ];
 
 
-        cells.forEach(cellData => {
+        cells.forEach((cellData, index) => {
             const cell = document.createElement("td");
             cell.textContent = cellData.text;
             cell.setAttribute("data-value", cellData.value);
+            //if (index === 1) {
+            //    cell.classList.add("special-class");
+            //}
             newRow.appendChild(cell);
         });
 
@@ -94,7 +98,7 @@ function populateTreatmentTable(dataArray, tblId) {
         editButton.id = "bEdit";
         editButton.type = "button";
         editButton.className = "btn btn-sm btn-soft-success btn-circle me-2";
-        editButton.setAttribute("onclick", "rowEdit(this);");
+        editButton.setAttribute("onclick", "QrowEdit(this);");
         editButton.innerHTML = '<i class="dripicons-pencil"></i>';
         buttonDiv.appendChild(editButton);
 
@@ -113,7 +117,7 @@ function populateTreatmentTable(dataArray, tblId) {
         acceptButton.type = "button";
         acceptButton.className = "btn btn-sm btn-soft-purple me-2 btn-circle";
         acceptButton.style.display = "none";
-        acceptButton.setAttribute("onclick", "rowAcep(this);");
+        acceptButton.setAttribute("onclick", "QrowAcep(this);");
         acceptButton.innerHTML = '<i class="dripicons-checkmark"></i>';
         buttonDiv.appendChild(acceptButton);
 
@@ -134,6 +138,58 @@ function populateTreatmentTable(dataArray, tblId) {
         // Append the row to the table body
         tableBody.appendChild(newRow);
     });
+}
+
+function QrowEdit(but) {
+    var $td = $("tr[id='editing'] td");
+    QrowAcep($td)
+    var $row = $(but).parents('tr');
+    var $cols = $row.find('td');
+    if (ModoEdicion($row)) return;  //Ya está en edición
+    //Pone en modo de edición
+    IterarCamposEdit($cols, function ($td) {  //itera por la columnas
+        var cont = $td.html(); //lee contenido
+        var div = '<div style="display: none;">' + cont + '</div>';  //guarda contenido
+        var input = '<input class="form-control input-sm"  value="' + cont + '">';
+        $td.html(div + input);  //fija contenido
+    });
+    FijModoEdit(but);
+    var Fucker = "Munshi Facker";
+    var $secondTd = $row.find('td').eq(1);
+    var div1 = '<div style="display: none;">' + Fucker + '</div>';  //guarda contenido
+    var input1 = '<select class="form-control customselect2 ousud custom-select" value=""></select>';
+    $secondTd.html(div1 + input1);
+    customSelect2(true);
+
+}
+
+function QrowAcep(but) {
+    //Acepta los cambios de la edición
+
+
+    var $row = $(but).parents('tr');  //accede a la fila
+    var $cols = $row.find('td');  //lee campos
+    if (!ModoEdicion($row)) return;  //Ya está en edición
+    //Está en edición. Hay que finalizar la edición
+    IterarCamposEdit($cols, function ($td) {  //itera por la columnas
+        var cont = $td.find('input').val(); //lee contenido del input
+        $td.html(cont);  //fija contenido y elimina controles
+        var cont = $td.find('select').val(); //lee contenido del input
+        $td.html(cont);
+    });
+    FijModoNormal(but);
+    params.onEdit($row);
+}
+
+funtion getOusudData() {
+    DotNet.invokeMethodAsync('QuickMed', 'GetOusudData')
+        .then(data => {
+            console.log("Data retrieved:", data); // Log the data or use it
+            // Process the data as needed
+        })
+        .catch(error => {
+            console.error("Error retrieving data:", error);
+        });
 }
 
 function tretmentDelete(but, tableid) {

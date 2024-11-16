@@ -77,6 +77,8 @@ namespace QuickMed.BaseComponent
 
                     var treatments = JsonSerializer.Deserialize<List<TreatmentPopVM>>(jsonString);
                     await JS.InvokeVoidAsync("populateTreatmentTable", treatments, "TretmentTmpTbl");
+                    await JS.InvokeVoidAsync("populateTreatmentTable", treatments, "TretmentTmpTbl");
+
                 }
             }
             catch (Exception ex)
@@ -238,6 +240,13 @@ namespace QuickMed.BaseComponent
                 }
 
             }
+        }
+
+        [JSInvokable("GetOusudData")]
+        public static List<string> GetOusudData()
+        {
+            // Example data
+            return new List<string> { "Medicine 1", "Medicine 2", "Medicine 3" };
         }
 
 

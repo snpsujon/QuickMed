@@ -152,8 +152,8 @@ function myrowAddNew(tabId, isSelect2 = true) {  // Adds a new row to the specif
                 } else {
                     var input = '<input class="form-control" value="" />';
                 }
-                
-                
+
+
                 $newRow.append('<td class="Qcutomselect">' + div + input + '</td>');
             }
         });
@@ -370,4 +370,18 @@ function downloadFileFromBytes(fileName, base64Content) {
 }
 function getRandomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+function setSelectOptions(selectClass, options) {
+    var $select = $('.' + selectClass);
+
+    if ($select.length) {
+        $select.find('option:not(:first)').remove();
+
+        options.forEach(option => {
+            var $opt = $('<option></option>').val(option.value).text(option.text);
+            $select.append($opt);
+        });
+    }
 }
