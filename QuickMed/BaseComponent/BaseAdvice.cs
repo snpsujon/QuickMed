@@ -13,6 +13,7 @@ namespace QuickMed.BaseComponent
 {
     public class BaseAdvice:ComponentBase
     {
+        public DotNetObjectReference<BaseAdvice> ObjectReference { get; private set; }
         [Inject]
         public IAdvice _advice { get; set; }
         public TblAdviceTemplate adviceTemplate = new();
@@ -25,11 +26,14 @@ namespace QuickMed.BaseComponent
         public IJSRuntime JS { get; set; }
 
         protected override async  Task OnInitializedAsync()
-        {            
+        {
+            ObjectReference = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("setInstanceReferences", ObjectReference);
             masterData = await _advice.GetAdviceMasterData();
             await JS.InvokeVoidAsync("onInitTable", "mainTable-advice",masterData);
             await JS.InvokeVoidAsync("initializeButtonClick",masterData);
             templateListData = await _advice.GetAdviceTemplateData();
+            
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -48,17 +52,7 @@ namespace QuickMed.BaseComponent
        protected async Task onAdviceSave()
         {
           var tableSelectedValue=   await JS.InvokeAsync<List<string>>("GetTableData", "mainTable-advice");
-            templateDetails = new List<TblAdviceTemplateDetails>();
-            foreach (var item in tableSelectedValue)
-            {
-                var detailsData = new TblAdviceTemplateDetails()
-                {
-                    Id = Guid.NewGuid(),
-                    AdviceTemplateId = adviceTemplate.Id,
-                    Advice = item
-                };
-                templateDetails.Add(detailsData);
-            }
+          
             if (adviceTemplate.Id == Guid.Empty)
             {
                 adviceTemplate.Id = Guid.NewGuid();
@@ -77,6 +71,17 @@ namespace QuickMed.BaseComponent
                     var isDeleteDetails = await _advice.DeleteAdviceDetails(SqlDetails);
                 }
 
+            }
+            templateDetails = new List<TblAdviceTemplateDetails>();
+            foreach (var item in tableSelectedValue)
+            {
+                var detailsData = new TblAdviceTemplateDetails()
+                {
+                    Id = Guid.NewGuid(),
+                    AdviceTemplateId = adviceTemplate.Id,
+                    Advice = item
+                };
+                templateDetails.Add(detailsData);
             }
             var saveDetails = await _advice.SaveAdviceTemplateDetails(templateDetails);
             await JS.InvokeVoidAsync("onInitTable", "mainTable-advice", masterData);
@@ -117,8 +122,9 @@ namespace QuickMed.BaseComponent
                     adviceTemplate = await _advice.GetTemplateById(Sql);
 
                     var SqlDetails = $"SELECT * FROM TblAdviceTemplateDetails WHERE AdviceTemplateId = '{id}'";
-                   templateDetails = await _advice.GetTemplateDetailsById(SqlDetails);
-                    await JS.InvokeVoidAsync("GeneTable", "mainTable-advice",masterData,templateDetails);
+                    var detailsData = new List<TblAdviceTemplateDetails>();
+                    detailsData = await _advice.GetTemplateDetailsById(SqlDetails);
+                    await JS.InvokeVoidAsync("GeneTable", "mainTable-advice",masterData, detailsData);
                     StateHasChanged();
 
                 }
@@ -130,6 +136,19 @@ namespace QuickMed.BaseComponent
                 throw;
             }
             
+        }
+        [JSInvokable]
+        public  async  void ChangeAdviceData(Guid id)
+        {
+            var SqlDetails = $"SELECT * FROM TblAdviceTemplateDetails WHERE AdviceTemplateId = '{id}'";
+            var detailsData = new List<TblAdviceTemplateDetails>();
+             detailsData = await _advice.GetTemplateDetailsById(SqlDetails);
+            if(detailsData != null)
+            {
+                await JS.InvokeVoidAsync("GeneTable", "mainTable-advice", masterData,detailsData);
+                StateHasChanged();
+            }
+           
         }
     }
 }

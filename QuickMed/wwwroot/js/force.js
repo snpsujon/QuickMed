@@ -1,3 +1,11 @@
+
+
+
+let instanceReference;
+
+function setInstanceReferences(dotNetObject) {
+    instanceReference = dotNetObject;
+}
 function onInitTable(tableId, data) {
     $(document).ready(function () { // Ensure DOM is fully loaded
         const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
@@ -165,6 +173,7 @@ function clearTable(tableId) {
     }
 }
 function GeneTable(tableId, masterDataList, selectedDataList) {
+    debugger;
     const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
     clearTable(tableId);
     // Now, insert the new rows
@@ -234,4 +243,21 @@ function GeneTable(tableId, masterDataList, selectedDataList) {
 function GenerateAdviceTemplateName() {
     
     return 'AdviceTemp_' + getRandomInteger(1, 9999)
+}
+
+function onAdviceChange(selectElement) {
+    debugger;
+    const selectedValue = selectElement.value; 
+    if (instanceReference) {
+        instanceReference.invokeMethodAsync("ChangeAdviceData", selectedValue)
+            .then(data => {
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    } else {
+        console.error("Instance reference is not set.");
+    }
+
+
 }
