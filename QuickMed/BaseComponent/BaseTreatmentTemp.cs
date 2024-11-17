@@ -13,6 +13,7 @@ namespace QuickMed.BaseComponent
         public ITeatmentTemp _teatmentTemp { get; set; }
         [Inject]
         public IAdvice _adviceTemp { get; set; }
+        public DotNetObjectReference<BaseTreatmentTemp> ObjectReference { get; private set; }
 
         public TblTreatmentTemplate treatmentTemplate = new();
         public List<TblTreatmentTempDetails> templateDetails = new List<TblTreatmentTempDetails>();
@@ -35,6 +36,8 @@ namespace QuickMed.BaseComponent
 
         protected override async Task OnInitializedAsync()
         {
+            ObjectReference = DotNetObjectReference.Create(this);
+
             //await JS.InvokeVoidAsync("makeSelect2", true);
             Brands = new();
             Brands = await App.Database.GetTableRowsAsync<TblBrand>("TblBrand");
@@ -61,10 +64,15 @@ namespace QuickMed.BaseComponent
                 await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpTbl");
                 await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpAdviceTbl");
                 await JS.InvokeVoidAsync("makeSelect2", true);
+                await JS.InvokeVoidAsync("setInstanceReference", ObjectReference);
 
                 await JS.InvokeVoidAsync("OnChangeEvent", "adviceSelect", "AdviceChange", objRef);
 
             }
+        }
+        public void Dispose()
+        {
+            ObjectReference?.Dispose();
         }
         public async Task OsudAddbtn()
         {
@@ -243,10 +251,13 @@ namespace QuickMed.BaseComponent
         }
 
         [JSInvokable("GetOusudData")]
-        public static List<string> GetOusudData()
+        public async Task<dynamic> GetOusudData(string ousudData)
         {
+            var sameGen = await _teatmentTemp.GetBrandsSameGenaric(ousudData);
+            return sameGen;
+
             // Example data
-            return new List<string> { "Medicine 1", "Medicine 2", "Medicine 3" };
+            //return new List<string> { "Medicine 1", "Medicine 2", "Medicine 3" };
         }
 
 

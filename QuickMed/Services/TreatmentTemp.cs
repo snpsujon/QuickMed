@@ -1,5 +1,6 @@
 ﻿using QuickMed.DB;
 using QuickMed.Interface;
+using QuickMed.ViewModels;
 
 namespace QuickMed.Services
 {
@@ -47,6 +48,23 @@ namespace QuickMed.Services
             {
                 throw ex;
             }
+
+        }
+
+        public async Task<dynamic> GetBrandsSameGenaric(string brandid)
+        {
+            try
+            {
+                var sql = $"SELECT Id as value,Name as text FROM TblBrand WHERE GenericId = (SELECT GenericId FROM TblBrand WHERE Id = '{brandid}')";
+                var getsameGeneric = await _context.ExecuteSqlQueryAsync<SelectVM>(sql);
+                return getsameGeneric;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
 
         }
 

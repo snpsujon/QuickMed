@@ -1,5 +1,12 @@
 ﻿const treatments = [];
 
+let instanceReference;
+
+function setInstanceReference(dotNetObject) {
+    instanceReference = dotNetObject;
+}
+
+
 function OsudAddbtn() {
     // Get the selected elements
     const brandSelect = document.getElementById("brandSelect");
@@ -43,7 +50,7 @@ function OsudAddbtn() {
 
 
 function populateTreatmentTable(dataArray, tblId) {
-    getOusudData();
+    //getOusudData();
     console.log("Data received:", dataArray);
 
     // Convert to array if it is an object with array properties
@@ -150,23 +157,21 @@ function QrowEdit(but) {
     IterarCamposEdit($cols, function ($td) {  //itera por la columnas
         var cont = $td.html(); //lee contenido
         var div = '<div style="display: none;">' + cont + '</div>';  //guarda contenido
-        var input = '<input class="form-control input-sm"  value="' + cont + '">';
+        var input = '<input class="form-control input-sm"  value="' + cont + '" disabled>';
         $td.html(div + input);  //fija contenido
     });
     FijModoEdit(but);
-    var Fucker = "Munshi Facker";
+    var cont = $td.html();
     var $secondTd = $row.find('td').eq(1);
-    var div1 = '<div style="display: none;">' + Fucker + '</div>';  //guarda contenido
+    var div1 = '<div style="display: none;">' + cont + '</div>';  //guarda contenido
     var input1 = '<select class="form-control customselect2 ousud custom-select" value=""></select>';
     $secondTd.html(div1 + input1);
     customSelect2(true);
+    getOusudData(but);
 
 }
 
 function QrowAcep(but) {
-    //Acepta los cambios de la edición
-
-
     var $row = $(but).parents('tr');  //accede a la fila
     var $cols = $row.find('td');  //lee campos
     if (!ModoEdicion($row)) return;  //Ya está en edición
@@ -174,22 +179,65 @@ function QrowAcep(but) {
     IterarCamposEdit($cols, function ($td) {  //itera por la columnas
         var cont = $td.find('input').val(); //lee contenido del input
         $td.html(cont);  //fija contenido y elimina controles
-        var cont = $td.find('select').val(); //lee contenido del input
-        $td.html(cont);
     });
+
+    const row = $(but).closest('tr')[0];
+    const secondTd = $(row).find('td').eq(1);
+    var select = secondTd.find('select'); // Get the select element
+    var value = select.val(); // Get the value of the selected option
+    var text = select.find("option:selected").text(); // Get the text of the selected option
+    secondTd.text(text);
+    secondTd.attr("data-value", value);
+    const treatmentIndex = parseInt(row.getAttribute("data-value"), 10);
+    updateTreatmrntArray(treatmentIndex);
     FijModoNormal(but);
     params.onEdit($row);
+
+
 }
 
-funtion getOusudData() {
-    DotNet.invokeMethodAsync('QuickMed', 'GetOusudData')
-        .then(data => {
-            console.log("Data retrieved:", data); // Log the data or use it
-            // Process the data as needed
-        })
-        .catch(error => {
-            console.error("Error retrieving data:", error);
-        });
+function updateTreatmrntArray(index) {
+    const treatmentIndexss = treatments.findIndex(t => t.index === treatmentIndex);
+
+
+}
+
+function getOusudData(but) {
+    const row = $(but).closest('tr')[0];
+    const secondTd = $(row).find('td').eq(1);
+    if (row && row.hasAttribute("data-value")) {
+
+        const treatmentIndex = parseInt(row.getAttribute("data-value"), 10);
+        const treatmentIndexss = treatments.findIndex(t => t.index === treatmentIndex);
+        var datas = treatments[treatmentIndexss]['brand']['value'];
+
+        if (instanceReference) {
+            instanceReference.invokeMethodAsync("GetOusudData", datas)
+                .then(data => {
+                    setSelectOptions('ousud', data)
+
+                    console.log("Data received from Blazor:", data);
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        } else {
+            console.error("Instance reference is not set.");
+        }
+
+
+        //DotNet.invokeMethodAsync('QuickMed', 'GetOusudData', data)
+        //    .then(data => {
+        //        console.log("Data retrieved:", data); // Log the data or use it
+        //        // Process the data as needed
+        //    })
+        //    .catch(error => {
+        //        console.error("Error retrieving data:", error);
+        //    });
+
+    }
+
+
 }
 
 function tretmentDelete(but, tableid) {
