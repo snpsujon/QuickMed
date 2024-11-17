@@ -126,7 +126,6 @@ function addNewRowOnTable(data) {
     deleteButton.className = "btn btn-soft-danger btn-sm";
     deleteButton.innerHTML = '<i class="dripicons-trash"></i>';
     deleteButton.onclick = function () {
-        debugger;
         const row = this.closest('tr'); // Find the closest row
         const index = row.rowIndex - 1;
         table.deleteRow(index);
@@ -146,18 +145,18 @@ function GetTableData(tableId) {
     for (let i = 0; i < table.rows.length; i++) {
         const row = table.rows[i];
         const select = row.cells[1].querySelector(".select2"); // Get the select element in the second cell
-
         if (select) {
-            selectedValues.push(select.value); // Add the selected value to the array
+            if (select.value != "") {
+                selectedValues.push(select.value); // Add the selected value to the array
+            }
+            
         }
     }
 
-    console.log(selectedValues); // Output selected values for debugging
     return selectedValues;
 }
 
 function clearTable(tableId) {
-    debugger;
     const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
 
     // Deleting rows from the last one to the first
@@ -165,7 +164,74 @@ function clearTable(tableId) {
         table.deleteRow(i);
     }
 }
-function GeneTable(tableId,masterDataList,selectedDataList) {
+function GeneTable(tableId, masterDataList, selectedDataList) {
     const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
-    clearTable(tableId)
+    clearTable(tableId);
+    // Now, insert the new rows
+    for (var i = 0; i < selectedDataList.length; i++) {  // Note: Change to `i < 6` to add exactly 6 rows
+        const newRow = table.insertRow();
+
+        const cell1 = newRow.insertCell(0);
+        cell1.innerHTML = i + 1;
+
+        const cell2 = newRow.insertCell(1);
+
+        // Create the select element
+        let select = document.createElement("select");
+        select.classList.add("select2");
+
+        // Add an empty option as the placeholder for select2
+        let placeholderOption = document.createElement("option");
+        placeholderOption.value = "";
+        placeholderOption.text = "Select One";
+        select.appendChild(placeholderOption);
+
+        // Loop through data array to create options
+        if (Array.isArray(masterDataList) && masterDataList.length > 0) { // Check if data is valid
+            masterDataList.forEach(optionText => {
+                debugger;
+                const option = document.createElement("option");
+                option.value = optionText.adviceName;
+                option.text = optionText.adviceName;
+                if (optionText.adviceName === selectedDataList[i].advice) {
+                    option.selected = true;
+                }
+
+                select.appendChild(option);
+            });
+        }
+        // Append the select element to the cell
+        cell2.appendChild(select);
+
+        // Apply select2 after appending to the DOM
+        $(select).select2({
+            width: "100%",
+            placeholder: "Select One", // Ensures placeholder text is shown
+            allowClear: true,
+            tags: true// Enables clear button
+        });
+        const cell3 = newRow.insertCell(2);
+
+        // Create a button dynamically
+        let deleteButton = document.createElement("button");
+        deleteButton.className = "btn btn-soft-danger btn-sm";
+        deleteButton.innerHTML = '<i class="dripicons-trash"></i>';
+        deleteButton.onclick = function () {
+            debugger;
+            const row = this.closest('tr'); // Find the closest row
+            const index = row.rowIndex - 1;
+            table.deleteRow(index);
+        };
+
+        // Append the button to cell3
+        cell3.appendChild(deleteButton);
+    }
+
+}
+
+
+
+function GenerateAdviceTemplateName() {
+    
+    return 'AdviceTemp_' + getRandomInteger(1, 9999)
 }

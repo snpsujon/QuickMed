@@ -15,5 +15,8 @@ namespace QuickMed.Interface
         Task<dynamic> SaveAdviceTemplateDetails(List<TblAdviceTemplateDetails> data);
         Task<dynamic> DeleteAdviceTemplete(string sql);
         Task<dynamic> DeleteAdviceDetails(string sql);
+        Task<dynamic> GetTemplateById(string sql);
+        Task<dynamic> GetTemplateDetailsById(string sql);
+        Task<dynamic> UpdateAdviceTemplate(TblAdviceTemplate data);
     }
 }

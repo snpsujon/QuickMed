@@ -24,18 +24,19 @@
                     <hr style="border-top: 1px dashed red;" />
                     <div class="row">
                         <div class="col-sm-3">
-                            <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
+                            <select class="select2 form-control mb-3 custom-select"
+                                    aria-label="Default select example"
+                                     >
                                 <option selected disabled>Select Advice</option>
                                 @if (templateListData != null)
                                 {
-                                    @foreach (var item in templateListData)
+                                    foreach (var item in templateListData)
                                     {
                                         <option value="@item.Id">@item.AdviceTemplateName</option>
                                     }
                                 }
-                                
                             </select>
-                        </div>
+                        </div>  
                     </div>
                 </div>
                 <!--end card-header-->
@@ -63,7 +64,7 @@
 
                     <hr />
                     <span class="float-right">
-                        <button  class="btn btn-success btn-sm float-end" @onclick=onAdviceSave>Save</button>
+                        <button  class="btn btn-success btn-sm float-end" @onclick=onAdviceSave>@saveOrUpdateContent</button>
                     </span>
 
                 </div><!--end card-body-->
@@ -101,7 +102,7 @@
                                             <td>@item.AdviceTemplateName</td>
                                             <td class="float-end">
                                                 <small class="text-muted">
-                                                    <button class="btn btn-soft-success btn-sm">
+                                                    <button class="btn btn-soft-success btn-sm" @onclick="() => onDataEdit(item.Id)">
                                                         <i class="dripicons-pencil"></i>
                                                     </button>
                                                     <button class="btn btn-soft-danger btn-sm"@onclick="() => onDataDelete(item.Id)">

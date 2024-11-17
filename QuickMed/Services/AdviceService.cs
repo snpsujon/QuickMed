@@ -68,6 +68,34 @@ namespace QuickMed.Services
                 throw;
             }
         }
+        public async Task<dynamic> GetTemplateById(string sql)
+        {
+            try
+            {
+                var data = await _context.ExecuteSqlQueryAsync<TblAdviceTemplate>(sql);
+                return data.FirstOrDefault();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public async Task<dynamic> GetTemplateDetailsById(string sql)
+        {
+            try
+            {
+                var data = await _context.ExecuteSqlQueryAsync<TblAdviceTemplateDetails>(sql);
+                return data.ToList();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
 
         public async Task<dynamic> SaveAdviceTemplate(TblAdviceTemplate data)
         {
@@ -91,6 +119,20 @@ namespace QuickMed.Services
                 return true;
             }
             catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<dynamic> UpdateAdviceTemplate(TblAdviceTemplate data)
+        {
+            try
+            {
+                var saveTemplate = await _context.UpdateAsync<TblAdviceTemplate>(data);
+                return true;
+            }
+            catch (Exception)
             {
 
                 throw;
