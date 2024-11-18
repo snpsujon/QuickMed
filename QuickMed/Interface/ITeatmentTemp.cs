@@ -7,6 +7,7 @@ namespace QuickMed.Interface
         Task<dynamic> GetAdviceDataById(string AdviceID);
         Task<dynamic> SaveTreatmentTemp(TblTreatmentTemplate tblTreatmentTemplate);
         Task<dynamic> SaveTreatmentTempDetails(List<TblTreatmentTempDetails> data);
+        Task<dynamic> GetBrandsSameGenaric(string brandid);
         Task<dynamic> DeleteTreatmentTemp(string TempId);
     }
 }
