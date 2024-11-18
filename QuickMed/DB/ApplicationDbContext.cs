@@ -70,9 +70,6 @@ namespace QuickMed.DB
         {
             await _dbConnection.CreateTableAsync<TblPatient>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblTreatmentTemplate>().ConfigureAwait(false);
-            await _dbConnection.CreateTableAsync<TblBrand>().ConfigureAwait(false);
-            await _dbConnection.CreateTableAsync<TblGeneric>().ConfigureAwait(false);
-            await _dbConnection.CreateTableAsync<TblCompany>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblPrescription>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblPrescriptionDetails>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblDoctor>().ConfigureAwait(false);
@@ -90,6 +87,11 @@ namespace QuickMed.DB
             await _dbConnection.CreateTableAsync<TblTreatmentTempDetails>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblMixTemplate>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblFavouriteDrugTemplate>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<DrugType>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<DrugDosage>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<DrugGeneric>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<DrugManufacturer>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<DrugMedicine>().ConfigureAwait(false);
 
             // Await the seed data methods to ensure they complete before continuing
             await insertSeedDoseData().ConfigureAwait(false);

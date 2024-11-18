@@ -3,8 +3,6 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using QuickMed.DB;
-using System.Net.NetworkInformation;
-using System.Threading.Tasks;
 
 namespace QuickMed.Services
 {
@@ -44,14 +42,14 @@ namespace QuickMed.Services
             if (await IsConnectedToInternet())
             {
                 _logger.LogInformation("Internet is available, starting sync...");
-                _ = Task.Run(() => SyncTableDataAsync<TblBrand>());
-                _ = Task.Run(() => SyncTableDataAsync<TblCompany>());
-                //_ = Task.Run(() => SyncTableDataAsync<TblDoctor>());
-                _ = Task.Run(() => SyncTableDataAsync<TblGeneric>());
+
                 _ = Task.Run(() => SyncTableDataAsync<TblPatient>());
+                _ = Task.Run(() => SyncTableDataAsync<DrugDosage>());
+                _ = Task.Run(() => SyncTableDataAsync<DrugGeneric>());
+                _ = Task.Run(() => SyncTableDataAsync<DrugManufacturer>());
+                _ = Task.Run(() => SyncTableDataAsync<DrugType>());
+                _ = Task.Run(() => SyncTableDataAsync<DrugMedicine>());
                 _ = Task.Run(() => SyncTableDataAsync<TblPrescription>());
-                //_ = Task.Run(() => SyncTableDataAsync<TblPrescriptionDetails>());
-                //_ = Task.Run(() => SyncTableDataAsync<TblTreatmentTemplate>());
             }
             else
             {
@@ -82,7 +80,7 @@ namespace QuickMed.Services
         {
             try
             {
-                var tblName = typeof(TEntity); 
+                var tblName = typeof(TEntity);
                 var unsyncedRecords = await _localDbContext._dbConnection.Table<TEntity>().ToListAsync();
                 var filteredRecords = unsyncedRecords
                     .Where(record => (bool)(record.GetType().GetProperty("IsSynced")?.GetValue(record) ?? true) == false)
