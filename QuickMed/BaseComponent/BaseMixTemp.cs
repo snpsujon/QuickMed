@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using QuickMed.DB;
 using QuickMed.Interface;
+using QuickMed.ViewModels;
 using System.Text.Json;
 
 namespace QuickMed.BaseComponent
@@ -16,16 +17,17 @@ namespace QuickMed.BaseComponent
 
 
         public TblMixTemplate model = new();
-        public TblBrand brnad = new();
+        public DrugMedicine brnad = new();
         public TblDose dose = new();
         public IEnumerable<TblMixTemplate>? models { get; set; }
-        public IEnumerable<TblBrand>? brands { get; set; }
+        public IEnumerable<DrugMedicine>? brands { get; set; }
         public IEnumerable<TblDose>? doses { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             models = await App.Database.GetTableRowsAsync<TblMixTemplate>("TblMixTemplate");
-            brands = await App.Database.GetTableRowsAsync<TblBrand>("TblBrand");
+            //brands = await App.Database.GetTableRowsAsync<DrugMedicine>("DrugMedicine");
+            brands = await _mix.GetAllMedicine();
             doses = await App.Database.GetTableRowsAsync<TblDose>("TblDose");
         }
 
@@ -60,8 +62,11 @@ namespace QuickMed.BaseComponent
                 {
                     var jsonString = result.ToString();
 
-                    var treatments = JsonSerializer.Deserialize<List<TblDose>>(jsonString);
-                    await JS.InvokeVoidAsync("populateTreatmentTable", treatments, "TretmentTmpTbl");
+
+                    var treatments = JsonSerializer.Deserialize<List<TreatmentPopVM>>(jsonString);
+
+                    await JS.InvokeVoidAsync("populateMixTempTable", treatments, "MixTempTbl");
+
                 }
             }
             catch (Exception ex)
