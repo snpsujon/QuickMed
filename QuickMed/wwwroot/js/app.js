@@ -262,7 +262,6 @@ function makeSelect2(isTags) {
 
 
 function makeDataTable(tableid, newData = []) {
-    debugger;
     $(document).ready(function () {
         // Check if the DataTable is already initialized
         if (!$.fn.dataTable.isDataTable('#' + tableid)) {

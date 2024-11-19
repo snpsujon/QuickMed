@@ -1,6 +1,7 @@
 
 
 function onInitTable(tableId, data) {
+    debugger;
     $(document).ready(function () { // Ensure DOM is fully loaded
         const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
 
@@ -170,8 +171,12 @@ function GeneTable(tableId, masterDataList, selectedDataList) {
     debugger;
     const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
     clearTable(tableId);
+    var isSelected = false;
     // Now, insert the new rows
-    for (var i = 0; i < selectedDataList.length; i++) {  // Note: Change to `i < 6` to add exactly 6 rows
+    for (var i = 0; i < selectedDataList.length; i++) {
+        isSelected = false;
+          debugger;
+        // Note: Change to `i < 6` to add exactly 6 rows
         const newRow = table.insertRow();
 
         const cell1 = newRow.insertCell(0);
@@ -190,14 +195,36 @@ function GeneTable(tableId, masterDataList, selectedDataList) {
         select.appendChild(placeholderOption);
 
         // Loop through data array to create options
-        if (Array.isArray(masterDataList) && masterDataList.length > 0) { // Check if data is valid
+        if (Array.isArray(masterDataList) && masterDataList.length > 0) {
+            debugger;
             masterDataList.forEach(optionText => {
-                debugger;
+               
                 const option = document.createElement("option");
-                option.value = optionText.adviceName;
-                option.text = optionText.adviceName;
-                if (optionText.adviceName === selectedDataList[i].advice) {
-                    option.selected = true;
+               
+                if (!isSelected) {
+                    isSelected = true;
+                    if (optionText.adviceName === selectedDataList[i].advice) {
+                        option.value = optionText.adviceName;
+                        option.text = optionText.adviceName;
+                        option.selected = true;
+                    }
+                    else {
+                        var checkExist = masterDataList.find(x => x.adviceName == selectedDataList[i].advice);
+                        if (!checkExist) {
+                            option.value = selectedDataList[i].advice;
+                            option.text = selectedDataList[i].advice;
+                            option.selected = true;
+                        } else {    
+                            option.value = optionText.adviceName;
+                            option.text = optionText.adviceName;
+                            isSelected = false;
+                        }
+                        
+                    }
+                    
+                } else {
+                    option.value = optionText.adviceName;
+                    option.text = optionText.adviceName;
                 }
 
                 select.appendChild(option);

@@ -117,16 +117,16 @@
                     <tbody>
                         @if (models != null && models.Any())
                         {
-                            @foreach (var item in models.Select((value, index) => new { value, index }))
+                            @foreach (var item in models)
                             {
                                 <tr>
-                                    <td>@(item.index + 1)</td> <!-- Display serial number (index + 1) -->
-                                    <td>@item.value.TemplateName</td>
+                                   
+                                    <td>@item.TemplateName</td>
 
 
                                     <td class="text-end">
-                                        <span class="text-primary mx-1 cursor-pointer" @onclick="() => OnEditClick(item.value)"><i class="dripicons-pencil"></i></span>
-                                        <span class="text-danger mx-1 cursor-pointer" @onclick="() => OnDeleteClick(item.value.Id)"><i class="dripicons-trash"></i></span>
+                                        <span class="text-primary mx-1 cursor-pointer" @onclick="() => OnEditClick(item)"><i class="dripicons-pencil"></i></span>
+                                        <span class="text-danger mx-1 cursor-pointer" @onclick="() => OnDeleteClick(item.Id)"><i class="dripicons-trash"></i></span>
                                     </td>
 
 
