@@ -24,12 +24,15 @@ namespace QuickMed.BaseComponent
         public IEnumerable<TblPatient>? patients { get; set; }
         public IEnumerable<DrugMedicine>? brands { get; set; }
         public IEnumerable<TblDose>? doses { get; set; }
+        public IEnumerable<TblTreatmentTemplate>? treatmentTemps { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             patients = await App.Database.GetTableRowsAsync<TblPatient>("TblPatient");
             brands = await _mix.GetAllMedicine();
             doses = await App.Database.GetTableRowsAsync<TblDose>("TblDose");
+
+            treatmentTemps = await App.Database.GetTableRowsAsync<TblTreatmentTemplate>("TblTreatmentTemplate");
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
