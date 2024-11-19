@@ -49,6 +49,8 @@ namespace QuickMed.BaseComponent
 
         protected async Task InitializeDataTable()
         {
+            model = new();
+            templateDetails = new();
             models = await _ixTemp.GetAsync();
             await JS.InvokeVoidAsync("makeDataTable", "datatable-ixTemp");
            
@@ -122,10 +124,6 @@ namespace QuickMed.BaseComponent
                     Console.WriteLine("templateName not found.");
                 }
 
-                await OnAfterRenderAsync(true);
-
-                await OnInitializedAsync();
-
                 StateHasChanged();
 
 
@@ -138,6 +136,7 @@ namespace QuickMed.BaseComponent
         {
             model = data;
             await IXTempChange(data.Id.ToString());
+            saveOrUpdateContent = "Update";
             StateHasChanged(); // Re-render the component with the updated model
         }
         [JSInvokable]
@@ -170,8 +169,6 @@ namespace QuickMed.BaseComponent
                     await JS.InvokeVoidAsync("showAlert", "Delete Successful", "Record has been successfully deleted.", "success", "swal-danger");
 
                     // Refresh the list after deletion
-                    await OnInitializedAsync();
-                    await OnAfterRenderAsync(true);
                     StateHasChanged();  // Update the UI after deletion
                 }
                 else
