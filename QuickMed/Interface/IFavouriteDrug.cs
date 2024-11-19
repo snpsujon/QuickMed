@@ -1,8 +1,7 @@
 ﻿namespace QuickMed.Interface
 {
-    public interface IMixTemp : IBase
+    public interface IFavouriteDrug : IBase
     {
         Task<dynamic> GetAsync();
-        Task<dynamic> GetAllMedicine();
     }
 }

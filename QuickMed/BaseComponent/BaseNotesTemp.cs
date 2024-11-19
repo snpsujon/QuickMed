@@ -81,12 +81,22 @@ namespace QuickMed.BaseComponent
                 if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
                 {
                    var templateName = templateNameElement.GetString();
-                    model = new()
+                    if(model.Id == Guid.NewGuid())
                     {
-                        Id = Guid.NewGuid(),
-                        Name = templateName
-                    };
-                    await _notes.SaveAsync(model);
+                        model = new()
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = templateName
+                        };
+                        await _notes.SaveAsync(model);
+                    }
+                    else
+                    {
+                        model.Name = templateName;
+                        await _notes.UpdateAsync(model);
+                        await _notes.DeleteDetailsAsync(model.Id);
+                    }
+                    
 
                 }
 

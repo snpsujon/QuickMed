@@ -28,7 +28,8 @@ namespace QuickMed.Services
                     WHEN Gender = 1 THEN 'M'
                     WHEN Gender = 2 THEN 'F'
                     ELSE 'O'
-                END AS GenderName
+                END AS GenderName,
+                Gender
             FROM 
                 TblPatient";
 

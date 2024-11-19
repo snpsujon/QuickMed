@@ -88,6 +88,7 @@ namespace QuickMed.BaseComponent
                     // Refresh the list after deletion
                     await OnInitializedAsync();
                     await InitializeDataTable();
+                    model = new PatientVM();
                     StateHasChanged();  // Update the UI after deletion
                 }
                 else

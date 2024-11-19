@@ -61,7 +61,7 @@ namespace QuickMed.Services
                 var details = $"DELETE FROM TblNotesTempDetails WHERE TblNotesTempMasterId = '{id}'";
 
                  await _context.ExecuteSqlQueryFirstorDefultAsync<TblNotesTemplate>(master);
-                 await _context.ExecuteSqlQueryFirstorDefultAsync<TblNotesTempDetails>(master);
+                 await _context.ExecuteSqlQueryFirstorDefultAsync<TblNotesTempDetails>(details);
 
                 return true;
             }
@@ -112,6 +112,22 @@ namespace QuickMed.Services
             {
                 throw new Exception("An error occurred while updating the template.", ex);
             }
+        }
+        public async Task<dynamic> DeleteDetailsAsync(Guid id)
+        {
+            try
+            {
+                var details = $"DELETE FROM TblNotesTempDetails WHERE TblNotesTempMasterId = '{id}'";
+                await _context.ExecuteSqlQueryFirstorDefultAsync<TblNotesTempDetails>(details);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
     }
 }

@@ -24,8 +24,8 @@
                     <div class="row mb-2">
                       
                         <div class="col-sm-6">
-                            <select class="select2W  form-control custom-select" aria-label="Default select example" id="brandTempSelect" >
-                            <option selected disabled>Select Template</option>
+                            <select class="select2  form-control custom-select" aria-label="Default select example" id="brandTempSelect" >
+                                <option selected disabled>Select Brand  Template</option>
                             @if (brands != null && brands.Any())
                             {
                                 @foreach (var item in brands)
@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-sm-5">
                             <select class="select2W  form-control custom-select" aria-label="Default select example" id="doseTempSelect" >
-                            <option selected disabled>Select Template</option>
+                            <option selected disabled>Select Dose Template</option>
                             @if (doses != null && doses.Any())
                             {
                                 @foreach (var item in doses)

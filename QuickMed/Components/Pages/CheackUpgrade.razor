@@ -1,5 +1,8 @@
 ﻿@page "/checkUpgrade";
 @inject IJSRuntime JS
+@using QuickMed.DB
+@using QuickMed.Services
+@inject DataSyncService _service;
 
 <div class="row mt-4">
     <div class="col-xl-12 d-flex">
@@ -11,11 +14,37 @@
                 </p>
             </div><!--end card-header-->
             <div class="card-body d-flex justify-content-center align-items-center">
-                <i id="downloadIcon" class="dripicons-time-reverse display-3" style="color: red;" onclick="toggleLoadingIcon()"></i>
+                @*<i id="downloadIcon" class="dripicons-time-reverse display-3" style="color: red;" onclick="toggleLoadingIcon()"></i>*@
+                <i id="downloadIcon" class="dripicons-time-reverse display-3" style="color: red;" @onclick="CheckingUpgrade"></i>
             </div><!--end card-body-->
         </div><!--end card-->
     </div><!--end col-->
 </div><!--end row-->
+
+@code {
+
+    private async void CheckingUpgrade()
+    {
+
+        StateHasChanged(); // Trigger UI update
+        UpdateDB();
+        // Simulate an update check with a delay
+        await Task.Delay(3000); // Replace this with your actual update checking logic
+
+        StateHasChanged(); // Trigger UI update
+    }
+
+    private async void UpdateDB()
+    {
+        await _service.SyncSqlToLiteAsync<DrugDosage>("Admin");
+        await _service.SyncSqlToLiteAsync<DrugGeneric>("Admin");
+        await _service.SyncSqlToLiteAsync<DrugManufacturer>("Admin");
+        await _service.SyncSqlToLiteAsync<DrugType>("Admin");
+        await _service.SyncSqlToLiteAsync<DrugMedicine>("Admin");
+    }
+
+
+}
 
 <script>
     function toggleLoadingIcon() {
