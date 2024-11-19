@@ -5,7 +5,7 @@ function AddNewPlusBtn() {
     const brandSelect = document.getElementById("brandTempSelect");
     const doseSelect = document.getElementById("doseTempSelect");
 
-    if (!brandSelect || !doseSelect ) {
+    if (!brandSelect || !doseSelect) {
         console.error("One or more select elements were not found in the DOM.");
         return null;
     }
@@ -62,7 +62,7 @@ function populateMixTempTable(dataArray, tblId) {
             { text: index + 1, value: index + 1 },
             { text: data.brand?.value == 0 ? "N/A" : data.brand?.text || "N/A", value: data.brand?.value || "" },
             { text: data.dose?.value == 0 ? "N/A" : data.dose?.text || "N/A", value: data.dose?.value || "" }
-            
+
         ];
 
 
@@ -88,7 +88,7 @@ function populateMixTempTable(dataArray, tblId) {
         editButton.id = "bEdit";
         editButton.type = "button";
         editButton.className = "btn btn-sm btn-soft-success btn-circle me-2";
-        editButton.setAttribute("onclick", "QrowEdit(this);");
+        editButton.setAttribute("onclick", "QrowEditmixTemp(this);");
         editButton.innerHTML = '<i class="dripicons-pencil"></i>';
         buttonDiv.appendChild(editButton);
 
@@ -131,7 +131,7 @@ function populateMixTempTable(dataArray, tblId) {
 }
 
 
-function QrowEdit(but) {
+function QrowEditmixTemp(but) {
     var $td = $("tr[id='editing'] td");
     QrowAcepmixTemp($td)
     var $row = $(but).parents('tr');

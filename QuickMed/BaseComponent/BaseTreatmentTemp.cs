@@ -9,6 +9,10 @@ namespace QuickMed.BaseComponent
 {
     public class BaseTreatmentTemp : ComponentBase
     {
+
+        [Inject]
+        public IMixTemp _mix { get; set; }
+
         [Inject]
         public ITeatmentTemp _teatmentTemp { get; set; }
         [Inject]
@@ -22,7 +26,7 @@ namespace QuickMed.BaseComponent
         public TblAdviceTemplate adviceTemplate = new();
         public List<TblAdviceTemplateDetails> adviceDetails = new List<TblAdviceTemplateDetails>();
         public TblAdviceTemplateDetails TblAdviceTemplate = new();
-        public List<TblBrand> Brands = new List<TblBrand>();
+        public List<DrugMedicine> Brands = new List<DrugMedicine>();
         public List<TblDose> Dose = new List<TblDose>();
         public List<TblDuration> Duration = new List<TblDuration>();
         public List<TblInstruction> Instructions = new List<TblInstruction>();
@@ -40,7 +44,7 @@ namespace QuickMed.BaseComponent
 
             //await JS.InvokeVoidAsync("makeSelect2", true);
             Brands = new();
-            Brands = await App.Database.GetTableRowsAsync<TblBrand>("TblBrand");
+            Brands = await _mix.GetAllMedicine();
             Dose = new();
             Dose = await App.Database.GetTableRowsAsync<TblDose>("TblDose");
             Duration = new();

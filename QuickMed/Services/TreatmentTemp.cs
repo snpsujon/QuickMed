@@ -55,7 +55,13 @@ namespace QuickMed.Services
         {
             try
             {
-                var sql = $"SELECT Id as value,Name as text FROM TblBrand WHERE GenericId = (SELECT GenericId FROM TblBrand WHERE Id = '{brandid}')";
+                var sql = $@"SELECT 
+                    dm.Id as value,  
+                    dd.Name || ' - ' || dm.Name || ' ( ' || dm.Strength || ' ) ' || ' - ' || dg.Name AS text
+                    FROM DrugMedicine dm
+                    LEFT JOIN DrugDosage dd ON dm.DosageId = dd.Id
+                    LEFT JOIN DrugGeneric dg ON dm.GenericId = dg.Id
+                    LEFT JOIN DrugManufacturer c ON dm.ManufacturerId = c.Id WHERE dm.GenericId = (SELECT GenericId FROM DrugMedicine WHERE Id = '{brandid}')";
                 var getsameGeneric = await _context.ExecuteSqlQueryAsync<SelectVM>(sql);
                 return getsameGeneric;
             }
