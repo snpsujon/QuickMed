@@ -285,7 +285,6 @@ function makeSelect2Custom(classs,invokeMethod,minInput) {
 
 
 function makeDataTable(tableid, newData = []) {
-    debugger;
     $(document).ready(function () {
         // Check if the DataTable is already initialized
         if (!$.fn.dataTable.isDataTable('#' + tableid)) {

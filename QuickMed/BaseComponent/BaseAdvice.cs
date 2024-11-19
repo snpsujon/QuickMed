@@ -25,6 +25,7 @@ namespace QuickMed.BaseComponent
             await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             masterData = await _advice.GetAdviceMasterData();
             await JS.InvokeVoidAsync("onInitTable", "mainTable-advice", masterData);
+            await JS.InvokeVoidAsync("makeDataTable", "adviceListtable");
             await JS.InvokeVoidAsync("initializeButtonClick", masterData);
             templateListData = await _advice.GetAdviceTemplateData();
 
@@ -102,6 +103,7 @@ namespace QuickMed.BaseComponent
                         var isDeleteDetails = await _advice.DeleteAdviceDetails(SqlDetails);
                         templateListData = await _advice.GetAdviceTemplateData();
                         await JS.InvokeVoidAsync("showAlert", "Delete Successful", "Record has been successfully deleted.", "success", "swal-danger");
+                        saveOrUpdateContent = "Save";
                         StateHasChanged();
                     }
                 }
