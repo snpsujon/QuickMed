@@ -1,6 +1,7 @@
 ﻿@page "/prescription"
-@inject IJSRuntime JS
 
+@using QuickMed.BaseComponent
+@inherits BasePrescription
 
 
 <div class="row">
@@ -407,13 +408,21 @@
                                     <option value="3">O</option>
                                 </select>
                             </div>
-                            <div class="col-sm-3">
-                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                                    <option selected disabled>Treatment Template</option>
-                                    <option value="1">M</option>
-                                    <option value="2">F</option>
-                                    <option value="3">O</option>
+                            <div class="col-sm-3">                             
+
+                                <select class="select2W form-control mb-3 custom-select" id="presTreatTempSelect" aria-label="Default select example">
+                                    <option selected value="0" disabled>Select Treatment Template</option>
+                                    @if (treatmentTemps != null && treatmentTemps.Any())
+                                    {
+                                        @foreach (var item in treatmentTemps)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+
+                                    }
+                                    
                                 </select>
+
                             </div>
                             <div class="col-sm-3">
                                 <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
@@ -960,15 +969,3 @@
 
 </div>
 
-@code {
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JS.InvokeVoidAsync("setupEditableTable", "Dxtable", "Dxtable_but_add");
-            await JS.InvokeVoidAsync("setupEditableTable", "makeEditable", "but_add");
-            await JS.InvokeVoidAsync("makeTableDragable", "makeEditable");
-            await JS.InvokeVoidAsync("makeSelect2", true);
-        }
-    }
-}
