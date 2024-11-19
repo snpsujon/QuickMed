@@ -15,7 +15,7 @@
                     <div>
                         @*<input class="form-control form-control-sm" type="text" placeholder="Template Name">*@
 
-                        <select class="select2W  form-control  mb-3 custom-select" aria-label="Default select example">
+                        <select class="select2W  form-control  mb-3 custom-select" aria-label="Default select example" id="IXTempSelect">
                             <option selected disabled>Select Advice Template</option>
                             @if (models != null && models.Any())
                             {
@@ -80,7 +80,7 @@
                     </span><!--end table-->
                     <hr />
                     <span class="float-right">
-                        <button id="but_add" class="btn btn-success btn-sm float-end" @onclick="OnSaveBtnClick">Save</button>
+                        <button id="but_add" class="btn btn-success btn-sm float-end" @onclick="OnSaveBtnClick">@saveOrUpdateContent</button>
                     </span>
                 </div><!--end card-body-->
             </div><!--end card-->
@@ -115,43 +115,26 @@
 
 
                     <tbody>
-                        <tr>
-                            <td>2C</td>
-                            <td class="text-end">
-                                <span class="text-primary mx-1"><i class="dripicons-pencil"></i></span>
-                                <span class="text-danger mx-1"><i class="dripicons-trash"></i></span>
-
-                            </td>
-                        </tr><!--end tr-->
-
-                        <tr>
-                            <td>2C</td>
-                            <td class="text-end">
-                                <span class="text-primary mx-1"><i class="dripicons-pencil"></i></span>
-                                <span class="text-danger mx-1"><i class="dripicons-trash"></i></span>
-
-                            </td>
-                        </tr><!--end tr-->
-
-                        <tr>
-                            <td>2C</td>
-                            <td class="text-end">
-                                <span class="text-primary mx-1"><i class="dripicons-pencil"></i></span>
-                                <span class="text-danger mx-1"><i class="dripicons-trash"></i></span>
-
-                            </td>
-                        </tr><!--end tr-->
-
-                        <tr>
-                            <td>2C</td>
-                            <td class="text-end">
-                                <span class="text-primary mx-1"><i class="dripicons-pencil"></i></span>
-                                <span class="text-danger mx-1"><i class="dripicons-trash"></i></span>
-
-                            </td>
-                        </tr><!--end tr-->
+                        @if (models != null && models.Any())
+                        {
+                            @foreach (var item in models.Select((value, index) => new { value, index }))
+                            {
+                                <tr>
+                                    <td>@(item.index + 1)</td> <!-- Display serial number (index + 1) -->
+                                    <td>@item.value.TemplateName</td>
 
 
+                                    <td class="text-end">
+                                        <span class="text-primary mx-1 cursor-pointer" @onclick="() => OnEditClick(item.value)"><i class="dripicons-pencil"></i></span>
+                                        <span class="text-danger mx-1 cursor-pointer" @onclick="() => OnDeleteClick(item.value.Id)"><i class="dripicons-trash"></i></span>
+                                    </td>
+
+
+                                </tr>
+                            }
+
+
+                        }
 
                     </tbody>
                 </table>

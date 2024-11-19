@@ -45,5 +45,48 @@ namespace QuickMed.Services
                 throw;
             }
         }
+        public async Task<dynamic> UpdateAsync(TblIXTemplate data)
+        {
+            try
+            {
+                var saveTemplate = await _context.UpdateAsync<TblIXTemplate>(data);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public async Task<dynamic> DeleteDetailsAsync(Guid id)
+        {
+            try
+            {
+                var details = $"DELETE FROM TblIXDetails WHERE TblIXTempMasterId = '{id}'";
+                await _context.ExecuteSqlQueryFirstorDefultAsync<TblIXDetails>(details);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        public async Task<dynamic> GetDataById(string Id)
+        {
+            try
+            {
+                var sql = $"SELECT * FROM TblIXDetails WHERE TblIXTempMasterId = '{Id}'";
+                var data = await _context.ExecuteSqlQueryAsync<TblIXDetails>(sql);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
     }
 }

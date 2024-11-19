@@ -15,7 +15,7 @@ namespace QuickMed.BaseComponent
         [Inject]
         public IJSRuntime JS { get; set; }
 
-
+        public string saveOrUpdateContent { get; set; } = "Save";
 
         public TblIXTemplate model = new();
         public IEnumerable<TblIXTemplate>? models { get; set; }
@@ -54,9 +54,11 @@ namespace QuickMed.BaseComponent
         }
         protected async Task InitializeJS()
         {
+            var objRef = DotNetObjectReference.Create(this);
             await JS.InvokeVoidAsync("setupEditableTable", "makeEditable_IxTemp", "but_add_IxTemp", false);
             await JS.InvokeVoidAsync("makeTableDragable", "makeEditable_IxTemp");
             await JS.InvokeVoidAsync("makeSelect2", false);
+            await JS.InvokeVoidAsync("OnChangeEvent", "IXTempSelect", "IXTempChange", objRef);
         }
 
 
@@ -68,12 +70,23 @@ namespace QuickMed.BaseComponent
                 if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
                 {
                     var templateName = templateNameElement.GetString();
-                    model = new()
+                    if(model.Id == Guid.Empty)
                     {
-                        Id = Guid.NewGuid(),
-                        TemplateName = templateName
-                    };
-                    await _ixTemp.SaveAsync(model);
+                        model = new()
+                        {
+                            Id = Guid.NewGuid(),
+                            TemplateName = templateName
+                        };
+                        await _ixTemp.SaveAsync(model);
+                    }
+                    else
+                    {
+                        model.TemplateName = templateName;
+                        await _ixTemp.UpdateAsync(model);
+                        await _ixTemp.DeleteDetailsAsync(model.Id);
+                    }
+                    model = new TblIXTemplate();
+                   
 
                 }
 
@@ -120,6 +133,51 @@ namespace QuickMed.BaseComponent
 
 
         }
+        protected async Task OnEditClick(TblIXTemplate data)
+        {
+            model = data;
+            await IXTempChange(data.Id.ToString());
+            StateHasChanged(); // Re-render the component with the updated model
+        }
+        [JSInvokable]
+        public async Task IXTempChange(string selectedData)
+        {
+            try
+            {
+                //var selectedData = await JS.InvokeAsync<string>("getAdviceValue");
+                if (selectedData is not null)
+                {
+                    templateDetails = await _ixTemp.GetDataById(selectedData);
+                    await JS.InvokeVoidAsync("populateIXTable", templateDetails, "makeEditable_IxTemp");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        protected async Task OnDeleteClick(Guid id)
+        {
+            bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
 
+            if (isConfirmed)
+            {
+                var isDeleted = await _ixTemp.DeleteAsync(id);
+                if (isDeleted)
+                {
+                    // Show success alert with red color
+                    await JS.InvokeVoidAsync("showAlert", "Delete Successful", "Record has been successfully deleted.", "success", "swal-danger");
+
+                    // Refresh the list after deletion
+                    await OnInitializedAsync();
+                    StateHasChanged();  // Update the UI after deletion
+                }
+                else
+                {
+                    // Handle failure case and show an error alert if necessary
+                    Console.WriteLine("Failed to delete record from the database.");
+                }
+            }
+        }
     }
 }

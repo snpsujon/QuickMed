@@ -6,7 +6,10 @@ namespace QuickMed.Interface
     {
         Task<dynamic> GetCCTempData();
         Task<dynamic> DeleteAsync(Guid id);
+        Task<dynamic> DeleteDetailsAsync(Guid id);
         Task<dynamic> SaveAsync(TblIXTemplate data);
+        Task<dynamic> UpdateAsync(TblIXTemplate data);
+        Task<dynamic> GetDataById(string id);
         Task<dynamic> SaveTemplateDetails(List<TblIXDetails> data);
 
     }
