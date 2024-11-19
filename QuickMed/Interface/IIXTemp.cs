@@ -5,6 +5,7 @@ namespace QuickMed.Interface
     public interface IIXTemp : IBase
     {
         Task<dynamic> GetCCTempData();
+        Task<dynamic> GetAsync();
         Task<dynamic> DeleteAsync(Guid id);
         Task<dynamic> DeleteDetailsAsync(Guid id);
         Task<dynamic> SaveAsync(TblIXTemplate data);

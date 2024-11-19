@@ -9,11 +9,35 @@ namespace QuickMed.Services
         {
         }
 
-        public Task<dynamic> DeleteAsync(Guid id)
+        public async Task<dynamic> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                var master = $"DELETE FROM TblIXTemplate WHERE Id = '{id}'";
+                var details = $"DELETE FROM TblIXDetails WHERE TblIXTempMasterId = '{id}'";
 
+                await _context.ExecuteSqlQueryFirstorDefultAsync<TblIXTemplate>(master);
+                await _context.ExecuteSqlQueryFirstorDefultAsync<TblIXDetails>(details);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public async Task<dynamic> GetAsync()
+        {
+            try
+            {
+                return await _context.GetTableRowsAsync<TblIXTemplate>("TblIXTemplate");
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
         public Task<dynamic> GetCCTempData()
         {
             throw new NotImplementedException();
