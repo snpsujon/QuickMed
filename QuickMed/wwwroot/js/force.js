@@ -240,7 +240,7 @@ function GenerateAdviceTemplateName() {
 }
 
 function onAdviceChange(selectElement) {
-    const selectedValue = selectElement.value; 
+    //const selectedValue = selectElement.value; 
     debugger;
     const selectedValue = selectElement.value;
     if (instanceReference) {
