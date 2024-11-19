@@ -58,16 +58,25 @@ namespace QuickMed.BaseComponent
         {
             if (firstRender)
             {
-                var objRef = DotNetObjectReference.Create(this);
-                //await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpTbl", null);
+                await JsInvokeAction();
+            }
+        }
+
+        public async Task JsInvokeAction()
+        {
+            try
+            {
+                await JS.InvokeVoidAsync("makeSelect2", true);
+                await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
                 await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpAdviceTbl", "add_Advice");
                 await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpTbl");
                 await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpAdviceTbl");
-                await JS.InvokeVoidAsync("makeSelect2", true);
-                await JS.InvokeVoidAsync("setInstanceReference", ObjectReference);
+                await JS.InvokeVoidAsync("OnChangeEvent", "adviceSelect", "AdviceChange", ObjectReference);
 
-                await JS.InvokeVoidAsync("OnChangeEvent", "adviceSelect", "AdviceChange", objRef);
-
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
         public void Dispose()
@@ -254,7 +263,27 @@ namespace QuickMed.BaseComponent
         public async Task<dynamic> GetOusudData(string ousudData)
         {
             var sameGen = await _teatmentTemp.GetBrandsSameGenaric(ousudData);
-            return sameGen;
+
+            var result = new
+            {
+                Ousud = sameGen,
+                Dose = Dose.Select(x => new SelectVM
+                {
+                    text = x.Name,
+                    value = x.Id
+                }).ToList(),
+                Duration = Duration.Select(x => new SelectVM
+                {
+                    text = x.Name,
+                    value = x.Id
+                }).ToList(),
+                Instruction = Instructions.Select(x => new SelectVM
+                {
+                    text = x.Name,
+                    value = x.Id
+                }).ToList()
+            };
+            return result;
 
             // Example data
             //return new List<string> { "Medicine 1", "Medicine 2", "Medicine 3" };

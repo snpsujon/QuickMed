@@ -1,11 +1,5 @@
 
 
-
-let instanceReference;
-
-function setInstanceReferences(dotNetObject) {
-    instanceReference = dotNetObject;
-}
 function onInitTable(tableId, data) {
     $(document).ready(function () { // Ensure DOM is fully loaded
         const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
@@ -124,7 +118,7 @@ function addNewRowOnTable(data) {
         width: "100%",
         placeholder: "Select One",
         allowClear: true,
-        tags:true
+        tags: true
     });
 
     const cell3 = newRow.insertCell(2);
@@ -157,7 +151,7 @@ function GetTableData(tableId) {
             if (select.value != "") {
                 selectedValues.push(select.value); // Add the selected value to the array
             }
-            
+
         }
     }
 
@@ -241,13 +235,14 @@ function GeneTable(tableId, masterDataList, selectedDataList) {
 
 
 function GenerateAdviceTemplateName() {
-    
+
     return 'AdviceTemp_' + getRandomInteger(1, 9999)
 }
 
 function onAdviceChange(selectElement) {
+    //const selectedValue = selectElement.value; 
     debugger;
-    const selectedValue = selectElement.value; 
+    const selectedValue = selectElement.value;
     if (instanceReference) {
         instanceReference.invokeMethodAsync("ChangeAdviceData", selectedValue)
             .then(data => {
@@ -260,4 +255,65 @@ function onAdviceChange(selectElement) {
     }
 
 
+}
+function GetIXTempData() {
+    const tableBody = $("#makeEditable_IxTemp tbody")[0];
+    const secondColumnData = [];
+    const tempname = $("#TempName").val();
+    $(tableBody).find("tr").each(function () {
+        const secondCell = $(this).children("td").eq(1);
+        const cellData = secondCell.find("input").val().trim();
+        secondColumnData.push(cellData);
+    });
+
+    var data = {
+        templateName: tempname == '' ? 'IXTemp_' + getRandomInteger(1, 9999) : tempname,
+
+        tempData: secondColumnData,
+    };
+    return data;
+}
+
+
+
+
+
+
+function populateIXTable(dataArray, tblId) {
+
+    if (!Array.isArray(dataArray) && typeof dataArray === 'object') {
+        dataArray = Object.values(dataArray);
+    }
+
+    if (!Array.isArray(dataArray)) {
+        console.error("Expected an array but received:", dataArray);
+        return;
+    }
+
+    const tableBody = $("#" + tblId + " tbody")[0];
+
+    tableBody.innerHTML = "";
+    dataArray.forEach((data, index) => {
+        const newRow = document.createElement("tr");
+        newRow.setAttribute("data-value", index + 1);
+
+        const cells = [
+            { text: index + 1, value: index + 1 },
+            { text: data?.name || "N/A", value: data?.id || "" }
+        ];
+
+        cells.forEach(cellData => {
+            const cell = document.createElement("td");
+            cell.textContent = cellData.text;
+            cell.setAttribute("data-value", cellData.value);
+            newRow.appendChild(cell);
+        });
+
+        var buttonCell = document.createElement("td");
+        buttonCell.setAttribute("name", "buttons");
+
+        buttonCell.innerHTML = deletebun;
+        newRow.appendChild(buttonCell);
+        tableBody.appendChild(newRow);
+    });
 }

@@ -2,16 +2,10 @@
 using Microsoft.JSInterop;
 using QuickMed.DB;
 using QuickMed.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QuickMed.BaseComponent
 {
-    public class BaseAdvice:ComponentBase
+    public class BaseAdvice : ComponentBase
     {
         public DotNetObjectReference<BaseAdvice> ObjectReference { get; private set; }
         [Inject]
@@ -25,15 +19,15 @@ namespace QuickMed.BaseComponent
         [Inject]
         public IJSRuntime JS { get; set; }
 
-        protected override async  Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
             ObjectReference = DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("setInstanceReferences", ObjectReference);
+            await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             masterData = await _advice.GetAdviceMasterData();
-            await JS.InvokeVoidAsync("onInitTable", "mainTable-advice",masterData);
-            await JS.InvokeVoidAsync("initializeButtonClick",masterData);
+            await JS.InvokeVoidAsync("onInitTable", "mainTable-advice", masterData);
+            await JS.InvokeVoidAsync("initializeButtonClick", masterData);
             templateListData = await _advice.GetAdviceTemplateData();
-            
+
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -49,14 +43,14 @@ namespace QuickMed.BaseComponent
                 StateHasChanged();
             }
         }
-       protected async Task onAdviceSave()
+        protected async Task onAdviceSave()
         {
-          var tableSelectedValue=   await JS.InvokeAsync<List<string>>("GetTableData", "mainTable-advice");
-          
+            var tableSelectedValue = await JS.InvokeAsync<List<string>>("GetTableData", "mainTable-advice");
+
             if (adviceTemplate.Id == Guid.Empty)
             {
                 adviceTemplate.Id = Guid.NewGuid();
-                if(adviceTemplate.AdviceTemplateName == null)
+                if (adviceTemplate.AdviceTemplateName == null)
                 {
                     adviceTemplate.AdviceTemplateName = await JS.InvokeAsync<string>("GenerateAdviceTemplateName");
                 }
@@ -65,7 +59,7 @@ namespace QuickMed.BaseComponent
             else
             {
                 var updateTemplate = await _advice.UpdateAdviceTemplate(adviceTemplate);
-                if(updateTemplate == true)
+                if (updateTemplate == true)
                 {
                     var SqlDetails = $"DELETE FROM TblAdviceTemplateDetails WHERE AdviceTemplateId = '{adviceTemplate.Id}'";
                     var isDeleteDetails = await _advice.DeleteAdviceDetails(SqlDetails);
@@ -91,13 +85,13 @@ namespace QuickMed.BaseComponent
             await JS.InvokeVoidAsync("showAlert", $"{saveOrUpdateContent} Successful", $"Record has been successfully {saveOrUpdateContent}.", "success", "swal-success");
             StateHasChanged();
         }
-       protected async Task onDataDelete(Guid id)
+        protected async Task onDataDelete(Guid id)
         {
             bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
 
             if (isConfirmed)
             {
-               
+
                 if (id != Guid.Empty)
                 {
                     var Sql = $"DELETE FROM TblAdviceTemplate WHERE Id = '{id}'";
@@ -112,7 +106,7 @@ namespace QuickMed.BaseComponent
                     }
                 }
             }
-            
+
         }
         protected async Task onDataEdit(Guid id)
         {
@@ -126,7 +120,7 @@ namespace QuickMed.BaseComponent
                     var SqlDetails = $"SELECT * FROM TblAdviceTemplateDetails WHERE AdviceTemplateId = '{id}'";
                     var detailsData = new List<TblAdviceTemplateDetails>();
                     detailsData = await _advice.GetTemplateDetailsById(SqlDetails);
-                    await JS.InvokeVoidAsync("GeneTable", "mainTable-advice",masterData, detailsData);
+                    await JS.InvokeVoidAsync("GeneTable", "mainTable-advice", masterData, detailsData);
                     StateHasChanged();
 
                 }
@@ -137,20 +131,20 @@ namespace QuickMed.BaseComponent
 
                 throw;
             }
-            
+
         }
         [JSInvokable]
-        public  async  void ChangeAdviceData(Guid id)
+        public async void ChangeAdviceData(Guid id)
         {
             var SqlDetails = $"SELECT * FROM TblAdviceTemplateDetails WHERE AdviceTemplateId = '{id}'";
             var detailsData = new List<TblAdviceTemplateDetails>();
-             detailsData = await _advice.GetTemplateDetailsById(SqlDetails);
-            if(detailsData != null)
+            detailsData = await _advice.GetTemplateDetailsById(SqlDetails);
+            if (detailsData != null)
             {
-                await JS.InvokeVoidAsync("GeneTable", "mainTable-advice", masterData,detailsData);
+                await JS.InvokeVoidAsync("GeneTable", "mainTable-advice", masterData, detailsData);
                 StateHasChanged();
             }
-           
+
         }
     }
 }

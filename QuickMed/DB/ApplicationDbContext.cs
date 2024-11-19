@@ -92,6 +92,8 @@ namespace QuickMed.DB
             await _dbConnection.CreateTableAsync<DrugGeneric>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<DrugManufacturer>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<DrugMedicine>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblIXDetails>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblIXTemplate>().ConfigureAwait(false);
 
             // Await the seed data methods to ensure they complete before continuing
             await insertSeedDoseData().ConfigureAwait(false);
