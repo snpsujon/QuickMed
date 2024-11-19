@@ -25,23 +25,52 @@
                                 }
 
                             }
-                            </select>
+                        </select>
                     </div>
                 </div>
                 <!--end card-header-->
 
 
+                <div class="card-header">
+                    <div class="row mb-2 bg-light py-3">
+                        <div class="col-sm-12 d-flex">
+                            <label for="example-text-input" class="col-sm-1 form-label  mb-lg-0 me-3 fw-bold">Template Name  </label>
+                            <div class="col-sm-4">
+                                <input class="form-control form-control-sm border-dark" type="text" id="TempName" @bind-value=model.TemplateName>
+                            </div>
 
+                        </div>
+                    </div>
+                    <hr style="border-top: 1px dashed red;" />
+                    @*                     <div class="row">
+                <div class="col-sm-3">
+                    <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
+                        <option selected disabled>Select Notes</option>
+                        <option value="1">M</option>
+                        <option value="2">F</option>
+                        <option value="3">O</option>
+                    </select>
+                </div>
+            </div> *@
+                </div>
                 <div class="card-body">
                     <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
                     <div class="table-responsive">
                         <table class="table  table-borderd table-sm" id="makeEditable_IxTemp">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Name</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr name="bogichogi">
+                                    <td>
+                                    </td>
+                                    <td class="text-center text-blue">No data Available</td>
+                                    <td name="buttons" class="text-center text-blue"></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -49,6 +78,10 @@
                     <span class="float-right">
                         <button id="but_add_IxTemp" class="btn btn-success btn-sm">Add New Row</button>
                     </span><!--end table-->
+                    <hr />
+                    <span class="float-right">
+                        <button id="but_add" class="btn btn-success btn-sm float-end" @onclick="OnSaveBtnClick">Save</button>
+                    </span>
                 </div><!--end card-body-->
             </div><!--end card-->
         </div> <!-- end col -->

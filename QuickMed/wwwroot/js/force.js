@@ -246,7 +246,6 @@ function GenerateAdviceTemplateName() {
 }
 
 function onAdviceChange(selectElement) {
-    debugger;
     const selectedValue = selectElement.value; 
     if (instanceReference) {
         instanceReference.invokeMethodAsync("ChangeAdviceData", selectedValue)
@@ -260,4 +259,21 @@ function onAdviceChange(selectElement) {
     }
 
 
+}
+function GetIXTempData() {
+    const tableBody = $("#makeEditable_IxTemp tbody")[0];
+    const secondColumnData = [];
+    const tempname = $("#TempName").val();
+    $(tableBody).find("tr").each(function () {
+        const secondCell = $(this).children("td").eq(1);
+        const cellData = secondCell.find("input").val().trim();
+        secondColumnData.push(cellData);
+    });
+
+    var data = {
+        templateName: tempname == '' ? 'IXTemp_' + getRandomInteger(1, 9999) : tempname,
+
+        tempData: secondColumnData,
+    };
+    return data;
 }

@@ -18,5 +18,32 @@ namespace QuickMed.Services
         {
             throw new NotImplementedException();
         }
+        public async Task<dynamic> SaveTemplateDetails(List<TblIXDetails> data)
+        {
+            try
+            {
+                var saveDetails = await _context.CreateMultipleAsync<TblIXDetails>(data);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<dynamic> SaveAsync(TblIXTemplate data)
+        {
+            try
+            {
+                var saveTemplate = await _context.CreateAsync<TblIXTemplate>(data);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
     }
 }
