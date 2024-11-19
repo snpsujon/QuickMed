@@ -12,7 +12,7 @@ namespace QuickMed.DB
         [PrimaryKey]
         public Guid Id { get; set; }
         public string BrandId { get; set; }
-        public string Name { get; set; }
+        public string DoseId { get; set; }
         public Guid TblMixTemplateMasterId { get; set; }
     }
 }

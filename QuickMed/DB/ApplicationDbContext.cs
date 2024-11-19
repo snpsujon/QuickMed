@@ -94,6 +94,7 @@ namespace QuickMed.DB
             await _dbConnection.CreateTableAsync<DrugMedicine>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblIXDetails>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblIXTemplate>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblMixTempDetails>().ConfigureAwait(false);
 
             // Await the seed data methods to ensure they complete before continuing
             await insertSeedDoseData().ConfigureAwait(false);
@@ -439,20 +440,20 @@ namespace QuickMed.DB
                 {
                     // Define initial data
                     var initialDoses = new List<TblAdviceMaster>
-{
-    new TblAdviceMaster { AdviceName = "নিয়মিত ঔষধ খাবেন।" },
-    new TblAdviceMaster { AdviceName = "পরবর্তী সাক্ষাতে প্রেসক্রিপশন ও এই ফাইলটি সাথে আনবেন।" },
-    new TblAdviceMaster { AdviceName = "জ্বর ১০২ এর বেশি হলে ১টি Napa Suppository (500 mg) পায়ুপথের মাধ্যমে দেবেন।" },
-    new TblAdviceMaster { AdviceName = "ভিটামিন সি যুক্ত ফল বেশি পরিমাণে খাবেন।" },
-    new TblAdviceMaster { AdviceName = "প্রতিদিন অন্তত ৮ গ্লাস পানি পান করবেন।" },
-    new TblAdviceMaster { AdviceName = "চাপের-লেখা উত্তম চিকিৎসকের পরামর্শ ছাড়া বন্ধ করবেন না।" },
-    new TblAdviceMaster { AdviceName = "ধুমপান ও তামাকজাত দ্রব্য ব্যবহার নিষেধ।" },
-    new TblAdviceMaster { AdviceName = "অতিরিক্ত কায়িক পরিশ্রম নিষেধ।" },
-    new TblAdviceMaster { AdviceName = "পান্তা ভাত খাওয়া নিষেধ।" },
-    new TblAdviceMaster { AdviceName = "পাতে আলু, চিপস, ফ্রাইড রাইস ও উচ্চ ক্যালোরিযুক্ত খাবার কম খাবেন।" },
-    new TblAdviceMaster { AdviceName = "প্রতিদিন সকালের ১৫ মিনিটের সময় ৫ মিনিট করে হাঁটবেন।" },
-    new TblAdviceMaster { AdviceName = "সপ্তাহে ২ বার ব্লাড প্রেসার পরীক্ষা করবেন।" }
-};
+                    {
+                        new TblAdviceMaster { AdviceName = "নিয়মিত ঔষধ খাবেন।" },
+                        new TblAdviceMaster { AdviceName = "পরবর্তী সাক্ষাতে প্রেসক্রিপশন ও এই ফাইলটি সাথে আনবেন।" },
+                        new TblAdviceMaster { AdviceName = "জ্বর ১০২ এর বেশি হলে ১টি Napa Suppository (500 mg) পায়ুপথের মাধ্যমে দেবেন।" },
+                        new TblAdviceMaster { AdviceName = "ভিটামিন সি যুক্ত ফল বেশি পরিমাণে খাবেন।" },
+                        new TblAdviceMaster { AdviceName = "প্রতিদিন অন্তত ৮ গ্লাস পানি পান করবেন।" },
+                        new TblAdviceMaster { AdviceName = "চাপের-লেখা উত্তম চিকিৎসকের পরামর্শ ছাড়া বন্ধ করবেন না।" },
+                        new TblAdviceMaster { AdviceName = "ধুমপান ও তামাকজাত দ্রব্য ব্যবহার নিষেধ।" },
+                        new TblAdviceMaster { AdviceName = "অতিরিক্ত কায়িক পরিশ্রম নিষেধ।" },
+                        new TblAdviceMaster { AdviceName = "পান্তা ভাত খাওয়া নিষেধ।" },
+                        new TblAdviceMaster { AdviceName = "পাতে আলু, চিপস, ফ্রাইড রাইস ও উচ্চ ক্যালোরিযুক্ত খাবার কম খাবেন।" },
+                        new TblAdviceMaster { AdviceName = "প্রতিদিন সকালের ১৫ মিনিটের সময় ৫ মিনিট করে হাঁটবেন।" },
+                        new TblAdviceMaster { AdviceName = "সপ্তাহে ২ বার ব্লাড প্রেসার পরীক্ষা করবেন।" }
+                    };
 
                     // Insert the initial data into the table
                     await _dbConnection.InsertAllAsync(initialDoses);
@@ -465,6 +466,9 @@ namespace QuickMed.DB
                 throw;
             }
         }
+
+
+
     }
 
 

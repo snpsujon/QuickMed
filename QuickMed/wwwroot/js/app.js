@@ -285,8 +285,7 @@ function makeSelect2Custom(classs,invokeMethod,minInput) {
 
 
 function makeDataTable(tableid, newData = []) {
-    debugger;
-    $(document).ready(function () {
+
         // Check if the DataTable is already initialized
         if (!$.fn.dataTable.isDataTable('#' + tableid)) {
             // Initialize the DataTable
@@ -295,7 +294,7 @@ function makeDataTable(tableid, newData = []) {
                 buttons: ['excel', 'pdf']
             });
 
-            // Append the DataTable buttons to the container
+            // Append the DataTable  buttons to the container
             table.buttons().container()
                 .appendTo('.dataTables_wrapper .col-md-6:eq(0)');
         } else {
@@ -314,7 +313,31 @@ function makeDataTable(tableid, newData = []) {
             // Redraw the table to refresh the state and remove "No data available" message
             table.draw();
         }
-    });
+}
+function makeDataTableQ(tableid, data) {
+
+    if (!$.fn.dataTable.isDataTable('#' + tableid)) {
+        var table = $('#' + tableid).DataTable({
+            data: data,
+            lengthChange: false,
+            buttons: ['excel', 'pdf'],
+            pageLength: 10,
+        });
+
+        table.buttons().container()
+            .appendTo('.dataTables_wrapper .col-md-6:eq(0)');
+
+    }
+    else {
+        var table = $('#' + tableid).DataTable();
+    }
+    if (data.length > 0) {
+        table.clear();
+        table.rows.add(data);
+        table.draw();
+    }
+    
+
 }
 
 

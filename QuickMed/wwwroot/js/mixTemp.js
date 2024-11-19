@@ -144,18 +144,75 @@ function QrowEditmixTemp(but) {
         var input = '<input class="form-control input-sm"  value="' + cont + '" disabled>';
         $td.html(div + input);  //fija contenido
     });
-    FijModoEdit(but);
-    var cont = $td.html();
+
     var $secondTd = $row.find('td').eq(1);
+    var cont = $secondTd.find('input').val();
     var div1 = '<div style="display: none;">' + cont + '</div>';  //guarda contenido
     var input1 = '<select class="form-control customselect2 ousud custom-select" value=""></select>';
     $secondTd.html(div1 + input1);
+
+    //var cont = $td.html();
+    var $thirdTd = $row.find('td').eq(2);
+    cont = $thirdTd.find('input').val();
+    div1 = '<div style="display: none;">' + cont + '</div>';  //guarda contenido
+    input1 = '<select class="form-control customselect2 dose custom-select" value=""></select>';
+    $thirdTd.html(div1 + input1);
+
+    FijModoEdit(but);
+
     customSelect2(true);
-    getOusudData(but);
+    getMixTableData(but);
 
 }
 
+
+
+
+
+function getMixTableData(but) {
+    const row = $(but).closest('tr')[0];
+    const secondTd = $(row).find('td').eq(1);
+    if (row && row.hasAttribute("data-value")) {
+
+        const treatmentIndex = parseInt(row.getAttribute("data-value"), 10);
+        const treatmentIndexss = mainTblData.findIndex(t => t.index === treatmentIndex);
+        var selectedData = mainTblData[treatmentIndexss];
+        var datas = mainTblData[treatmentIndexss]['brand']['value'];
+
+        if (instanceReference) {
+            instanceReference.invokeMethodAsync("GetOusudData", datas)
+                .then(data => {
+
+                    setSelectOptions('ousud', data.ousud, datas);
+                    setSelectOptions('dose', data.dose, selectedData['dose']['value']);
+
+                    //console.log("Data received from Blazor:", data);
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        } else {
+            console.error("Instance reference is not set.");
+        }
+
+
+        //DotNet.invokeMethodAsync('QuickMed', 'GetOusudData', data)
+        //    .then(data => {
+        //        console.log("Data retrieved:", data); // Log the data or use it
+        //        // Process the data as needed
+        //    })
+        //    .catch(error => {
+        //        console.error("Error retrieving data:", error);
+        //    });
+
+    }
+
+
+}
+
+
 function QrowAcepmixTemp(but) {
+
     var $row = $(but).parents('tr');  //accede a la fila
     var $cols = $row.find('td');  //lee campos
     if (!ModoEdicion($row)) return;  //Ya está en edición
@@ -165,23 +222,49 @@ function QrowAcepmixTemp(but) {
         $td.html(cont);  //fija contenido y elimina controles
     });
 
-    const row = $(but).closest('tr')[0];
-    const secondTd = $(row).find('td').eq(1);
-    var select = secondTd.find('select'); // Get the select element
-    var value = select.val(); // Get the value of the selected option
-    var text = select.find("option:selected").text(); // Get the text of the selected option
-    secondTd.text(text);
-    secondTd.attr("data-value", value);
-    const treatmentIndex = parseInt(row.getAttribute("data-value"), 10);
-    updatemixTempArray(treatmentIndex);
+
+    updateMixTempArray(but);
     FijModoNormal(but);
     params.onEdit($row);
-
-
 }
 
-function updatemixTempArray(index) {
-    const treatmentIndexss = mainTblData.findIndex(t => t.index === treatmentIndex);
+function updateMixTempArray(but) {
+    const row = $(but).closest('tr')[0]; // Get the parent row
+    const col = $(row).find('td'); // Get all columns in the row
+    const treatmentIndex = parseInt(row.getAttribute("data-value"), 10); // Read data-value for treatment index
+    const treatmentIndexInArray = mainTblData.findIndex(t => t.index === treatmentIndex); // Find the treatment in the array
+
+    if (treatmentIndexInArray === -1) {
+        console.error("Treatment not found in the array.");
+        return;
+    }
+
+    // Get the treatment object to update
+    const treatmentData = mainTblData[treatmentIndexInArray];
+
+    // Iterate over each column to extract and update data
+    col.each(function (index) {
+        if (index !== 0 && index !== (col.length - 1)) { // Skip the first and last columns
+            var td = $(this);
+            var select = td.find('select'); // Get the select element
+            if (select.length) {
+                var value = select.val(); // Get the selected value
+                var text = select.find("option:selected").text(); // Get the selected text
+                td.text(text); // Update the table cell with the selected text
+                td.attr("data-value", value); // Set the data-value attribute for reference
+
+                // Update the treatment object based on the column index
+                if (index === 1) {
+                    treatmentData['brand']['value'] = value;
+                    treatmentData['brand']['text'] = text;
+                } else if (index === 2) {
+                    treatmentData['dose']['value'] = value;
+                    treatmentData['dose']['text'] = text;
+                }
+            }
+        }
+    });
+
 
 
 }
@@ -222,4 +305,29 @@ function mixTempDelete(but, tableid) {
         $(this).children(":first").text(index + 1); // Update the first column with the new index
     });
 }
+
+function GetMixTempData() {
+
+    const tempname = $("#TempName").val();
+    const doseInsSelect = $("#doseInsSelect").val();
+    const durationInsSelect = $("#durationInsSelect").val();
+    const totalqty = $("#totalqty").val();
+    const instructionInsSelect = $("#instructionInsSelect").val();
+    const notesIns = $("#notesIns").val();
+
+  
+
+    var data = {
+        templateName: tempname == '' ? 'MixTemp_' + getRandomInteger(1, 9999) : tempname,
+        tempData: mainTblData,
+        doseInsSelect: doseInsSelect,
+        durationInsSelect: durationInsSelect,
+        totalqty: totalqty,
+        instructionInsSelect: instructionInsSelect,
+        notesIns: notesIns,
+
+    };
+    return data;
+}
+
 

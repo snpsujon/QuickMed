@@ -44,5 +44,33 @@ namespace QuickMed.Services
                 throw;
             }
         }
+
+        public async Task<dynamic> SaveMixTemp(TblMixTemplate tblTreatmentTemplate)
+        {
+            try
+            {
+                var saveTemplate = await _context.CreateAsync<TblMixTemplate>(tblTreatmentTemplate);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<dynamic> SaveMixTempDetails(List<TblMixTempDetails> data)
+        {
+            try
+            {
+                var saveDetails = await _context.CreateMultipleAsync<TblMixTempDetails>(data);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
     }
 }
