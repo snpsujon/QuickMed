@@ -1,5 +1,11 @@
 ﻿var deletebun = '<button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button>';
 
+let instanceReference;
+
+function setInstanceReferenceForAll(dotNetObject) {
+    instanceReference = dotNetObject;
+}
+
 function LoadPage(ff) {
     if (ff == '1') {
         fetch('login.html')
@@ -373,7 +379,7 @@ function getRandomInteger(min, max) {
 }
 
 
-function setSelectOptions(selectClass, options) {
+function setSelectOptions(selectClass, options, defaultValue) {
     var $select = $('.' + selectClass);
 
     if ($select.length) {
@@ -381,6 +387,12 @@ function setSelectOptions(selectClass, options) {
 
         options.forEach(option => {
             var $opt = $('<option></option>').val(option.value).text(option.text);
+
+            // Set default selected option
+            if (option.value === defaultValue) {
+                $opt.attr('selected', 'selected');
+            }
+
             $select.append($opt);
         });
     }

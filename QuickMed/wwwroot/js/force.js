@@ -1,11 +1,5 @@
 
 
-
-let instanceReference;
-
-function setInstanceReferences(dotNetObject) {
-    instanceReference = dotNetObject;
-}
 function onInitTable(tableId, data) {
     $(document).ready(function () { // Ensure DOM is fully loaded
         const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
@@ -124,7 +118,7 @@ function addNewRowOnTable(data) {
         width: "100%",
         placeholder: "Select One",
         allowClear: true,
-        tags:true
+        tags: true
     });
 
     const cell3 = newRow.insertCell(2);
@@ -157,7 +151,7 @@ function GetTableData(tableId) {
             if (select.value != "") {
                 selectedValues.push(select.value); // Add the selected value to the array
             }
-            
+
         }
     }
 
@@ -241,13 +235,13 @@ function GeneTable(tableId, masterDataList, selectedDataList) {
 
 
 function GenerateAdviceTemplateName() {
-    
+
     return 'AdviceTemp_' + getRandomInteger(1, 9999)
 }
 
 function onAdviceChange(selectElement) {
     debugger;
-    const selectedValue = selectElement.value; 
+    const selectedValue = selectElement.value;
     if (instanceReference) {
         instanceReference.invokeMethodAsync("ChangeAdviceData", selectedValue)
             .then(data => {

@@ -1,12 +1,4 @@
 ﻿const treatments = [];
-
-let instanceReference;
-
-function setInstanceReference(dotNetObject) {
-    instanceReference = dotNetObject;
-}
-
-
 function OsudAddbtn() {
     // Get the selected elements
     const brandSelect = document.getElementById("brandSelect");
@@ -160,15 +152,41 @@ function QrowEdit(but) {
         var input = '<input class="form-control input-sm"  value="' + cont + '" disabled>';
         $td.html(div + input);  //fija contenido
     });
-    FijModoEdit(but);
-    var cont = $td.html();
+
+    //var cont = $td.html();
     var $secondTd = $row.find('td').eq(1);
+    var cont = $secondTd.find('input').val();
     var div1 = '<div style="display: none;">' + cont + '</div>';  //guarda contenido
     var input1 = '<select class="form-control customselect2 ousud custom-select" value=""></select>';
     $secondTd.html(div1 + input1);
-    customSelect2(true);
-    getOusudData(but);
 
+    //var cont = $td.html();
+    var $thirdTd = $row.find('td').eq(2);
+    cont = $thirdTd.find('input').val();
+    div1 = '<div style="display: none;">' + cont + '</div>';  //guarda contenido
+    input1 = '<select class="form-control customselect2 dose custom-select" value=""></select>';
+    $thirdTd.html(div1 + input1);
+
+
+    //var cont = $td.html();
+    var $forthTd = $row.find('td').eq(3);
+    cont = $forthTd.find('input').val();
+    div1 = '<div style="display: none;">' + cont + '</div>';  //guarda contenido
+    input1 = '<select class="form-control customselect2 instruc custom-select" value=""></select>';
+    $forthTd.html(div1 + input1);
+
+
+    //var cont = $td.html();
+    var $fifthTd = $row.find('td').eq(4);
+    cont = $fifthTd.find('input').val();
+    div1 = '<div style="display: none;">' + cont + '</div>';  //guarda contenido
+    input1 = '<select class="form-control customselect2 duration custom-select" value=""></select>';
+    $fifthTd.html(div1 + input1);
+
+    FijModoEdit(but);
+
+    customSelect2(true);
+    getTreatmentData(but);
 }
 
 function QrowAcep(but) {
@@ -181,42 +199,83 @@ function QrowAcep(but) {
         $td.html(cont);  //fija contenido y elimina controles
     });
 
-    const row = $(but).closest('tr')[0];
-    const secondTd = $(row).find('td').eq(1);
-    var select = secondTd.find('select'); // Get the select element
-    var value = select.val(); // Get the value of the selected option
-    var text = select.find("option:selected").text(); // Get the text of the selected option
-    secondTd.text(text);
-    secondTd.attr("data-value", value);
-    const treatmentIndex = parseInt(row.getAttribute("data-value"), 10);
-    updateTreatmrntArray(treatmentIndex);
+
+    updateTreatmrntArray(but);
     FijModoNormal(but);
     params.onEdit($row);
 
 
 }
 
-function updateTreatmrntArray(index) {
-    const treatmentIndexss = treatments.findIndex(t => t.index === treatmentIndex);
+function updateTreatmrntArray(but) {
+    const row = $(but).closest('tr')[0]; // Get the parent row
+    const col = $(row).find('td'); // Get all columns in the row
+    const treatmentIndex = parseInt(row.getAttribute("data-value"), 10); // Read data-value for treatment index
+    const treatmentIndexInArray = treatments.findIndex(t => t.index === treatmentIndex); // Find the treatment in the array
 
+    if (treatmentIndexInArray === -1) {
+        console.error("Treatment not found in the array.");
+        return;
+    }
 
+    // Get the treatment object to update
+    const treatmentData = treatments[treatmentIndexInArray];
+
+    // Iterate over each column to extract and update data
+    col.each(function (index) {
+        if (index !== 0 && index !== (col.length - 1)) { // Skip the first and last columns
+            var td = $(this);
+            var select = td.find('select'); // Get the select element
+            if (select.length) {
+                var value = select.val(); // Get the selected value
+                var text = select.find("option:selected").text(); // Get the selected text
+                td.text(text); // Update the table cell with the selected text
+                td.attr("data-value", value); // Set the data-value attribute for reference
+
+                // Update the treatment object based on the column index
+                if (index === 1) {
+                    treatmentData['brand']['value'] = value;
+                    treatmentData['brand']['text'] = text;
+                } else if (index === 2) {
+                    treatmentData['dose']['value'] = value;
+                    treatmentData['dose']['text'] = text;
+                } else if (index === 3) {
+                    treatmentData['instruction']['value'] = value;
+                    treatmentData['instruction']['text'] = text;
+                } else if (index === 4) {
+                    treatmentData['duration']['value'] = value;
+                    treatmentData['duration']['text'] = text;
+                }
+            }
+        }
+    });
+
+    // Log the updated treatment data for debugging
+    console.log("Updated Treatment:", treatmentData);
+    console.log("Updated Treatments Array:", treatments);
 }
 
-function getOusudData(but) {
+
+function getTreatmentData(but) {
     const row = $(but).closest('tr')[0];
     const secondTd = $(row).find('td').eq(1);
     if (row && row.hasAttribute("data-value")) {
 
         const treatmentIndex = parseInt(row.getAttribute("data-value"), 10);
         const treatmentIndexss = treatments.findIndex(t => t.index === treatmentIndex);
+        var selectedData = treatments[treatmentIndexss];
         var datas = treatments[treatmentIndexss]['brand']['value'];
 
         if (instanceReference) {
             instanceReference.invokeMethodAsync("GetOusudData", datas)
                 .then(data => {
-                    setSelectOptions('ousud', data)
 
-                    console.log("Data received from Blazor:", data);
+                    setSelectOptions('ousud', data.ousud, datas);
+                    setSelectOptions('duration', data.duration, selectedData['duration']['value']);
+                    setSelectOptions('instruc', data.instruction, selectedData['instruction']['value']);
+                    setSelectOptions('dose', data.dose, selectedData['dose']['value']);
+
+                    //console.log("Data received from Blazor:", data);
                 })
                 .catch(error => {
                     console.error("Error:", error);
