@@ -260,6 +260,29 @@ function makeSelect2(isTags) {
 
 }
 
+function makeSelect2Custom(invokeMethod,minInput) {
+    $('.select2C').select2({
+        ajax: {
+            transport: function (params, success, failure) {
+                instanceReference.invokeMethodAsync(invokeMethod, params.data.term || "")
+                    .then(success)
+                    .catch(failure);
+            },
+            processResults: function (data) {
+                return {
+                    results: data.map(item => ({ id: item.id, text: item.name })),
+                };
+            },
+            delay: 250,
+            cache: true
+        },
+        minimumInputLength: minInput,
+        placeholder: 'Search',
+    });
+}
+
+
+
 
 function makeDataTable(tableid, newData = []) {
     debugger;
