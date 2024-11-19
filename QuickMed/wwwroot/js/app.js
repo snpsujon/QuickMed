@@ -260,8 +260,8 @@ function makeSelect2(isTags) {
 
 }
 
-function makeSelect2Custom(invokeMethod,minInput) {
-    $('.select2C').select2({
+function makeSelect2Custom(classs,invokeMethod,minInput) {
+    $('.' + classs).select2({
         ajax: {
             transport: function (params, success, failure) {
                 instanceReference.invokeMethodAsync(invokeMethod, params.data.term || "")

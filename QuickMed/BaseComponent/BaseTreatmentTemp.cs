@@ -71,7 +71,7 @@ namespace QuickMed.BaseComponent
             try
             {
                 await JS.InvokeVoidAsync("makeSelect2", true);
-                await JS.InvokeVoidAsync("makeSelect2Custom", "GetMedicines", 3);
+                await JS.InvokeVoidAsync("makeSelect2Custom", "select2C", "GetMedicines", 3);
                 await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
                 await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpAdviceTbl", "add_Advice");
                 await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpTbl");
