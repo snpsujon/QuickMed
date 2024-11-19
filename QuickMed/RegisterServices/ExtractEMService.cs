@@ -20,6 +20,7 @@ namespace QuickMed.RegisterServices
             services.AddScoped<IMixTemp, MixTempService>();
             services.AddScoped<IDurationTemp, DurationTempService>();
             services.AddScoped<IFavouriteDrug, FavouriteDrugService>();
+            services.AddScoped<IPrescription, PrescriptionService>();
 
         }
 
