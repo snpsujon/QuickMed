@@ -107,7 +107,7 @@ function populateMixTempTable(dataArray, tblId) {
         acceptButton.type = "button";
         acceptButton.className = "btn btn-sm btn-soft-purple me-2 btn-circle";
         acceptButton.style.display = "none";
-        acceptButton.setAttribute("onclick", "QrowAcep(this);");
+        acceptButton.setAttribute("onclick", "QrowAcepmixTemp(this);");
         acceptButton.innerHTML = '<i class="dripicons-checkmark"></i>';
         buttonDiv.appendChild(acceptButton);
 
@@ -133,7 +133,7 @@ function populateMixTempTable(dataArray, tblId) {
 
 function QrowEdit(but) {
     var $td = $("tr[id='editing'] td");
-    QrowAcep($td)
+    QrowAcepmixTemp($td)
     var $row = $(but).parents('tr');
     var $cols = $row.find('td');
     if (ModoEdicion($row)) return;  //Ya está en edición
@@ -155,7 +155,7 @@ function QrowEdit(but) {
 
 }
 
-function QrowAcep(but) {
+function QrowAcepmixTemp(but) {
     var $row = $(but).parents('tr');  //accede a la fila
     var $cols = $row.find('td');  //lee campos
     if (!ModoEdicion($row)) return;  //Ya está en edición
@@ -173,14 +173,14 @@ function QrowAcep(but) {
     secondTd.text(text);
     secondTd.attr("data-value", value);
     const treatmentIndex = parseInt(row.getAttribute("data-value"), 10);
-    updateTreatmrntArray(treatmentIndex);
+    updatemixTempArray(treatmentIndex);
     FijModoNormal(but);
     params.onEdit($row);
 
 
 }
 
-function updateTreatmrntArray(index) {
+function updatemixTempArray(index) {
     const treatmentIndexss = mainTblData.findIndex(t => t.index === treatmentIndex);
 
 
