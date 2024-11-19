@@ -1,7 +1,7 @@
 ﻿@page "/prescription-list"
 @using QuickMed.BaseComponent
 @using QuickMed.DB
-@inherits BaseAdvice
+@inherits BasePrescriptionList
 
 @*<h3 class="text-primary"> <i class="fas fa-prescription"></i> Prescription List</h3>*@
 <div class="row">
@@ -12,73 +12,51 @@
             </div><!--end card-header-->
             <div class="card-body">
 
-                @if (prescriptions == null)
-                {
-                    <p>Loading prescriptions...</p>
-                }
-                else if (!prescriptions.Any())
-                {
-                    <p>No prescriptions found.</p>
-                }
-                else
-                {
-                    <table id="datatable-prescriptionList" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                        <thead>
-                            <tr>
-                                <th class="border-top-0">Name</th>
-                                <th class="border-top-0">Value</th>
-                                <th class="border-top-0 text-end">Action</th>
-                            </tr>
-                        </thead>
+                <table id="datatable-prescriptionList" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0">Reg.</th>
+                            <th class="border-top-0">Date</th>
+                            <th class="border-top-0">Name</th>
+                            <th class="border-top-0">Mobile</th>
+                            <th class="border-top-0">Address</th>
+                            <th class="border-top-0">Dx/Condition</th>
+                            <th class="border-top-0">Plan</th>
+                            <th class="border-top-0 text-end">Action</th>
+                        </tr>
+                    </thead>
 
-                        <tbody>
-                            @foreach (var prescription in prescriptions)
+                    <tbody>
+                        @if (prescriptions != null && prescriptions.Any())
+                        {
+                            @foreach (var item in prescriptions.Select((value, index) => new { value, index }))
                             {
                                 <tr>
-                                    <td>@prescription.Name</td>
-                                    <td>@prescription.Value</td>
+                                    <td>@(item.index + 1)</td> <!-- Display serial number (index + 1) -->
+                                    <td>@item.value.PrescriptionCode</td>
+                                    <td>@item.value.PrescriptionDate</td>
+                                    <td>@item.value.PatientName</td>
+                                    <td>@item.value.MobileNumber</td>
+                                    <td>@item.value.Address</td>
+                                    <td>@item.value.Dx</td>
+                                    <td>@item.value.Plan</td>
+
+
                                     <td class="text-end">
-                                        <button class="btn btn-soft-primary" title="Edit"><i class="dripicons-pencil"></i></button>
-                                        <button class="btn btn-soft-danger" title="Delete"><i class="dripicons-trash"></i></button>
+                                        <span class="text-primary mx-1 cursor-pointer" @onclick="() => OnPreviewClick(item.value)"><i class="dripicons-view"></i></span>
+                                        <span class="text-primary mx-1 cursor-pointer" @onclick="() => OnEditClick(item.value)"><i class="dripicons-pencil"></i></span>
+                                        <span class="text-danger mx-1 cursor-pointer" @onclick="() => OnDeleteClick(item.value.Id)"><i class="dripicons-trash"></i></span>
                                     </td>
+
+
                                 </tr>
                             }
-                        </tbody>
-                    </table>
-                }
+
+
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div> <!-- end col -->
 </div> <!-- end row -->
-@code {
-    private List<Prescription> prescriptions;
-
-    protected override async Task OnInitializedAsync()
-    {
-        // Load prescription data (this is a placeholder - replace with actual data fetching logic)
-        prescriptions = await GetPrescriptionsAsync();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JS.InvokeVoidAsync("makeDataTable", "datatable-prescriptionList");
-        }
-    }
-
-    private async Task<List<Prescription>> GetPrescriptionsAsync()
-    {
-        // Placeholder for actual data retrieval logic
-        return new List<Prescription>
-        {
-            new Prescription { Name = "2C", Value = "২ চামচ দিনে ৩ বার" }
-        };
-    }
-
-    private class Prescription
-    {
-        public string Name { get; set; }
-        public string Value { get; set; }
-    }
-}

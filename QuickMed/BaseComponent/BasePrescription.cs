@@ -56,5 +56,8 @@ namespace QuickMed.BaseComponent
             await JS.InvokeVoidAsync("makeSelect2", true);
 
         }
+
+
+
     }
 }

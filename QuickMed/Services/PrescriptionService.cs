@@ -9,9 +9,35 @@ namespace QuickMed.Services
         {
         }
 
-        public Task<dynamic> GetAll()
+        public async Task<dynamic> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var master = $"DELETE FROM TblPrescription WHERE Id = '{id}'";
+
+                await _context.ExecuteSqlQueryFirstorDefultAsync<TblNotesTemplate>(master);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        public async Task<dynamic> GetAll()
+        {
+            try
+            {
+                return await _context.GetTableRowsAsync<TblPrescription>("TblPrescription");
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
     }
 }
