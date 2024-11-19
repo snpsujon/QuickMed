@@ -88,6 +88,7 @@ namespace QuickMed.BaseComponent
             templateDetails = new List<TblAdviceTemplateDetails>();
             adviceTemplate = new();
             templateListData = await _advice.GetAdviceTemplateData();
+            await JS.InvokeVoidAsync("showAlert", $"{saveOrUpdateContent} Successful", $"Record has been successfully {saveOrUpdateContent}.", "success", "swal-success");
             StateHasChanged();
         }
        protected async Task onDataDelete(Guid id)
@@ -106,6 +107,7 @@ namespace QuickMed.BaseComponent
                         var SqlDetails = $"DELETE FROM TblAdviceTemplateDetails WHERE AdviceTemplateId = '{id}'";
                         var isDeleteDetails = await _advice.DeleteAdviceDetails(SqlDetails);
                         templateListData = await _advice.GetAdviceTemplateData();
+                        await JS.InvokeVoidAsync("showAlert", "Delete Successful", "Record has been successfully deleted.", "success", "swal-danger");
                         StateHasChanged();
                     }
                 }
