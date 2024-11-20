@@ -19,16 +19,41 @@ namespace QuickMed.BaseComponent
 
         protected override async Task OnInitializedAsync()
         {
-            await InitializeDataTable();
+            tblCCTemplates = await _cCTemp.GetCCTempData(); // Load the initial data
+            tblCCTemplates = await App.Database.GetTableRowsAsync<TblCCTemplate>("TblCCTemplate");
             tblCCTemplates = await _cCTemp.GetCCTempData();
 
         }
 
-        private async Task InitializeDataTable()
+        //private async Task InitializeDataTable()
+        //{
+        //    await JS.InvokeVoidAsync("makeDataTable", "datatable-ccTemp");
+        //}
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            await JS.InvokeVoidAsync("makeDataTable", "datatable-ccTemp");
+            if (firstRender)
+            {
+                await RefreshDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
+            }
         }
+        protected async Task RefreshDataTable()
+        {
 
+            var tableData = tblCCTemplates?.Select((note, index) => new[]
+                {
+                    (index + 1).ToString(), // Serial number starts from 1
+                    note.Name?.ToString() ?? string.Empty, // Note name
+                    $@"
+                    <div style='display: flex; justify-content: flex-end;'>
+                        <i class='dripicons-pencil btn btn-soft-primary' onclick='editRow({note.Id})'></i>
+                        <i class='dripicons-trash btn btn-soft-danger' onclick='deleteRow({note.Id})'></i>
+                    </div>
+                    " // Action buttons
+                }).ToArray();
+
+            await JS.InvokeVoidAsync("makeDataTableQ", "datatable-ccTemp", tableData);
+
+        }
 
 
         protected async Task OnSaveBtnClick()
@@ -50,7 +75,7 @@ namespace QuickMed.BaseComponent
 
             // Fetch updated data
             tblCCTemplates = await _cCTemp.GetCCTempData();
-            await InitializeDataTable();  // Re-initialize DataTable after data change
+            await RefreshDataTable();   // Re-initialize DataTable after data change
             StateHasChanged();  // Update the UI
         }
         protected async Task OnEditClick(TblCCTemplate data)
@@ -72,7 +97,7 @@ namespace QuickMed.BaseComponent
 
                     // Refresh the list after deletion
                     tblCCTemplates = await _cCTemp.GetCCTempData();
-                    await InitializeDataTable();  // Re-initialize DataTable after deletion
+                    await RefreshDataTable();   // Re-initialize DataTable after deletion
                     StateHasChanged();  // Update the UI after deletion
                 }
                 else

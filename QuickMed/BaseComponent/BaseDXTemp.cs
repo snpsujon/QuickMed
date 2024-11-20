@@ -11,8 +11,8 @@ namespace QuickMed.BaseComponent
         public IDXTemp _dXTemp { get; set; }
 
 
-        public TblDXTemplate model = new();
-        public IEnumerable<TblDXTemplate>? models { get; set; }
+        public TblDXTemplate dxtemp = new();
+        public IEnumerable<TblDXTemplate>? dxtemps { get; set; }
 
 
         [Inject]
@@ -20,14 +20,39 @@ namespace QuickMed.BaseComponent
 
         protected override async Task OnInitializedAsync()
         {
-            await InitializeDataTable();
-            models = await _dXTemp.GetCCTempData();
+            dxtemps = await App.Database.GetTableRowsAsync<TblDXTemplate>("TblDXTemplate");
+            dxtemps = await _dXTemp.GetCCTempData();
 
         }
-
-        private async Task InitializeDataTable()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            await JS.InvokeVoidAsync("makeDataTable", "datatable-dxTemp");
+            if (firstRender)
+            {
+                await RefreshDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
+            }
+        }
+
+        //private async Task InitializeDataTable()
+        //{
+        //    await JS.InvokeVoidAsync("makeDataTable", "datatable-dxTemp");
+        //}
+        protected async Task RefreshDataTable()
+        {
+
+            var tableData = dxtemps?.Select((dx, index) => new[]
+                {
+                    (index + 1).ToString(), // Serial number starts from 1
+                    dx.Name?.ToString() ?? string.Empty, // Note name
+                    $@"
+                    <div style='display: flex; justify-content: flex-end;'>
+                        <i class='dripicons-pencil btn btn-soft-primary' onclick='editRow({dx.Id})'></i>
+                        <i class='dripicons-trash btn btn-soft-danger' onclick='deleteRow({dx.Id})'></i>
+                    </div>
+                    " // Action buttons
+                }).ToArray();
+
+            await JS.InvokeVoidAsync("makeDataTableQ", "datatable-dxTemp", tableData);
+
         }
 
         private async Task DownloadFile(string fileName, byte[] fileContent)
@@ -39,30 +64,28 @@ namespace QuickMed.BaseComponent
 
         protected async Task OnSaveBtnClick()
         {
-            if (model.Id == Guid.Empty) // Check if the GUID is uninitialized
+            if (dxtemp.Id == Guid.Empty) // Check if the GUID is uninitialized
             {
-                model.Id = Guid.NewGuid(); // This line will be redundant as the default is already set
-                await _dXTemp.SaveCCTemplate(model); // Create the new template
+                dxtemp.Id = Guid.NewGuid(); // This line will be redundant as the default is already set
+                await _dXTemp.SaveCCTemplate(dxtemp); // Create the new template
                 await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
             }
             else
             {
-                await _dXTemp.UpdateCCTemplate(model); // Update the existing template
+                await _dXTemp.UpdateCCTemplate(dxtemp); // Update the existing template
                 await JS.InvokeVoidAsync("showAlert", "Update Successful", "Record has been successfully Updated.", "success", "swal-info");
             }
 
             // Reset the model for future input
-            model = new TblDXTemplate(); // Creates a new instance with a new GUID
+            dxtemp = new TblDXTemplate(); // Creates a new instance with a new GUID
 
-            // Fetch updated data
-            //models = await _dXTemp.GetCCTempData();
             await OnInitializedAsync();
-
+            await RefreshDataTable();
             StateHasChanged();  // Update the UI
         }
         protected async Task OnEditClick(TblDXTemplate data)
         {
-            model = data;
+            dxtemp = data;
             StateHasChanged(); // Re-render the component with the updated model
         }
         protected async Task OnDeleteClick(Guid id)
