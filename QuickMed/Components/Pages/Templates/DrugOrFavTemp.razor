@@ -10,8 +10,9 @@
                 <div class="card-header bg-warning ">
                     <h4 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Drug / Favourite Form</h4>
                 </div><!--end card-header-->
-                <div class="card-header bg-light">
-                    <div class="row mb-2  py-3">
+                
+                <div class="card-header">
+                    <div class="row mb-2 bg-light py-3">
                         <div class="col-sm-12 d-flex">
                             <label for="example-text-input" class="col-sm-1 form-label  mb-lg-0 me-3 fw-bold">Template Name  </label>
                             <div class="col-sm-4">
@@ -20,8 +21,17 @@
 
                         </div>
                     </div>
-                    <hr style="border-top: 1px dashed #f1f5fa;" />
-                    <div class="row">
+                    <hr style="border-top: 1px dashed red;" />                 
+                </div>
+
+
+
+
+
+
+                <!--end card-header-->
+                <div class="card-body">
+                    <div class="row mb-5">
                         <div class="col-sm-3">
                             <select class="select2C form-control mb-3 custom-select" id="brandSelect" aria-label="Default select example" style="appearance: none;">
                                 <option selected value="0" disabled>Select Brand</option>
@@ -49,7 +59,7 @@
                                 }
                             </select>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <select class="select2W  form-control custom-select" aria-label="Default select example" id="durationSelectfav">
                                 <option selected disabled>Select Duration</option>
                                 @if (Duration != null && Duration.Any())
@@ -63,33 +73,6 @@
                             </select>
 
                         </div>
-
-                        <div class="col-sm-1 text-end">
-                            <button class="btn btn-success btn-sm" @onclick="OsudAddbtn" title="Add"><i class="fas fa-plus"></i></button>
-
-                        </div>
-                    </div>
-                </div>
-                <!--end card-header-->
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table  table-bordered table-sm" id="drugTmp">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Brand</th>
-                                    <th>Dose</th>
-                                    <th>Instruction</th>
-                                    <th>Duration</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="5" class="text-center text-blue">No data Available</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
                     </div>
                     <span class="float-right">
                         <button id="but_add" class="btn btn-success btn-sm float-end">Save</button>
@@ -118,6 +101,10 @@
                     <thead>
                         <tr>
                             <th class="border-top-0">Name</th>
+                            <th class="border-top-0">Brand</th>
+                            <th class="border-top-0">Dose</th>
+                            <th class="border-top-0">Instruction</th>
+                            <th class="border-top-0">Duration</th>
                             <th class="border-top-0 text-end">Action</th>
                         </tr>
                     </thead>
@@ -126,23 +113,12 @@
                     <tbody>
                         <tr>
                             <td>2C</td>
-                            <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
-                        </tr><!--end tr-->
-
-                        <tr>
+                            <td>2C</td>
+                            <td>2C</td>
+                            <td>2C</td>
                             <td>2C</td>
                             <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
-                        </tr><!--end tr-->
-
-                        <tr>
-                            <td>2C</td>
-                            <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
-                        </tr><!--end tr-->
-
-                        <tr>
-                            <td>2C</td>
-                            <td class="text-end"> <i class="dripicons-pencil btn btn-soft-primary"></i><i class="dripicons-trash btn btn-soft-danger"></i></td>
-                        </tr><!--end tr-->
+                        </tr><!--end tr-->                        
 
 
 
