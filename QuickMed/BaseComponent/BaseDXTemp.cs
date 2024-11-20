@@ -18,17 +18,22 @@ namespace QuickMed.BaseComponent
         [Inject]
         public IJSRuntime JS { get; set; }
 
+        public DotNetObjectReference<BaseDXTemp> ObjectReference { get; private set; }
+
         protected override async Task OnInitializedAsync()
         {
+            ObjectReference = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             dxtemps = await App.Database.GetTableRowsAsync<TblDXTemplate>("TblDXTemplate");
             dxtemps = await _dXTemp.GetCCTempData();
+            await RefreshDataTable();
 
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await RefreshDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
+                // Initialize JavaScript-based DataTable once the component has rendered
             }
         }
 
@@ -45,8 +50,8 @@ namespace QuickMed.BaseComponent
                     dx.Name?.ToString() ?? string.Empty, // Note name
                     $@"
                     <div style='display: flex; justify-content: flex-end;'>
-                        <i class='dripicons-pencil btn btn-soft-primary' onclick='editRow({dx.Id})'></i>
-                        <i class='dripicons-trash btn btn-soft-danger' onclick='deleteRow({dx.Id})'></i>
+                        <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{dx.Id}' data-method='OnEditClick'></i>
+                        <i class='dripicons-trash btn btn-soft-danger dTRowActionBtn' data-id='{dx.Id}' data-method='OnDeleteClick'></i>
                     </div>
                     " // Action buttons
                 }).ToArray();
@@ -80,15 +85,19 @@ namespace QuickMed.BaseComponent
             dxtemp = new TblDXTemplate(); // Creates a new instance with a new GUID
 
             await OnInitializedAsync();
-            await RefreshDataTable();
+            //await RefreshDataTable();
             StateHasChanged();  // Update the UI
         }
-        protected async Task OnEditClick(TblDXTemplate data)
+        [JSInvokable("OnEditClick")]
+        public async Task OnEditClick(string Id)
         {
-            dxtemp = data;
+
+            dxtemp.Name = dxtemps.FirstOrDefault(x => x.Id == Guid.Parse(Id)).Name;
+            dxtemp.Id = Guid.Parse(Id);
             StateHasChanged(); // Re-render the component with the updated model
         }
-        protected async Task OnDeleteClick(Guid id)
+        [JSInvokable("OnDeleteClick")]
+        public async Task OnDeleteClick(Guid id)
         {
             bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
 

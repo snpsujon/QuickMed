@@ -16,18 +16,22 @@ namespace QuickMed.BaseComponent
 
         public TblDuration duration = new();
         public IEnumerable<TblDuration>? durations { get; set; }
+        public DotNetObjectReference<BaseDurationTemp> ObjectReference { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
+            ObjectReference = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             durations = await App.Database.GetTableRowsAsync<TblDuration>("TblDuration");
             durations = await _duration.GetAsync(); // Load the initial data
+            await RefreshDataTable();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await RefreshDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
+                //await RefreshDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
             }
         }
 
@@ -45,8 +49,8 @@ namespace QuickMed.BaseComponent
                     drt.Name?.ToString() ?? string.Empty, // Note name
                     $@"
                     <div style='display: flex; justify-content: flex-end;'>
-                        <i class='dripicons-pencil btn btn-soft-primary' onclick='editRow({drt.Id})'></i>
-                        <i class='dripicons-trash btn btn-soft-danger' onclick='deleteRow({drt.Id})'></i>
+                        <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{drt.Id}' data-method='OnEditClick'></i>
+                        <i class='dripicons-trash btn btn-soft-danger dTRowActionBtn' data-id='{drt.Id}' data-method='OnDeleteClick'></i>
                     </div>
                     " // Action buttons
                 }).ToArray();
@@ -70,17 +74,20 @@ namespace QuickMed.BaseComponent
             }
             duration = new TblDuration();
             await OnInitializedAsync();
-            await RefreshDataTable();
+            //await RefreshDataTable();
 
             StateHasChanged();  // Update the UI
         }
 
-        protected async Task OnEditClick(TblDuration data)
+        [JSInvokable("OnEditClick")]
+        public async Task OnEditClick(string Id)
         {
-            duration = data;
+            duration.Name = durations.FirstOrDefault(x => x.Id == Guid.Parse(Id)).Name;
+            duration.Id = Guid.Parse(Id);
             StateHasChanged(); // Re-render the component with the updated model
         }
-        protected async Task OnDeleteClick(Guid id)
+        [JSInvokable("OnDeleteClick")]
+        public async Task OnDeleteClick(Guid id)
         {
             bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
 

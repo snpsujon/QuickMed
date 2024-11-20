@@ -260,7 +260,7 @@ function makeSelect2(isTags) {
 
 }
 
-function makeSelect2Custom(classs,invokeMethod,minInput) {
+function makeSelect2Custom(classs, invokeMethod, minInput) {
     $('.' + classs).select2({
         ajax: {
             transport: function (params, success, failure) {
@@ -282,39 +282,55 @@ function makeSelect2Custom(classs,invokeMethod,minInput) {
 }
 
 
+// Add event listener to the document or a static parent element
+document.addEventListener('click', function (event) {
+    // Check if the clicked element has the 'dTeditRow' class
+    if (event.target && event.target.classList.contains('dTRowActionBtn')) {
+        const id = event.target.getAttribute('data-id');
+        const method = event.target.getAttribute('data-method');
+
+
+        // Call Blazor method if needed
+        if (instanceReference) {
+            instanceReference.invokeMethodAsync(method, id);
+        } else {
+            console.error("Instance reference is not set");
+        }
+    }
+});
 
 
 function makeDataTable(tableid, newData = []) {
 
-        // Check if the DataTable is already initialized
-        if (!$.fn.dataTable.isDataTable('#' + tableid)) {
-            // Initialize the DataTable
-            var table = $('#' + tableid).DataTable({
-                lengthChange: false,
-                buttons: ['excel', 'pdf']
-            });
+    // Check if the DataTable is already initialized
+    if (!$.fn.dataTable.isDataTable('#' + tableid)) {
+        // Initialize the DataTable
+        var table = $('#' + tableid).DataTable({
+            lengthChange: false,
+            buttons: ['excel', 'pdf']
+        });
 
-            // Append the DataTable  buttons to the container
-            table.buttons().container()
-                .appendTo('.dataTables_wrapper .col-md-6:eq(0)');
-        } else {
-            // If DataTable is already initialized, just get the existing table instance
-            var table = $('#' + tableid).DataTable();
-        }
+        // Append the DataTable  buttons to the container
+        table.buttons().container()
+            .appendTo('.dataTables_wrapper .col-md-6:eq(0)');
+    } else {
+        // If DataTable is already initialized, just get the existing table instance
+        var table = $('#' + tableid).DataTable();
+    }
 
-        // Check if new data is provided and add it to the table
-        if (newData.length > 0) {
-            // Clear the existing table
-            table.clear();
+    // Check if new data is provided and add it to the table
+    if (newData.length > 0) {
+        // Clear the existing table
+        table.clear();
 
-            // Add the new data to the table
-            table.rows.add(newData);
+        // Add the new data to the table
+        table.rows.add(newData);
 
-            // Redraw the table to refresh the state and remove "No data available" message
-            table.draw();
-        }
+        // Redraw the table to refresh the state and remove "No data available" message
+        table.draw();
+    }
 }
-function makeDataTableQ(tableid, data) {
+function makeDataTableQ(tableid, data = []) {
 
     if (!$.fn.dataTable.isDataTable('#' + tableid)) {
         var table = $('#' + tableid).DataTable({
@@ -331,12 +347,15 @@ function makeDataTableQ(tableid, data) {
     else {
         var table = $('#' + tableid).DataTable();
     }
-    if (data.length > 0) {
-        table.clear();
-        table.rows.add(data);
-        table.draw();
+    if (data != null) {
+
+        if (data.length > 0) {
+            table.clear();
+            table.rows.add(data);
+            table.draw();
+        }
     }
-    
+
 
 }
 

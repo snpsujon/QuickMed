@@ -2,15 +2,7 @@
 using Microsoft.JSInterop;
 using QuickMed.DB;
 using QuickMed.Interface;
-using QuickMed.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using static SQLite.SQLite3;
 
 namespace QuickMed.BaseComponent
 {
@@ -27,11 +19,17 @@ namespace QuickMed.BaseComponent
         public IEnumerable<TblNotesTemplate>? noteTemps { get; set; }
         public List<TblNotesTempDetails> templateDetails { get; set; }
 
+        public DotNetObjectReference<BaseNotesTemp> ObjectReference { get; private set; }
+
         protected override async Task OnInitializedAsync()
         {
+            ObjectReference = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             noteTemps = await _notes.GetAsync(); // Load the initial data
             noteTemps = await App.Database.GetTableRowsAsync<TblNotesTemplate>("TblNotesTemplate");
             templateDetails = await _notes.GetDetailsAsync();
+            await RefreshDataTable();
+
 
         }
 
@@ -39,7 +37,7 @@ namespace QuickMed.BaseComponent
         {
             if (firstRender)
             {
-                await RefreshDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
+                // Initialize JavaScript-based DataTable once the component has rendered
                 await InitializeJS();
             }
         }
@@ -58,8 +56,8 @@ namespace QuickMed.BaseComponent
                     note.Name?.ToString() ?? string.Empty, // Note name
                     $@"
                     <div style='display: flex; justify-content: flex-end;'>
-                        <i class='dripicons-pencil btn btn-soft-primary' onclick='editRow({note.Id})'></i>
-                        <i class='dripicons-trash btn btn-soft-danger' onclick='deleteRow({note.Id})'></i>
+                        <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{note.Id}' data-method='OnEditClick'></i>
+                        <i class='dripicons-trash btn btn-soft-danger dTRowActionBtn' data-id='{note.Id}' data-method='OnDeleteClick'></i>
                     </div>
                     " // Action buttons
                 }).ToArray();
@@ -71,7 +69,7 @@ namespace QuickMed.BaseComponent
         protected async Task InitializeJS()
         {
             var objRef = DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("setupEditableTable", "notesMainTbl", "add_new_notes",false);
+            await JS.InvokeVoidAsync("setupEditableTable", "notesMainTbl", "add_new_notes", false);
             await JS.InvokeVoidAsync("makeSelect2", false);
             await JS.InvokeVoidAsync("OnChangeEvent", "notesTempSelect", "NotesTempChange", objRef);
             await JS.InvokeVoidAsync("makeTableDragable", "notesMainTbl");
@@ -101,8 +99,8 @@ namespace QuickMed.BaseComponent
             {
                 if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
                 {
-                   var templateName = templateNameElement.GetString();
-                    if(noteTemp.Id == Guid.NewGuid())
+                    var templateName = templateNameElement.GetString();
+                    if (noteTemp.Id == Guid.Empty)
                     {
                         noteTemp = new()
                         {
@@ -117,7 +115,7 @@ namespace QuickMed.BaseComponent
                         await _notes.UpdateAsync(noteTemp);
                         await _notes.DeleteDetailsAsync(noteTemp.Id);
                     }
-                    
+
 
                 }
 
@@ -130,9 +128,9 @@ namespace QuickMed.BaseComponent
                             .ToList();
 
                         if (ListData.Count() > 0)
-                        {                           
-                           
-                           templateDetails = new List<TblNotesTempDetails>();
+                        {
+
+                            templateDetails = new List<TblNotesTempDetails>();
                             foreach (var item in ListData)
                             {
                                 templateDetails.Add(new TblNotesTempDetails
@@ -152,27 +150,32 @@ namespace QuickMed.BaseComponent
                     Console.WriteLine("templateName not found.");
                 }
 
-                await RefreshDataTable();
+                //await RefreshDataTable();
 
-                await OnInitializedAsync();               
+                await OnInitializedAsync();
 
                 StateHasChanged();
 
 
             }
-        
-        
-        
+
+
+
         }
 
-
-        protected async Task OnEditClick(TblNotesTemplate data)
+        [JSInvokable("OnEditClick")]
+        public async Task OnEditClick(string Id)
         {
-            noteTemp = data;
-            await NotesTempChange(data.Id.ToString());
+            //noteTemp = data;
+            //noteTemp = await _notes.GetByIdAsync(Guid.Parse(Id));
+            noteTemp.Name = noteTemps.FirstOrDefault(x => x.Id == Guid.Parse(Id)).Name;
+            noteTemp.Id = Guid.Parse(Id);
+            await NotesTempChange(Id);
             StateHasChanged(); // Re-render the component with the updated model
         }
-        protected async Task OnDeleteClick(Guid id)
+
+        [JSInvokable("OnDeleteClick")]
+        public async Task OnDeleteClick(Guid id)
         {
             bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
 

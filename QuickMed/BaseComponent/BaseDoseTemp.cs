@@ -15,11 +15,15 @@ namespace QuickMed.BaseComponent
 
         public TblDose dose = new();
         public IEnumerable<TblDose>? doses { get; set; }
+        public DotNetObjectReference<BaseDoseTemp> ObjectReference { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
+            ObjectReference = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             doses = await App.Database.GetTableRowsAsync<TblDose>("TblDose");
             doses = await _dose.GetAsync(); // Load the initial data
+            await RefreshDataTable();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -44,8 +48,8 @@ namespace QuickMed.BaseComponent
                     ds.Name?.ToString() ?? string.Empty, // Note name
                     $@"
                     <div style='display: flex; justify-content: flex-end;'>
-                        <i class='dripicons-pencil btn btn-soft-primary' onclick='editRow({ds.Id})'></i>
-                        <i class='dripicons-trash btn btn-soft-danger' onclick='deleteRow({ds.Id})'></i>
+                        <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{ds.Id}' data-method='OnEditClick'></i>
+                        <i class='dripicons-trash btn btn-soft-danger dTRowActionBtn' data-id='{ds.Id}' data-method='OnDeleteClick'></i>
                     </div>
                     " // Action buttons
                 }).ToArray();
@@ -75,12 +79,15 @@ namespace QuickMed.BaseComponent
             StateHasChanged();  // Update the UI
         }
 
-        protected async Task OnEditClick(TblDose data)
+        [JSInvokable("OnEditClick")]
+        public async Task OnEditClick(string Id)
         {
-            dose = data;
+            dose.Name = doses.FirstOrDefault(x => x.Id == Guid.Parse(Id)).Name;
+            dose.Id = Guid.Parse(Id);
             StateHasChanged(); // Re-render the component with the updated model
         }
-        protected async Task OnDeleteClick(Guid id)
+        [JSInvokable("OnDeleteClick")]
+        public async Task OnDeleteClick(Guid id)
         {
             bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
 
