@@ -444,59 +444,47 @@
                         <hr style="border-top: 1px dashed #f1f5fa;" />
                         <div class="row">
                             <div class="col-sm-3">
-                                
-                                 <select class="select2W form-control mb-3 custom-select" id="presBrandTempSelect" aria-label="Default select example">
-                                    <option selected value="0" disabled>Brand Template</option>
-                                    @if (BrandTemps != null && BrandTemps.Any())
+
+                                <select class="select2C form-control mb-3 custom-select" id="brandSelect" aria-label="Default select example" style="appearance: none;">
+                                    <option selected value="0" disabled>Select Brand</option>
+                                    @foreach (var item in Brands)
                                     {
-                                        @foreach (var item in BrandTemps)
-                                        {
-                                              <option value="@item.Id">@item.Name</option>
-                                        }
+                                        <option value="@item.Id">@item.Name</option>
                                     }
                                 </select>
                             </div>
                             <div class="col-sm-3"> 
-                                <select class="select2W form-control mb-3 custom-select" id="presDoseTempSelect" aria-label="Default select example">
-                                    <option selected value="0" disabled>Dose Template</option>
-                                    @if (DoseTemps != null && DoseTemps.Any())
+                                <select class="select2 form-control mb-3 custom-select" id="doseSelect" aria-label="Default select example">
+                                    <option selected value="0" disabled>Select Dose</option>
+                                    @foreach (var item in Dose)
                                     {
-                                        @foreach (var item in DoseTemps)
-                                        {
-                                             <option value="@item.Id">@item.Name</option>
-                                        }
+                                        <option value="@item.Id">@item.Name</option>
                                     }
                                 </select>
                             </div>
                             <div class="col-sm-3">
                                
-                                <select class="select2W form-control mb-3 custom-select" id="presInstructionTempSelect" aria-label="Default select example">
-                                    <option selected value="0" disabled>Instruction Template</option>
-                                    @if (InsTemps != null && InsTemps.Any())
+                                <select class="select2 form-control mb-3 custom-select" id="instructionSelect" aria-label="Default select example">
+                                    <option selected value="0" disabled>Select Instruction</option>
+                                    @foreach (var item in Instructions)
                                     {
-                                        @foreach (var item in InsTemps)
-                                        {
-                                                     <option value="@item.Id">@item.Name</option>
-                                        }
+                                        <option value="@item.Id">@item.Name</option>
                                     }
                                 </select>
                             </div>
                             <div class="col-sm-2">
-                                
-                                 <select class="select2W form-control mb-3 custom-select" id="presInstructionTempSelect" aria-label="Default select example">
-                                    <option selected value="0" disabled>Duration Template</option>
-                                    @if (DuraTionTemps != null && DuraTionTemps.Any())
+
+                                <select class="select2 form-control mb-3 custom-select" id="durationSelect" aria-label="Default select example">
+                                    <option selected value="0" disabled>Select Duration</option>
+                                    @foreach (var item in Duration)
                                     {
-                                        @foreach (var item in DuraTionTemps)
-                                        {
-                                                <option value="@item.Id">@item.Name</option>
-                                        }
+                                        <option value="@item.Id">@item.Name</option>
                                     }
                                 </select>
                             </div>
 
                             <div class="col-sm-1 text-end">
-                                <button class="btn btn-success btn-sm" title="Add"><i class="fas fa-plus"></i></button>
+                                <button class="btn btn-success btn-sm" @onclick="OsudAddbtn" title="Add"><i class="fas fa-plus"></i></button>
 
                             </div>
                         </div>
@@ -505,32 +493,24 @@
                     <div class="card-body">
                         <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
                         <div class="table-responsive">
-                            <table class="table  table-borde#f1f5fa table-sm" id="makeEditable">
+                            <table class="table  table-borde#f1f5fa table-sm" id="TretmentTmpTbl">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>Brand</th>
                                         <th>Dose</th>
+                                        <th>Instruction</th>
+                                        <th>Duration</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>1</td>
-                                        <td>fucker1</td>
-                                        <td>def@somemail.com</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>fucker2</td>
-                                        <td>def@somemail.com</td>
+                                        <td colspan="5" class="text-center text-blue">No data Available</td>
                                     </tr>
 
                                 </tbody>
                             </table>
                         </div>
-                        <span class="float-right">
-                            <button id="but_add" class="btn btn-success btn-sm">Add New Row</button>
-                        </span><!--end table-->
                     </div><!--end card-body-->
                 </div><!--end card-->
             </div> <!-- end col -->
@@ -548,14 +528,13 @@
                             </div>
 
                             <div class="col-sm-8">
-                               <select class="select2W form-control mb-3 custom-select" id="presAdviceTempSelect" aria-label="Default select example">
-                                    <option selected value="0" disabled>Advice Template</option>
-                                    @if (AdviceTemps != null && AdviceTemps.Any())
+                                <select class="select2W form-control mb-3 custom-select"
+                                        id="adviceSelect"
+                                        aria-label="Default select example">
+                                    <option selected disabled>Select Advice Template</option>
+                                    @foreach (var item in adviceMasters)
                                     {
-                                        @foreach (var item in AdviceTemps)
-                                        {
-                                            <option value="@item.Id">@item.AdviceTemplateName</option>
-                                        }
+                                        <option value="@item.Id">@item.AdviceTemplateName</option>
                                     }
                                 </select>
                             </div>
@@ -568,31 +547,27 @@
                     <div class="card-body">
                         <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
                         <div class="table-responsive">
-                            <table class="table  table-borde#f1f5fa table-sm" id="makeEditable">
+                            <table class="table  table-bordered table-sm" id="TretmentTmpAdviceTbl">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Brand</th>
-                                        <th>Dose</th>
+                                        <th>Name</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>fucker1</td>
-                                        <td>def@somemail.com</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>fucker2</td>
-                                        <td>def@somemail.com</td>
+                                    <tr name="bogichogi">
+                                        <td>
+                                        </td>
+                                        <td class="text-center text-blue">No data Available</td>
+                                        <td name="buttons" class="text-center text-blue"></td>
                                     </tr>
 
                                 </tbody>
                             </table>
                         </div>
                         <span class="float-right">
-                            <button id="but_add" class="btn btn-success btn-sm">Add New Row</button>
+                            <button id="add_Advice" class="btn btn-success btn-sm">Add A Advice</button>
                         </span><!--end table-->
                     </div><!--end card-body-->
                 </div><!--end card-->
@@ -612,31 +587,37 @@
                                     <tr>
                                         <th>পরবর্তী সাক্ষাৎ</th>
                                         <td>
-                                            <select class="select2W form-control mb-3 custom-select" id="presRefferTempSelect" aria-label="Default select example">
-                                    <option selected value="0" disabled>Select Instruction</option>
-                                                @if (InsTemps != null && InsTemps.Any())
-                                                {
-                                                    @foreach (var item in RefferTemps)
-                                                    {
-                                                    <option value="@item.Id">@item.Name</option>
-                                                    }
-                                                }
-                                </select>
+                                            <select class="select2W form-control mb-3 custom-select" id="nxtMeetDateSelect" aria-label="Default select example">
+
+                                                <option value="30">১ মাস</option>
+                                                <option value="60">২ মাস</option>
+                                                <option value="90">৩ মাস</option>
+                                                <option value="7">১ সপ্তাহ</option>
+                                                <option value="14">২ সপ্তাহ</option>
+                                                <option value="28">৪ সপ্তাহ</option>
+                                                <option value="35">৫ সপ্তাহ</option>
+                                                <option value="42">৬ সপ্তাহ</option>
+                                                <option value="21">৩ সপ্তাহ</option>
+                                                <option value="3">৩ দিন</option>
+                                                <option value="10">১০ দিন</option>
+                                                <option value="15">১৫ দিন</option>
+                                                <option value="0" selected="">প্রয়োজন নেই</option>
+                                            </select>
                                         </td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>তারিখ</td>
-                                        <td>১২/০২/২০২৪</td>
+                                        <td><input id="nxtMeetDate" type="date" class="form-control"/></td>
                                     </tr>
                                     <tr>
                                         <td>পেমেন্ট</td>
-                                        <td><input type="text" name="name" value="" /></td>
+                                        <td><input type="text" class="form-control" name="name" value="" /></td>
                                     </tr>
                                     <tr>
                                         <td>রেফার্ড বাই </td>
-                                        <td><input type="text" name="name" value="" /></td>
+                                        <td><input type="text" class="form-control" name="name" value="" /></td>
                                     </tr>
 
 
@@ -725,9 +706,10 @@
                     <div class="card-body">
                         <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
                         <div class="table-responsive">
-                            <table class="table  table-borde#f1f5fa table-sm" id="makeEditable">
+                            <table class="table  table-borde#f1f5fa table-sm" id="rptEntryTbl">
                                 <thead>
                                     <tr>
+                                        <th>#</th>
                                         <th>Date</th>
                                         <th>Report Namer</th>
                                         <th>Result/Value</th>
@@ -736,18 +718,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>12-10-2024</td>
-                                        <td>CBC</td>
-                                        <td>24</td>
-                                        <td>mmol/L</td>
+                                    <tr name="bogichogi">
+                                        <td colspan="6">No Data Available</td>
+                                        
                                     </tr>
 
                                 </tbody>
                             </table>
                         </div>
                         <span class="float-right">
-                            <button id="but_add" class="btn btn-success btn-sm">Add New Row</button>
+                            @{tblid = "rptEntryTbl";}
+                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid)">Add New Row</button>
                         </span><!--end table-->
                     </div><!--end card-body-->
                 </div><!--end card-->
@@ -773,7 +754,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-center active" data-bs-toggle="tab" href="#cu_bmi" role="tab" aria-selected="false">BMI</a>
                                 </li>
-                                <li class="nav-item">
+                                @* <li class="nav-item">
                                     <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_insulin" role="tab" aria-selected="false">Insulin</a>
                                 </li>
                                 <li class="nav-item">
@@ -784,7 +765,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_edd" role="tab" aria-selected="true">EDD</a>
-                                </li>
+                                </li> *@
 
                             </ul>
                         </div>
@@ -798,27 +779,27 @@
 
                                     <div class="form-group col-md-4">
                                         <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                        <input @onkeydown="UpdateBMI" class="form-control form-control-sm" type="text" value="" id="bmiWeight">
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Ft)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                        <input @onkeydown="UpdateBMI" class="form-control form-control-sm" type="text" value="" id="bmiHeightft">
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Inch)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                        <input @onkeydown="UpdateBMI" class="form-control form-control-sm" type="text" value="" id="bmiHeightin">
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">BMI</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                        <input class="form-control form-control-sm" type="text" value="" id="bmiValue" readonly>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Class</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                        <input class="form-control form-control-sm" type="text" value="" id="bmiClass" readonly>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Idle Weight</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                        <input class="form-control form-control-sm" type="text" value="" id="bmiIdleWeight" readonly>
                                     </div>
                                 </div>
                             </div>

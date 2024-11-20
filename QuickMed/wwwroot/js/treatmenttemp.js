@@ -105,10 +105,19 @@ function populateTreatmentTable(dataArray, tblId) {
         const deleteButton = document.createElement("button");
         deleteButton.id = "bElim";
         deleteButton.type = "button";
-        deleteButton.className = "btn btn-sm btn-soft-danger btn-circle";
+        deleteButton.className = "btn btn-sm btn-soft-danger btn-circle me-2";
         deleteButton.setAttribute("onclick", "tretmentDelete(this);");
         deleteButton.innerHTML = '<i class="dripicons-trash" aria-hidden="true"></i>';
         buttonDiv.appendChild(deleteButton);
+
+        // Fav button
+        const favButton = document.createElement("button");
+        favButton.id = "bFav";
+        favButton.type = "button";
+        favButton.className = "btn btn-sm btn-soft-warning btn-circle";
+        favButton.setAttribute("onclick", "rowFav(this);");
+        favButton.innerHTML = '<i class="dripicons-heart" aria-hidden="true"></i>';
+        buttonDiv.appendChild(favButton);
 
         // Accept button (hidden by default)
         const acceptButton = document.createElement("button");
@@ -129,6 +138,10 @@ function populateTreatmentTable(dataArray, tblId) {
         cancelButton.setAttribute("onclick", "rowCancel(this);");
         cancelButton.innerHTML = '<i class="dripicons-cross" aria-hidden="true"></i>';
         buttonDiv.appendChild(cancelButton);
+
+
+
+
 
         // Append the button div to the button cell, and the cell to the row
         buttonCell.appendChild(buttonDiv);
@@ -183,6 +196,8 @@ function QrowEdit(but) {
     input1 = '<select class="form-control customselect2 duration custom-select" value=""></select>';
     $fifthTd.html(div1 + input1);
 
+
+
     FijModoEdit(but);
 
     customSelect2(true);
@@ -206,6 +221,36 @@ function QrowAcep(but) {
 
 
 }
+
+function rowFav(but) {
+    var $row = $(but).parents('tr');  //accede a la fila
+    var $cols = $row.find('td');  //lee campos
+    if (row && row.hasAttribute("data-value")) {
+        const treatmentIndex = parseInt(row.getAttribute("data-value"), 10);
+
+
+        const treatmentIndexInArray = treatments.findIndex(t => t.index === treatmentIndex);
+
+        if (treatmentIndexInArray === -1) {
+            console.error("Treatment not found in the array.");
+            return;
+        }
+
+        // Get the treatment object to update
+        const treatmentData = treatments[treatmentIndexInArray];
+
+
+
+
+    } else {
+        console.error("Could not find the row element or get its data-value attribute.");
+    }
+
+
+}
+
+
+
 
 function updateTreatmrntArray(but) {
     const row = $(but).closest('tr')[0]; // Get the parent row

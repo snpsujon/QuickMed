@@ -156,7 +156,11 @@ function myrowAddNew(tabId, isSelect2 = true) {  // Adds a new row to the specif
                     input = '<select class="form-control customselect2 custom-select" value=""></select>';
 
                 } else {
-                    var input = '<input class="form-control" value="" />';
+                    input = '<input class="form-control" value="" />';
+                }
+
+                if (tabId == 'rptEntryTbl' && index === 1) {
+                    input = '<input class="form-control" value="" type="date"/>';
                 }
 
 
@@ -180,6 +184,7 @@ function myrowAddNew(tabId, isSelect2 = true) {  // Adds a new row to the specif
     if (typeof params !== 'undefined' && typeof params.onAdd === 'function') {
         params.onAdd();
     }
+
 }
 
 function customSelect2(isTags) {
