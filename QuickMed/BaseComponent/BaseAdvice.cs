@@ -25,12 +25,35 @@ namespace QuickMed.BaseComponent
             await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             masterData = await _advice.GetAdviceMasterData();
             await JS.InvokeVoidAsync("onInitTable", "mainTable-advice", masterData);
-            await JS.InvokeVoidAsync("makeDataTable", "adviceListtable");
             await JS.InvokeVoidAsync("initializeButtonClick", masterData);
             templateListData = await _advice.GetAdviceTemplateData();
-
+            //await JS.InvokeVoidAsync("makeDataTable", "adviceListtable");
+            await RefreshDataTable();
         }
 
+
+        protected async Task RefreshDataTable()
+        {
+            var clic = $@"@onclick=""() => onDataEdit(item.Id)""";
+
+            var tableData = templateListData?.Select(mt => new[]
+            {
+                mt.AdviceTemplateName?.ToString() ?? string.Empty, // Replace Property1 with actual property name
+                    $@"
+                    <div style='display: flex; justify-content: flex-end;'>
+                        <i class='dripicons-pencil btn btn-soft-primary' {clic}></i>
+                        <i class='dripicons-trash btn btn-soft-danger' onclick='onDataDelete({mt.Id})'></i>
+                    </div>
+                    "  // Replace Property2 with actual property name
+            }).ToArray();
+
+
+
+
+
+            await JS.InvokeVoidAsync("makeDataTableQ", "adviceListtable", tableData);
+
+        }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
