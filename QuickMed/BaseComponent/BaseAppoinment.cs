@@ -98,12 +98,5 @@ namespace QuickMed.BaseComponent
                 }
             }
         }
-
-
-
-
-
-
-
     }
 }

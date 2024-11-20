@@ -96,6 +96,14 @@ namespace QuickMed.DB
             await _dbConnection.CreateTableAsync<TblIXTemplate>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblMixTempDetails>().ConfigureAwait(false);
 
+            await _dbConnection.CreateTableAsync<TblPerceptionTemplate>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblBrandTemplate>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblDoseTemplate>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblInstructionTemplate>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblDurationTemplate>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblAdviceTemplate>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblRefferTemplate>().ConfigureAwait(false);
+
             // Await the seed data methods to ensure they complete before continuing
             await insertSeedDoseData().ConfigureAwait(false);
             await insertSeedDurationData().ConfigureAwait(false);
