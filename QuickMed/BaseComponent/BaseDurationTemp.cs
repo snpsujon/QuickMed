@@ -14,49 +14,70 @@ namespace QuickMed.BaseComponent
         public IJSRuntime JS { get; set; }
 
 
-        public TblDuration model = new();
-        public IEnumerable<TblDuration>? models { get; set; }
+        public TblDuration duration = new();
+        public IEnumerable<TblDuration>? durations { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            models = await _duration.GetAsync(); // Load the initial data
+            durations = await App.Database.GetTableRowsAsync<TblDuration>("TblDuration");
+            durations = await _duration.GetAsync(); // Load the initial data
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await InitializeDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
+                await RefreshDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
             }
         }
 
-        protected async Task InitializeDataTable()
+        //protected async Task InitializeDataTable()
+        //{
+        //    await JS.InvokeVoidAsync("makeDataTable", "datatable-patientList");
+        //}
+
+        protected async Task RefreshDataTable()
         {
-            await JS.InvokeVoidAsync("makeDataTable", "datatable-patientList");
+
+            var tableData = durations?.Select((drt, index) => new[]
+                {
+                    (index + 1).ToString(), // Serial number starts from 1
+                    drt.Name?.ToString() ?? string.Empty, // Note name
+                    $@"
+                    <div style='display: flex; justify-content: flex-end;'>
+                        <i class='dripicons-pencil btn btn-soft-primary' onclick='editRow({drt.Id})'></i>
+                        <i class='dripicons-trash btn btn-soft-danger' onclick='deleteRow({drt.Id})'></i>
+                    </div>
+                    " // Action buttons
+                }).ToArray();
+
+            await JS.InvokeVoidAsync("makeDataTableQ", "datatable-durationTemp", tableData);
+
         }
 
         protected async Task OnSaveBtnClick()
         {
-            if (model.Id == Guid.Empty) // Check if the GUID is uninitialized
+            if (duration.Id == Guid.Empty) // Check if the GUID is uninitialized
             {
-                model.Id = Guid.NewGuid(); // This line will be redundant as the default is already set
-                await _duration.SaveAsync(model); // Create the new template
+                duration.Id = Guid.NewGuid(); // This line will be redundant as the default is already set
+                await _duration.SaveAsync(duration); // Create the new template
                 await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
             }
             else
             {
-                await _duration.UpdateAsync(model); // Update the existing template
+                await _duration.UpdateAsync(duration); // Update the existing template
                 await JS.InvokeVoidAsync("showAlert", "Update Successful", "Record has been successfully Updated.", "success", "swal-info");
             }
-            model = new TblDuration();
+            duration = new TblDuration();
             await OnInitializedAsync();
+            await RefreshDataTable();
 
             StateHasChanged();  // Update the UI
         }
 
         protected async Task OnEditClick(TblDuration data)
         {
-            model = data;
+            duration = data;
             StateHasChanged(); // Re-render the component with the updated model
         }
         protected async Task OnDeleteClick(Guid id)
