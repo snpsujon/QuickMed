@@ -67,7 +67,7 @@
                                 <button type="button" class="btn btn-outline-success btn-icon-circle btn-icon-circle-sm" title="Save & Print"><i class="fa fa-print"></i></button>
                                 <button type="button" class="btn btn-outline-danger btn-icon-circle btn-icon-circle-sm" title="Save & Print Without Header"><i class="far fa-file-alt"></i></button>
                                 <button type="button" class="btn btn-outline-primary btn-icon-circle btn-icon-circle-sm" title="Save Only"><i class="far fa-save"></i></button>
-                                <button type="button" class="btn btn-outline-warning btn-icon-circle btn-icon-circle-sm" title="Save as Template"><i class="far fa-bookmark"></i></button>
+                                <button type="button" class="btn btn-outline-info btn-icon-circle btn-icon-circle-sm" title="Save as Template"><i class="far fa-bookmark"></i></button>
                             </div>
                         </div>
 
@@ -612,12 +612,16 @@
                                     <tr>
                                         <th>পরবর্তী সাক্ষাৎ</th>
                                         <td>
-                                            <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                                                <option selected disabled>Select Instruction</option>
-                                                <option value="1">M</option>
-                                                <option value="2">F</option>
-                                                <option value="3">O</option>
-                                            </select>
+                                            <select class="select2W form-control mb-3 custom-select" id="presRefferTempSelect" aria-label="Default select example">
+                                    <option selected value="0" disabled>Select Instruction</option>
+                                                @if (InsTemps != null && InsTemps.Any())
+                                                {
+                                                    @foreach (var item in RefferTemps)
+                                                    {
+                                                    <option value="@item.Id">@item.Name</option>
+                                                    }
+                                                }
+                                </select>
                                         </td>
                                     </tr>
                                 </thead>
