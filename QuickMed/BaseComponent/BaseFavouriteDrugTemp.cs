@@ -15,12 +15,14 @@ namespace QuickMed.BaseComponent
         [Inject]
         public ITeatmentTemp _teatmentTemp { get; set; }
 
+
         [Inject]
         public IFavouriteDrug _drug { get; set; }
 
-
+        public DotNetObjectReference<BaseFavouriteDrugTemp> ObjectReference { get; private set; }
         public TblFavouriteDrugTemplate drugTemp = new();
         public IEnumerable<TblFavouriteDrugTemplate>? drugTemps { get; set; }
+        public IEnumerable<FavouriteDrugTempVM>? drugVM { get; set; }
         public List<DrugMedicine> Brands = new List<DrugMedicine>();
         public List<TblDose> Dose = new List<TblDose>();
         public List<TblDuration> Duration = new List<TblDuration>();
@@ -32,9 +34,9 @@ namespace QuickMed.BaseComponent
 
         protected override async Task OnInitializedAsync()
         {
-
-            await InitializeDataTable();
-            drugTemps = await _drug.GetAsync();
+            ObjectReference = DotNetObjectReference.Create(this);
+            drugTemps = await App.Database.GetTableRowsAsync<TblFavouriteDrugTemplate>("TblFavouriteDrugTemplate");
+            drugVM = await _drug.GetAsync();
             Brands = new();
             Brands = await _mix.GetAllMedicine();
             Dose = new();
@@ -43,26 +45,66 @@ namespace QuickMed.BaseComponent
             Duration = await App.Database.GetTableRowsAsync<TblDuration>("TblDuration");
             Instructions = new();
             Instructions = await App.Database.GetTableRowsAsync<TblInstruction>("TblInstruction");
+            await RefreshDataTable();
 
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await InitializeDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
+
                 await InitializeJS();
             }
         }
 
-        private async Task InitializeDataTable()
+        //private async Task InitializeDataTable()
+        //{
+        //    await JS.InvokeVoidAsync("makeDataTable", "datatable-dxTemp");
+        //}
+
+        protected async Task RefreshDataTable()
         {
-            await JS.InvokeVoidAsync("makeDataTable", "datatable-dxTemp");
+
+            var tableData = drugVM?.Select((drug, index) => new[]
+                {
+                    (index + 1).ToString(), // Serial number starts from 1
+                    drug.Name?.ToString() ?? string.Empty, // Note name
+                    drug.BrandName?.ToString() ?? string.Empty,
+                    drug.DoseName?.ToString() ?? string.Empty,
+                    drug.InstructionName?.ToString() ?? string.Empty,
+                    drug.DurationName?.ToString() ?? string.Empty,
+                    $@"
+                    <div style='display: flex; justify-content: flex-end;'>
+                        <i class='dripicons-pencil btn btn-soft-primary' onclick='editRow({drug.Id})'></i>
+                        <i class='dripicons-trash btn btn-soft-danger' onclick='deleteRow({drug.Id})'></i>
+                    </div>
+                    " // Action buttons
+                }).ToArray();
+
+            if (tableData != null)
+            {
+                await JS.InvokeVoidAsync("makeDataTableQ", "datatable-favouriteTemp", tableData);
+            }
+
         }
+
+
         protected async Task InitializeJS()
         {
+            await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             await JS.InvokeVoidAsync("makeSelect2", false);
             await JS.InvokeVoidAsync("makeSelect2Custom", "select2C", "GetMedicines", 3);
         }
+
+        //[JSInvokable("GetMedicines")]
+        //public Task<List<DrugMedicine>> LoadMedicines(string search)
+        //{
+        //    var filtered = string.IsNullOrEmpty(search)
+        //        ? Brands
+        //        : Brands.Where(m => m.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        //    return Task.FromResult(filtered);
+        //}
 
         [JSInvokable("GetMedicines")]
         public Task<List<DrugMedicine>> LoadMedicines(string search)
@@ -95,6 +137,68 @@ namespace QuickMed.BaseComponent
                 throw;
             }
 
+        }
+
+        protected async Task OnSaveBtnClick()
+        {
+            //var result = await JS.InvokeAsync<JsonElement>("GetFavDrugTempData");
+
+            //if (drugTemp.Id == Guid.Empty) // Check if the GUID is uninitialized
+            //{
+            //    drugTemp.Id = Guid.NewGuid(); // This line will be redundant as the default is already set
+            //    await _drug.SaveFavouriteDrugTemp(drugTemp); // Create the new template
+            //    await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
+            //}
+            //drugTemp = new TblFavouriteDrugTemplate(); // Creates a new instance with a new GUID
+            //await OnInitializedAsync();
+            //StateHasChanged();  // Update the UI
+
+            try
+            {
+                var result = await JS.InvokeAsync<JsonElement>("GetDrugTempData");
+
+                var TemplateId = Guid.NewGuid();
+                string templateName = "";
+
+                if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
+                {
+
+                    if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
+                    {
+                        templateName = templateNameElement.GetString();
+                        var brandId = Guid.Parse(result.GetProperty("brandSelect").GetString());
+                        var doseId = Guid.Parse(result.GetProperty("doseSelect").GetString());
+                        var instructionId = Guid.Parse(result.GetProperty("instructionSelect").GetString());
+                        var durationId = Guid.Parse(result.GetProperty("durationSelectfav").GetString());
+                        drugTemp = new();
+                        drugTemp = new TblFavouriteDrugTemplate
+                        {
+                            Id = TemplateId,
+                            Name = templateName,
+                            BrandId = brandId,
+                            DoseId = doseId,
+                            InstructionId = instructionId,
+                            DurationId = durationId
+                        };
+                        await _drug.SaveFavouriteDrugTemp(drugTemp);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("templateName not found.");
+                    }
+
+                    await OnInitializedAsync();
+                    await RefreshDataTable();
+                    StateHasChanged();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
     }
