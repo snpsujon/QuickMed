@@ -6,6 +6,7 @@ using QuickMed.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -22,13 +23,14 @@ namespace QuickMed.BaseComponent
         public IJSRuntime JS { get; set; }
 
 
-        public TblNotesTemplate model = new();
-        public IEnumerable<TblNotesTemplate>? models { get; set; }
+        public TblNotesTemplate noteTemp = new();
+        public IEnumerable<TblNotesTemplate>? noteTemps { get; set; }
         public List<TblNotesTempDetails> templateDetails { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            models = await _notes.GetAsync(); // Load the initial data
+            noteTemps = await _notes.GetAsync(); // Load the initial data
+            noteTemps = await App.Database.GetTableRowsAsync<TblNotesTemplate>("TblNotesTemplate");
             templateDetails = await _notes.GetDetailsAsync();
 
         }
@@ -37,14 +39,33 @@ namespace QuickMed.BaseComponent
         {
             if (firstRender)
             {
-                await InitializeDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
+                await RefreshDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
                 await InitializeJS();
             }
         }
 
-        protected async Task InitializeDataTable()
+        //protected async Task InitializeDataTable()
+        //{
+        //    await JS.InvokeVoidAsync("makeDataTable", "datatable-noteTemp");
+        //}
+
+        protected async Task RefreshDataTable()
         {
-            await JS.InvokeVoidAsync("makeDataTable", "datatable-noteTemp");
+
+            var tableData = noteTemps?.Select((note, index) => new[]
+                {
+                    (index + 1).ToString(), // Serial number starts from 1
+                    note.Name?.ToString() ?? string.Empty, // Note name
+                    $@"
+                    <div style='display: flex; justify-content: flex-end;'>
+                        <i class='dripicons-pencil btn btn-soft-primary' onclick='editRow({note.Id})'></i>
+                        <i class='dripicons-trash btn btn-soft-danger' onclick='deleteRow({note.Id})'></i>
+                    </div>
+                    " // Action buttons
+                }).ToArray();
+
+            await JS.InvokeVoidAsync("makeDataTableQ", "datatable-noteTemp", tableData);
+
         }
 
         protected async Task InitializeJS()
@@ -81,20 +102,20 @@ namespace QuickMed.BaseComponent
                 if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
                 {
                    var templateName = templateNameElement.GetString();
-                    if(model.Id == Guid.NewGuid())
+                    if(noteTemp.Id == Guid.NewGuid())
                     {
-                        model = new()
+                        noteTemp = new()
                         {
                             Id = Guid.NewGuid(),
                             Name = templateName
                         };
-                        await _notes.SaveAsync(model);
+                        await _notes.SaveAsync(noteTemp);
                     }
                     else
                     {
-                        model.Name = templateName;
-                        await _notes.UpdateAsync(model);
-                        await _notes.DeleteDetailsAsync(model.Id);
+                        noteTemp.Name = templateName;
+                        await _notes.UpdateAsync(noteTemp);
+                        await _notes.DeleteDetailsAsync(noteTemp.Id);
                     }
                     
 
@@ -117,7 +138,7 @@ namespace QuickMed.BaseComponent
                                 templateDetails.Add(new TblNotesTempDetails
                                 {
                                     Id = Guid.NewGuid(),
-                                    TblNotesTempMasterId = model.Id,
+                                    TblNotesTempMasterId = noteTemp.Id,
                                     Name = item
                                 });
                             }
@@ -131,7 +152,7 @@ namespace QuickMed.BaseComponent
                     Console.WriteLine("templateName not found.");
                 }
 
-                await InitializeDataTable();
+                await RefreshDataTable();
 
                 await OnInitializedAsync();               
 
@@ -147,7 +168,7 @@ namespace QuickMed.BaseComponent
 
         protected async Task OnEditClick(TblNotesTemplate data)
         {
-            model = data;
+            noteTemp = data;
             await NotesTempChange(data.Id.ToString());
             StateHasChanged(); // Re-render the component with the updated model
         }
