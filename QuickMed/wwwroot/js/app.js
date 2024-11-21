@@ -26,6 +26,8 @@ function LoadPage(ff) {
     }
 }
 
+
+
 function passDataToBlazor() {
     // Get the license key value from the input field
     var licenseKey = document.getElementById("license-key").value;
@@ -120,6 +122,10 @@ $.fn.MySetEditable = function (options, isSelect2) {
     }
 };
 
+
+function ClearTable(tableid) {
+    $('#' + tableid + ' tbody').empty();
+}
 
 
 function myrowAddNew(tabId, isSelect2 = true) {  // Adds a new row to the specified table.

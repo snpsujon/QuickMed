@@ -233,6 +233,9 @@ namespace QuickMed.BaseComponent
                     }
 
                     await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
+                    await JS.InvokeVoidAsync("ClearTable", "TretmentTmpTbl");
+                    await JS.InvokeVoidAsync("ClearTable", "TretmentTmpAdviceTbl");
+
                     await OnInitializedAsync();
                     StateHasChanged();
 
