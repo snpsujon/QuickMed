@@ -68,10 +68,9 @@ namespace QuickMed.BaseComponent
 
         protected async Task InitializeJS()
         {
-            var objRef = DotNetObjectReference.Create(this);
             await JS.InvokeVoidAsync("setupEditableTable", "notesMainTbl", "add_new_notes", false);
             await JS.InvokeVoidAsync("makeSelect2", false);
-            await JS.InvokeVoidAsync("OnChangeEvent", "notesTempSelect", "NotesTempChange", objRef);
+            await JS.InvokeVoidAsync("OnChangeEvent", "notesTempSelect", "NotesTempChange", ObjectReference);
             await JS.InvokeVoidAsync("makeTableDragable", "notesMainTbl");
         }
         [JSInvokable]

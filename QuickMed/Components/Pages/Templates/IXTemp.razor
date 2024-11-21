@@ -105,9 +105,10 @@
 
 
             <div class="card-body">
-                <table id="datatable-ixTemp" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                <table id="datatable-IxTemp" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
+                            <th class="border-top-0">#</th>
                             <th class="border-top-0">Name</th>
                             <th class="border-top-0 text-end">Action</th>
                         </tr>
@@ -115,27 +116,6 @@
 
 
                     <tbody>
-                        @if (models != null && models.Any())
-                        {
-                            @foreach (var item in models)
-                            {
-                                <tr>
-                                   
-                                    <td>@item.TemplateName</td>
-
-
-                                    <td class="text-end">
-                                        <span class="text-primary mx-1 cursor-pointer" @onclick="() => OnEditClick(item)"><i class="dripicons-pencil"></i></span>
-                                        <span class="text-danger mx-1 cursor-pointer" @onclick="() => OnDeleteClick(item.Id)"><i class="dripicons-trash"></i></span>
-                                    </td>
-
-
-                                </tr>
-                            }
-
-
-                        }
-
                     </tbody>
                 </table>
             </div>
