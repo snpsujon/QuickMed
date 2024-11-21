@@ -111,6 +111,7 @@ namespace QuickMed.BaseComponent
             await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpAdviceTbl", "add_Advice");
             await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpTbl");
             await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpAdviceTbl");
+            await JS.InvokeVoidAsync("MakeAvro", "avrotranslate");
             await JS.InvokeVoidAsync("OnChangeEvent", "adviceSelect", "AdviceChange", ObjectReference);
             await JS.InvokeVoidAsync("OnChangeEvent", "nxtMeetDateSelect", "NextMeetDateChange", ObjectReference);
             await JS.InvokeVoidAsync("OnChangeEvent", "presDrugTempSelect", "LoadFavDrugTemplate", ObjectReference);
@@ -213,9 +214,9 @@ namespace QuickMed.BaseComponent
             StateHasChanged();
         }
 
-        public async Task AddaRow(string tblid)
+        public async Task AddaRow(string tblid, bool isSelect = false)
         {
-            await JS.InvokeVoidAsync("myrowAddNew", tblid, false);
+            await JS.InvokeVoidAsync("myrowAddNew", tblid, isSelect);
         }
 
 

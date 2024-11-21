@@ -100,9 +100,11 @@
                                             <table class="table  table-borde#f1f5fa table-sm" id="ccTable">
                                                 <thead>
                                                     <tr>
+                                                        <th>#</th>
                                                         <th>C/C</th>
                                                         <th>Duration</th>
                                                         <th>D/M</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -129,28 +131,87 @@
                                 </h5>
                                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="hoTable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>C/C</th>
-                                                        <th>Duration</th>
-                                                        <th>D/M</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr name="bogichogi">
-                                                        <td colspan="3">No Data</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <span class="float-right">
-                                            @{
-                                                var tblid2 = "hoTable";
-                                            }
-                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid2)">Add New Row</button>
-                                        </span><!--end table-->
+
+                                        <div class="row">
+                                            <div class="col-lg-4">
+
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">HTN</label>
+                                                </div>
+                                                 <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">DM</label>
+                                                </div>
+                                                 <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Asthma</label>
+                                                </div>
+                                                 <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">COPD</label>
+                                                </div>  
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">IHD</label>
+                                                </div>
+                                                
+                                            </div><!--end col-->
+
+
+                                            <div class="col-lg-4">
+
+                                                
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">CKD</label>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">CVD</label>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">CLD</label>
+                                                </div>
+
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Smoking</label>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Tobacco Chewing</label>
+                                                </div>
+
+
+                                            </div><!--end col-->
+
+
+                                            <div class="col-lg-4">
+
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Malignancy</label>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Allergy</label>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Drug Abuse</label>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Depression</label>
+                                                </div>
+
+                                            </div><!--end col-->
+
+                                        </div><!--end row-->
+                                        <textarea id="avrotranslate" class="form-control mb-3" maxlength="1000" rows="3" placeholder="Type in English here. (limit 1000 chars)" spellcheck="false" data-ms-editor="true"></textarea>
+
                                     </div>
                                 </div>
                             </div>
@@ -166,15 +227,46 @@
                                             <table class="table  table-borde#f1f5fa table-sm" id="mhTable">
                                                 <thead>
                                                     <tr>
-                                                        <th>C/C</th>
-                                                        <th>Duration</th>
-                                                        <th>D/M</th>
+                                                        <th>#</th>
+                                                        <th>M/H</th>
+                                                        <th>Value</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr name="bogichogi">
-                                                        <td colspan="3">No Data</td>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td><input type="text" class="form-control" value="Age of Menarche" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
                                                     </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td><input type="text" class="form-control" value="MP" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>
+                                                            @* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@
+                                                            </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td><input type="text" class="form-control" value="MC" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>4</td>
+                                                        <td><input type="text" class="form-control" value="LMP" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>5</td>
+                                                        <td><input type="text" class="form-control" value="EDD" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -199,9 +291,9 @@
                                             <table class="table  table-borde#f1f5fa table-sm" id="dhTable">
                                                 <thead>
                                                     <tr>
-                                                        <th>C/C</th>
-                                                        <th>Duration</th>
-                                                        <th>D/M</th>
+                                                        <th>#</th>
+                                                        <th>Brand</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -215,7 +307,7 @@
                                             @{
                                                 var tblid4 = "dhTable";
                                             }
-                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid4)">Add New Row</button>
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid4, true)">Add New Row</button>
                                         </span><!--end table-->
                                     </div>
                                 </div>
@@ -232,9 +324,9 @@
                                             <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
                                                 <thead>
                                                     <tr>
-                                                        <th>C/C</th>
-                                                        <th>Duration</th>
-                                                        <th>D/M</th>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -248,7 +340,7 @@
                                             @{
                                                 var tblid5 = "Dxtable";
                                             }
-                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid5)">Add New Row</button>
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid5, true)">Add New Row</button>
                                         </span><!--end table-->
                                     </div>
                                 </div>
@@ -265,15 +357,97 @@
                                             <table class="table  table-borde#f1f5fa table-sm" id="oeTable">
                                                 <thead>
                                                     <tr>
-                                                        <th>C/C</th>
-                                                        <th>Duration</th>
-                                                        <th>D/M</th>
+                                                        <th>#</th>
+                                                        <th>O/E</th>
+                                                        <th>Value</th>
+                                                        <th>Unit</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr name="bogichogi">
-                                                        <td colspan="3">No Data</td>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td><input type="text" class="form-control" value="BP" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
                                                     </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td><input type="text" class="form-control" value="Pulse" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>
+                                                            @* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td><input type="text" class="form-control" value="Temp" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>4</td>
+                                                        <td><input type="text" class="form-control" value="SpO2" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>5</td>
+                                                        <td><input type="text" class="form-control" value="Heart" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+
+                                                       <tr>
+                                                        <td>6</td>
+                                                        <td><input type="text" class="form-control" value="Lungs" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>7</td>
+                                                        <td><input type="text" class="form-control" value="Abd" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>8</td>
+                                                        <td><input type="text" class="form-control" value="Anaemia" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                        <tr>
+                                                        <td>9</td>
+                                                        <td><input type="text" class="form-control" value="Jaundice" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>10</td>
+                                                        <td><input type="text" class="form-control" value="Cyanosis" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>11</td>
+                                                        <td><input type="text" class="form-control" value="Oedema" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+
+
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -377,14 +551,8 @@
                     </div><!--end card-header-->
 
                     <div class="card-body">
-                        <textarea id="textarea" class="form-control mb-3" maxlength="225" rows="3" placeholder="Type in English here. (limit 225 chars)" spellcheck="false" data-ms-editor="true"></textarea>
+                        <textarea id="avrotranslate" class="form-control mb-3" maxlength="1000" rows="3" placeholder="Type in English here. (limit 1000 chars)" spellcheck="false" data-ms-editor="true"></textarea>
 
-                        <div class="d-flex justify-content-center mb-3">
-                            <button id="but_converter" class="btn btn-success btn-sm">Convert</button>
-                            <div class="spinner-border spinner-border-custom-2 text-primary" role="status"></div>
-                        </div>
-
-                        <textarea id="textarea" class="form-control" maxlength="225" rows="3" placeholder="Result of English text" spellcheck="false" data-ms-editor="true"></textarea>
                     </div><!--end card-body-->
                 </div><!--end card-->
             </div> <!-- end col -->
