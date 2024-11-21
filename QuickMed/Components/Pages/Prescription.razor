@@ -83,7 +83,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header  bg-info">
-                        <h4 class="card-title text-light"><i class="dripicons-information"></i> &nbsp;&nbsp;Patient's Other Info'</h4>
+                        <h4 class="card-title text-light"><i class="dripicons-information"></i> &nbsp;&nbsp;Patient's Other Info</h4>
 
                     </div><!--end card-header-->
                     <div class="card-body">
@@ -97,7 +97,7 @@
                                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
+                                            <table class="table  table-borde#f1f5fa table-sm" id="ccTable">
                                                 <thead>
                                                     <tr>
                                                         <th>C/C</th>
@@ -106,16 +106,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
+                                                    <tr name="bogichogi">
+                                                        <td colspan="3">No Data</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
+                                            @{
+                                                var tblid1 = "ccTable";
+                                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid1)">Add New Row</button>
                                         </span><!--end table-->
                                     </div>
                                 </div>
@@ -129,7 +130,7 @@
                                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
+                                            <table class="table  table-borde#f1f5fa table-sm" id="hoTable">
                                                 <thead>
                                                     <tr>
                                                         <th>C/C</th>
@@ -138,16 +139,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
+                                                    <tr name="bogichogi">
+                                                        <td colspan="3">No Data</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
+                                            @{
+                                                var tblid2 = "hoTable";
+                                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid2)">Add New Row</button>
                                         </span><!--end table-->
                                     </div>
                                 </div>
@@ -161,7 +163,7 @@
                                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
+                                            <table class="table  table-borde#f1f5fa table-sm" id="mhTable">
                                                 <thead>
                                                     <tr>
                                                         <th>C/C</th>
@@ -170,16 +172,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
+                                                    <tr name="bogichogi">
+                                                        <td colspan="3">No Data</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
+                                            @{
+                                                var tblid3 = "mhTable";
+                                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid3)">Add New Row</button>
                                         </span><!--end table-->
                                     </div>
                                 </div>
@@ -193,7 +196,7 @@
                                 <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
+                                            <table class="table  table-borde#f1f5fa table-sm" id="dhTable">
                                                 <thead>
                                                     <tr>
                                                         <th>C/C</th>
@@ -202,16 +205,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
+                                                    <tr name="bogichogi">
+                                                        <td colspan="3">No Data</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
+                                            @{
+                                                var tblid4 = "dhTable";
+                                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid4)">Add New Row</button>
                                         </span><!--end table-->
                                     </div>
                                 </div>
@@ -234,16 +238,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
+                                                    <tr name="bogichogi">
+                                                        <td colspan="3">No Data</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
+                                            @{
+                                                var tblid5 = "Dxtable";
+                                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid5)">Add New Row</button>
                                         </span><!--end table-->
                                     </div>
                                 </div>
@@ -257,7 +262,7 @@
                                 <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
+                                            <table class="table  table-borde#f1f5fa table-sm" id="oeTable">
                                                 <thead>
                                                     <tr>
                                                         <th>C/C</th>
@@ -266,16 +271,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
+                                                    <tr name="bogichogi">
+                                                        <td colspan="3">No Data</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
+                                            @{
+                                                var tblid6 = "oeTable";
+                                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid6)">Add New Row</button>
                                         </span><!--end table-->
                                     </div>
                                 </div>
@@ -289,7 +295,7 @@
                                 <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
+                                            <table class="table  table-borde#f1f5fa table-sm" id="allergyTable">
                                                 <thead>
                                                     <tr>
                                                         <th>C/C</th>
@@ -298,16 +304,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
+                                                    <tr name="bogichogi">
+                                                        <td colspan="3">No Data</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
+                                            @{
+                                                var tblid7 = "allergyTable";
+                                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid7)">Add New Row</button>
                                         </span><!--end table-->
                                     </div>
                                 </div>
@@ -321,7 +328,7 @@
                                 <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
+                                            <table class="table  table-borde#f1f5fa table-sm" id="planTable">
                                                 <thead>
                                                     <tr>
                                                         <th>C/C</th>
@@ -330,16 +337,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
+                                                    <tr name="bogichogi">
+                                                        <td colspan="3">No Data</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
+                                            @{
+                                                var tblid8 = "planTable";
+                                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid8)">Add New Row</button>
                                         </span><!--end table-->
                                     </div>
                                 </div>
