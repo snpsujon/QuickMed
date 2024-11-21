@@ -103,6 +103,7 @@ namespace QuickMed.DB
             await _dbConnection.CreateTableAsync<TblDurationTemplate>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblAdviceTemplate>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblRefferTemplate>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblRefferTemplate>().ConfigureAwait(false);
 
             // Await the seed data methods to ensure they complete before continuing
             await insertSeedDoseData().ConfigureAwait(false);

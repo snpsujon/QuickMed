@@ -1,28 +1,68 @@
 ﻿@page "/referTemp"
-@using QuickMed.BaseComponent
-@using QuickMed.DB
-@inherits BaseAdvice
-
-<h4 class="text-success"> <i class="dripicons-document"></i> &nbsp;&nbsp;  C/C Form</h4>
 
 <div class="row">
     <div class="col-12">
         <div class="card">
+            <div class="card-header bg-info d-flex justify-content-between">
+                <div>
+                    <h4 class="card-title  text-light fw-bold">
+                        <i class="dripicons-information"></i>&nbsp;&nbsp;Reference Form
+                    </h4>
+                </div>
+                <div style="min-width: 500px;">
+                    <select class="select2W  form-control custom-select" aria-label="Default select example" id="referenceTempSelect">
+                        <option selected disabled>Select Template</option>
+                        @*@if (noteTemps != null && noteTemps.Any())
+                    {
+                        @foreach (var item in noteTemps)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+
+                    }*@
+                    </select>
+                </div>
+            </div>
+
             <div class="card-header">
-                <h4 class="card-title">Tinymce wysihtml5</h4>
-                
-            </div><!--end card-header-->
+                <div class="row mb-2 bg-light py-3">
+                    <div class="col-sm-12 d-flex">
+                        <label for="example-text-input" class="col-sm-1 form-label  mb-lg-0 me-3 fw-bold">Template Name  </label>
+                        <div class="col-sm-4">
+                            <input class="form-control form-control-sm border-dark" type="text" id="TempName">
+                        </div>
+
+                    </div>
+                </div>
+                <hr style="border-top: 1px dashed red;" />
+                @*                     <div class="row">
+                <div class="col-sm-3">
+                    <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
+                        <option selected disabled>Select Notes</option>
+                        <option value="1">M</option>
+                        <option value="2">F</option>
+                        <option value="3">O</option>
+                    </select>
+                </div>
+            </div> *@
+            </div>
             <div class="card-body">
-                <div id="editors" style="min-height:250px; min-width:100%"></div>
-            </div><!--end card-body-->
-        </div><!--end card-->
-    </div> <!-- end col -->
+                <div class="table-responsive">
+                    <div style="min-height:350px; min-width:100%" id="editor1"></div>
+                </div>
+
+
+                <hr />
+                <span class="float-right">
+                    <button id="but_add" class="btn btn-success btn-sm float-end" >Save</button>
+                </span>
+            </div>
+
+
+            </div><!--end card-->
+
+        </div> <!-- end col -->
 </div> <!-- end row     -->
-
-
-
-
-
 
 <h4 class="text-primary"> <i class="dripicons-view-list"></i> &nbsp;&nbsp;  C/C List</h4>
 
@@ -78,7 +118,7 @@
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("initializeQuill", "#editors");
+            await JS.InvokeVoidAsync("initializeQuill", "#editor1");
             StateHasChanged();
         }
     }
