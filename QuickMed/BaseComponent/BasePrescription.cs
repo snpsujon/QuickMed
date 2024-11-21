@@ -61,9 +61,17 @@ namespace QuickMed.BaseComponent
         public DateTime NextMeetingDate { get; set; } = DateTime.Now;
 
 
+        private BaseFavouriteDrugTemp _favdrag { get; set; } = new BaseFavouriteDrugTemp();
+        public DotNetObjectReference<BaseFavouriteDrugTemp> ObjectReferenceForFavDrag { get; private set; }
+
+        [Inject]
+        public IServiceProvider ServiceProvider { get; set; }
+
+
         protected override async Task OnInitializedAsync()
         {
             ObjectReference = DotNetObjectReference.Create(this);
+            ObjectReferenceForFavDrag = DotNetObjectReference.Create(_favdrag);
             treatmentTemps = await App.Database.GetTableRowsAsync<TblTreatmentTemplate>("TblTreatmentTemplate");
             FavDrugTemps = await App.Database.GetTableRowsAsync<TblFavouriteDrugTemplate>("TblFavouriteDrugTemplate");
             PrescTemps = await App.Database.GetTableRowsAsync<TblPerceptionTemplate>("TblPerceptionTemplate");
@@ -97,6 +105,7 @@ namespace QuickMed.BaseComponent
         protected async Task InitializeJS()
         {
             await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
+            await JS.InvokeVoidAsync("setInstanceReferenceForFavDrag", ObjectReferenceForFavDrag);
             await JS.InvokeVoidAsync("makeSelect2", true);
             await JS.InvokeVoidAsync("makeSelect2Custom", "select2C", "GetMedicines", 3);
             await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpAdviceTbl", "add_Advice");
@@ -104,6 +113,8 @@ namespace QuickMed.BaseComponent
             await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpAdviceTbl");
             await JS.InvokeVoidAsync("OnChangeEvent", "adviceSelect", "AdviceChange", ObjectReference);
             await JS.InvokeVoidAsync("OnChangeEvent", "nxtMeetDateSelect", "NextMeetDateChange", ObjectReference);
+            await JS.InvokeVoidAsync("OnChangeEvent", "presDrugTempSelect", "LoadFavDrugTemplate", ObjectReference);
+            await JS.InvokeVoidAsync("OnChangeEvent", "presTreatTempSelect", "LoadTreatMentTemplate", ObjectReference);
 
 
             //await JS.InvokeVoidAsync("setupEditableTable", "MixTempTbl", "add_MixTemp");
@@ -136,7 +147,6 @@ namespace QuickMed.BaseComponent
                     var jsonString = result.ToString();
 
                     var treatments = JsonSerializer.Deserialize<List<TreatmentPopVM>>(jsonString);
-                    await JS.InvokeVoidAsync("populateTreatmentTable", treatments, "TretmentTmpTbl");
                     await JS.InvokeVoidAsync("populateTreatmentTable", treatments, "TretmentTmpTbl");
 
                 }
@@ -212,6 +222,148 @@ namespace QuickMed.BaseComponent
         public async Task UpdateBMI()
         {
             await JS.InvokeVoidAsync("updateBMI");
+        }
+
+
+        [JSInvokable("GetOusudData")]
+        public async Task<dynamic> GetOusudData(string ousudData)
+        {
+            var sameGen = await _teatmentTemp.GetBrandsSameGenaric(ousudData);
+
+            var result = new
+            {
+                Ousud = sameGen,
+                Dose = Dose.Select(x => new SelectVM
+                {
+                    text = x.Name,
+                    value = x.Id
+                }).ToList(),
+                Duration = Duration.Select(x => new SelectVM
+                {
+                    text = x.Name,
+                    value = x.Id
+                }).ToList(),
+                Instruction = Instructions.Select(x => new SelectVM
+                {
+                    text = x.Name,
+                    value = x.Id
+                }).ToList()
+            };
+            return result;
+
+            // Example data
+            //return new List<string> { "Medicine 1", "Medicine 2", "Medicine 3" };
+        }
+
+
+        [JSInvokable("LoadTreatMentTemplate")]
+        public async Task LoadTreatMentTemplate(string selectedData)
+        {
+            try
+            {
+                if (selectedData is not null)
+                {
+
+                    List<FavouriteDrugTempVM> treatments = await _pres.TblTreatmentTempDetails(Guid.Parse(selectedData));
+                    List<TreatmentPopVM> treatmentPopVMs = new List<TreatmentPopVM>();
+                    var result = new object();
+                    if (treatments.Count() > 0)
+                    {
+                        //Load the treatment template to the prescription table
+                        foreach (var treatment in treatments)
+                        {
+                            TreatmentPopVM treatmentPopVM = new TreatmentPopVM()
+                            {
+                                brand = new BrandVM()
+                                {
+                                    text = treatment.BrandName,
+                                    value = treatment.BrandId.ToString()
+                                },
+                                dose = new DoseVM()
+                                {
+                                    text = treatment.DoseName,
+                                    value = treatment.DoseId.ToString()
+                                },
+                                duration = new DurationVM()
+                                {
+                                    text = treatment.DurationName,
+                                    value = treatment.DurationId.ToString()
+                                },
+                                instruction = new InstructionVM()
+                                {
+                                    text = treatment.InstructionName,
+                                    value = treatment.InstructionId.ToString()
+                                }
+                            };
+                            treatmentPopVMs.Add(treatmentPopVM);
+                            result = await JS.InvokeAsync<object>("pushtoPrescription", treatmentPopVM);
+                        }
+                        if (result is not null)
+                        {
+                            var jsonString = result.ToString();
+                            var treatments1 = JsonSerializer.Deserialize<List<TreatmentPopVM>>(jsonString);
+                            await JS.InvokeVoidAsync("populateTreatmentTable", treatments1, "TretmentTmpTbl");
+                        }
+
+                        adviceDetails = new();
+                        //Load the advice template to the prescription table
+                        adviceDetails = await _teatmentTemp.GetAdviceDataById(treatments.FirstOrDefault().Id.ToString());
+                        await JS.InvokeVoidAsync("populateAdviceTable", adviceDetails, "TretmentTmpAdviceTbl");
+
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        [JSInvokable("LoadFavDrugTemplate")]
+        public async Task LoadFavDrugTemplate(string selectedData)
+        {
+            try
+            {
+                if (selectedData is not null)
+                {
+                    FavouriteDrugTempVM favDrugTemp = await _pres.GetFavDrugbyId(Guid.Parse(selectedData));
+                    TreatmentPopVM treatmentPopVM = new TreatmentPopVM()
+                    {
+                        brand = new BrandVM()
+                        {
+                            text = favDrugTemp.BrandName,
+                            value = favDrugTemp.BrandId.ToString()
+                        },
+                        dose = new DoseVM()
+                        {
+                            text = favDrugTemp.DoseName,
+                            value = favDrugTemp.DoseId.ToString()
+                        },
+                        duration = new DurationVM()
+                        {
+                            text = favDrugTemp.DurationName,
+                            value = favDrugTemp.DurationId.ToString()
+                        },
+                        instruction = new InstructionVM()
+                        {
+                            text = favDrugTemp.InstructionName,
+                            value = favDrugTemp.InstructionId.ToString()
+                        }
+                    };
+                    var result = await JS.InvokeAsync<object>("pushtoPrescription", treatmentPopVM);
+                    if (result is not null)
+                    {
+                        var jsonString = result.ToString();
+                        var treatments = JsonSerializer.Deserialize<List<TreatmentPopVM>>(jsonString);
+                        await JS.InvokeVoidAsync("populateTreatmentTable", treatments, "TretmentTmpTbl");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
 

@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using QuickMed.DB;
 using QuickMed.Interface;
+using QuickMed.Services;
 using QuickMed.ViewModels;
 using System.Text.Json;
 
@@ -35,6 +36,7 @@ namespace QuickMed.BaseComponent
         protected override async Task OnInitializedAsync()
         {
             ObjectReference = DotNetObjectReference.Create(this);
+
             drugTemps = await App.Database.GetTableRowsAsync<TblFavouriteDrugTemplate>("TblFavouriteDrugTemplate");
             drugVM = await _drug.GetAsync();
             Brands = new();
@@ -156,13 +158,27 @@ namespace QuickMed.BaseComponent
             try
             {
                 var result = await JS.InvokeAsync<JsonElement>("GetDrugTempData");
+                await SaveData(result);
 
+                await OnInitializedAsync();
+                await RefreshDataTable();
+                StateHasChanged();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task SaveData(JsonElement result)
+        {
+            try
+            {
                 var TemplateId = Guid.NewGuid();
                 string templateName = "";
-
                 if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
                 {
-
                     if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
                     {
                         templateName = templateNameElement.GetString();
@@ -180,18 +196,16 @@ namespace QuickMed.BaseComponent
                             InstructionId = instructionId,
                             DurationId = durationId
                         };
-                        await _drug.SaveFavouriteDrugTemp(drugTemp);
+                        //[Inject]
+                        //public IFavouriteDrug _drug { get; set; }
+                        ApplicationDbContext applicationDbContext = new ApplicationDbContext();
+                        IFavouriteDrug drugService = new FavouriteDrugService(applicationDbContext);
+                        await drugService.SaveFavouriteDrugTemp(drugTemp);
                     }
-
                     else
                     {
                         Console.WriteLine("templateName not found.");
                     }
-
-                    await OnInitializedAsync();
-                    await RefreshDataTable();
-                    StateHasChanged();
-
                 }
 
             }
@@ -200,6 +214,24 @@ namespace QuickMed.BaseComponent
                 throw;
             }
         }
+
+        [JSInvokable("SaveFavOusud")]
+        public async Task<bool> SaveFavOusud(string data)
+        {
+            try
+            {
+                var result = JsonSerializer.Deserialize<JsonElement>(data);
+                await SaveData(result);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
+        }
+
+
 
     }
 }

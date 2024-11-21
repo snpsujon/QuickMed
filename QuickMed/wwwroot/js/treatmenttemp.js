@@ -197,7 +197,6 @@ function QrowEdit(but) {
     $fifthTd.html(div1 + input1);
 
 
-
     FijModoEdit(but);
 
     customSelect2(true);
@@ -216,6 +215,7 @@ function QrowAcep(but) {
 
 
     updateTreatmrntArray(but);
+
     FijModoNormal(but);
     params.onEdit($row);
 
@@ -223,8 +223,7 @@ function QrowAcep(but) {
 }
 
 function rowFav(but) {
-    var $row = $(but).parents('tr');  //accede a la fila
-    var $cols = $row.find('td');  //lee campos
+    var row = $(but).closest('tr')[0];  //accede a la fila
     if (row && row.hasAttribute("data-value")) {
         const treatmentIndex = parseInt(row.getAttribute("data-value"), 10);
 
@@ -239,9 +238,22 @@ function rowFav(but) {
         // Get the treatment object to update
         const treatmentData = treatments[treatmentIndexInArray];
 
-
-
-
+        var data = {
+            templateName: treatmentData['brand']['text'] + '_' + getRandomInteger(1, 9999),
+            brandSelect: treatmentData['brand']['value'],
+            doseSelect: treatmentData['dose']['value'],
+            instructionSelect: treatmentData['instruction']['value'],
+            durationSelectfav: treatmentData['duration']['value']
+        };
+        if (instanceReferenceforFavDrag != null) {
+            instanceReferenceforFavDrag.invokeMethodAsync('SaveFavOusud', JSON.stringify(data))
+                .then((data) => {
+                    if (data) {
+                        showAlert("Save Successful", "Record has been successfully Added to Fav List.", "success", "swal-success");
+                    }
+                })
+                .catch(err => console.error('Error:', err));
+        }
     } else {
         console.error("Could not find the row element or get its data-value attribute.");
     }

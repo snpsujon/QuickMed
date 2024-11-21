@@ -1,4 +1,11 @@
-﻿function changeNxtDatebyVal(DaytoAdd) {
+﻿function pushtoPrescription(formData) {
+    formData['index'] = treatments.length + 1;
+    treatments.push(formData);
+    return treatments;
+}
+
+
+function changeNxtDatebyVal(DaytoAdd) {
     const daysToAdd = parseInt(DaytoAdd, 10) || 0;
     const today = new Date();
     today.setDate(today.getDate() + daysToAdd);

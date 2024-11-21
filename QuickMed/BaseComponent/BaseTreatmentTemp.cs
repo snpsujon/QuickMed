@@ -33,6 +33,10 @@ namespace QuickMed.BaseComponent
         public List<TblAdviceTemplate> adviceMasters = new List<TblAdviceTemplate>();
 
 
+        private BaseFavouriteDrugTemp _favdrag { get; set; } = new BaseFavouriteDrugTemp();
+        public DotNetObjectReference<BaseFavouriteDrugTemp> ObjectReferenceForFavDrag { get; private set; }
+
+
 
         [Inject]
         public IJSRuntime JS { get; set; }
@@ -41,6 +45,8 @@ namespace QuickMed.BaseComponent
         protected override async Task OnInitializedAsync()
         {
             ObjectReference = DotNetObjectReference.Create(this);
+            ObjectReferenceForFavDrag = DotNetObjectReference.Create(_favdrag);
+
 
             //await JS.InvokeVoidAsync("makeSelect2", true);
             Brands = new();
@@ -73,6 +79,7 @@ namespace QuickMed.BaseComponent
                 await JS.InvokeVoidAsync("makeSelect2", true);
                 await JS.InvokeVoidAsync("makeSelect2Custom", "select2C", "GetMedicines", 3);
                 await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
+                await JS.InvokeVoidAsync("setInstanceReferenceForFavDrag", ObjectReferenceForFavDrag);
                 await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpAdviceTbl", "add_Advice");
                 await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpTbl");
                 await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpAdviceTbl");

@@ -1,9 +1,15 @@
 ﻿var deletebun = '<button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button>';
 
 let instanceReference;
+let instanceReferenceforFavDrag;
 
 function setInstanceReferenceForAll(dotNetObject) {
     instanceReference = dotNetObject;
+}
+
+
+function setInstanceReferenceForFavDrag(dotNetObject) {
+    instanceReferenceforFavDrag = dotNetObject;
 }
 
 function LoadPage(ff) {
