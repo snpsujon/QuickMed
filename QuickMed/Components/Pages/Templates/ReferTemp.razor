@@ -1,4 +1,6 @@
 ﻿@page "/referTemp"
+@using QuickMed.BaseComponent
+@inherits BaseRefferenceTemp
 
 <div class="row">
     <div class="col-12">
@@ -13,13 +15,13 @@
                     <select class="select2W  form-control custom-select" aria-label="Default select example" id="referenceTempSelect">
                         <option selected disabled>Select Template</option>
                         @*@if (noteTemps != null && noteTemps.Any())
-                    {
-                        @foreach (var item in noteTemps)
-                        {
-                            <option value="@item.Id">@item.Name</option>
-                        }
+                            {
+                                @foreach (var item in noteTemps)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
 
-                    }*@
+                            }*@
                     </select>
                 </div>
             </div>
@@ -36,15 +38,15 @@
                 </div>
                 <hr style="border-top: 1px dashed red;" />
                 @*                     <div class="row">
-                <div class="col-sm-3">
-                    <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                        <option selected disabled>Select Notes</option>
-                        <option value="1">M</option>
-                        <option value="2">F</option>
-                        <option value="3">O</option>
-                    </select>
-                </div>
-            </div> *@
+                        <div class="col-sm-3">
+                            <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
+                                <option selected disabled>Select Notes</option>
+                                <option value="1">M</option>
+                                <option value="2">F</option>
+                                <option value="3">O</option>
+                            </select>
+                        </div>
+                    </div> *@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -54,14 +56,14 @@
 
                 <hr />
                 <span class="float-right">
-                    <button id="but_add" class="btn btn-success btn-sm float-end" >Save</button>
+                    <button id="but_add" class="btn btn-success btn-sm float-end">Save</button>
                 </span>
             </div>
 
 
-            </div><!--end card-->
+        </div><!--end card-->
 
-        </div> <!-- end col -->
+    </div> <!-- end col -->
 </div> <!-- end row     -->
 
 <h4 class="text-primary"> <i class="dripicons-view-list"></i> &nbsp;&nbsp;  C/C List</h4>
@@ -113,7 +115,7 @@
         </div>
     </div> <!-- end col -->
 </div> <!-- end row -->
-@code {
+@*@code {
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -123,4 +125,4 @@
         }
     }
 
-}
+}*@

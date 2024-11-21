@@ -11,35 +11,57 @@ namespace QuickMed.BaseComponent
         public IPrescription _pres { get; set; }
         [Inject]
         public IJSRuntime JS { get; set; }
+
         public PrescriptionVM prescription = new();
         public IEnumerable<PrescriptionVM>? prescriptions { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            prescriptions = await App.Database.GetTableRowsAsync<PrescriptionVM>("TblPrescription");
-            await InitializeDataTable();
+            prescriptions = await _pres.GetAll();
+            await RefreshDataTable();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await InitializeDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
+                await RefreshDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
             }
         }
 
-        protected async Task InitializeDataTable()
+        //protected async Task InitializeDataTable()
+        //{
+        //    await JS.InvokeVoidAsync("makeDataTable", "datatable-prescriptionList");
+
+        //}
+
+        protected async Task RefreshDataTable()
         {
-            await JS.InvokeVoidAsync("makeDataTable", "datatable-prescriptionList");
 
-        }
+            var tableData = prescriptions?.Select((pres, index) => new[]
+                {
+                    (index + 1).ToString(), // Serial number starts from 1
+                    pres.PrescriptionCode?.ToString() ?? string.Empty, // Note name
+                    pres.PrescriptionDate.HasValue
+                    ? pres.PrescriptionDate.Value.ToString("yyyy-MM-dd") // Format the DateTime
+                    : string.Empty, // Handle null DateTime
+                    pres.PatientName?.ToString() ?? string.Empty,
+                    pres.MobileNumber?.ToString() ?? string.Empty,
+                    pres.Address?.ToString() ?? string.Empty,
+                    pres.Dx?.ToString() ?? string.Empty,
+                    pres.Plan?.ToString() ?? string.Empty,
+                    $@"
+                    <div style='display: flex; justify-content: flex-end;'>
+                        <i class='dripicons-pencil btn btn-soft-primary' onclick='editRow({pres.Id})'></i>
+                        <i class='dripicons-trash btn btn-soft-danger' onclick='deleteRow({pres.Id})'></i>
+                    </div>
+                    " // Action buttons
+                }).ToArray();
 
+            if (tableData != null)
+            {
+                await JS.InvokeVoidAsync("makeDataTableQ", "datatable-prescriptionList", tableData);
+            }
 
-
-        protected async Task OnEditClick(PrescriptionVM data)
-        {
-            prescription = data;
-            //await NotesTempChange(data.Id.ToString());
-            StateHasChanged(); // Re-render the component with the updated model
         }
         protected async Task OnPreviewClick(PrescriptionVM data)
         {

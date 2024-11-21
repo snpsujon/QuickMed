@@ -32,11 +32,27 @@ namespace QuickMed.Services
         {
             try
             {
-                return await _context.GetTableRowsAsync<TblPrescription>("TblPrescription");
+                var query = @"
+            SELECT 
+            p.Id,
+            p.PrescriptionCode,
+            p.PrescriptionDate,
+            pp.Id AS PatientId,
+            pp.Name as PatientName,
+            p.MobileNumber,
+            p.Address,
+            p.Plan,
+            p.Dx
+        FROM TblPrescription p
+        LEFT JOIN TblPatient pp 
+            ON p.PatientId = pp.Id";
+
+                var result = await _context.ExecuteSqlQueryAsync<PrescriptionVM>(query);
+                return result.ToList();
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine($"Error fetching data: {ex.Message}");
                 throw;
             }
         }
