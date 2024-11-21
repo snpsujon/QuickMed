@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using QuickMed.Components.Pages.Templates;
 using QuickMed.DB;
 using QuickMed.Interface;
 using System.Text.Json;
@@ -20,7 +19,7 @@ namespace QuickMed.BaseComponent
         public TblIXTemplate model = new();
         public IEnumerable<TblIXTemplate>? models { get; set; }
         public List<TblIXDetails> templateDetails { get; set; }
-
+        public DotNetObjectReference<BaseIXTemp> ObjectReference { get; private set; }
 
         //protected override async Task OnAfterRenderAsync(bool firstRender)
         //{
@@ -42,8 +41,8 @@ namespace QuickMed.BaseComponent
             {
                 await InitializeDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
                 await InitializeJS();
-               
-                
+
+
             }
         }
 
@@ -52,87 +51,124 @@ namespace QuickMed.BaseComponent
             model = new();
             templateDetails = new();
             models = await _ixTemp.GetAsync();
-            await JS.InvokeVoidAsync("makeDataTable", "datatable-ixTemp");
-           
+            this.RefreshDataTable();
+
         }
         protected async Task InitializeJS()
         {
-            var objRef = DotNetObjectReference.Create(this);
+            ObjectReference = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             await JS.InvokeVoidAsync("setupEditableTable", "makeEditable_IxTemp", "but_add_IxTemp", false);
-            await JS.InvokeVoidAsync("makeTableDragable", "makeEditable_IxTemp");
             await JS.InvokeVoidAsync("makeSelect2", false);
-            await JS.InvokeVoidAsync("OnChangeEvent", "IXTempSelect", "IXTempChange", objRef);
+            await JS.InvokeVoidAsync("OnChangeEvent", "IXTempSelect", "IXTempChange", ObjectReference);
+            await JS.InvokeVoidAsync("makeTableDragable", "makeEditable_IxTemp");
         }
+        protected async Task RefreshDataTable()
+        {
 
+            var tableData = models?.Select((ix, index) => new[]
+                {
+                    (index + 1).ToString(), // Serial number starts from 1
+                    ix.TemplateName?.ToString() ?? string.Empty, // Note name
+                    $@"
+                    <div style='display: flex; justify-content: flex-end;'>
+                        <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{ix.Id}' data-method='OnEditClick'></i>
+                        <i class='dripicons-trash btn btn-soft-danger dTRowActionBtn' data-id='{ix.Id}' data-method='OnDeleteClick'></i>
+                    </div>
+                    " // Action buttons
+                }).ToArray();
+
+            await JS.InvokeVoidAsync("makeDataTableQ", "datatable-IxTemp", tableData);
+
+        }
 
         protected async Task OnSaveBtnClick()
         {
-            var result = await JS.InvokeAsync<JsonElement>("GetIXTempData");
-            if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
+            try
             {
-                if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
+                var result = await JS.InvokeAsync<JsonElement>("GetIXTempData");
+                if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
                 {
-                    var templateName = templateNameElement.GetString();
-                    if(model.Id == Guid.Empty)
+                    if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
                     {
-                        model = new()
+                        var templateName = templateNameElement.GetString();
+                        if (model.Id == Guid.Empty)
                         {
-                            Id = Guid.NewGuid(),
-                            TemplateName = templateName
-                        };
-                        await _ixTemp.SaveAsync(model);
+                            model = new()
+                            {
+                                Id = Guid.NewGuid(),
+                                TemplateName = templateName
+                            };
+                            await _ixTemp.SaveAsync(model);
+                        }
+                        else
+                        {
+                            model.TemplateName = templateName;
+                            await _ixTemp.UpdateAsync(model);
+                            await _ixTemp.DeleteDetailsAsync(model.Id);
+                        }
+
+
+
+                    }
+
+                    if (result.TryGetProperty("tempData", out JsonElement jsonelement))
+                    {
+                        if (jsonelement.ValueKind == JsonValueKind.Array)
+                        {
+                            var ListData = jsonelement.EnumerateArray()
+                                .Select(item => item.GetString())
+                                .ToList();
+
+                            if (ListData.Count() > 0)
+                            {
+
+                                templateDetails = new List<TblIXDetails>();
+                                foreach (var item in ListData)
+                                {
+                                    templateDetails.Add(new TblIXDetails
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        TblIXTempMasterId = model.Id,
+                                        Name = item
+                                    });
+                                }
+                                var saveDetails = await _ixTemp.SaveTemplateDetails(templateDetails);
+                                await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
+                                model = new TblIXTemplate();
+                                await JS.InvokeVoidAsync("ClearTable", "makeEditable_IxTemp");
+
+                                await InitializeDataTable();
+                            }
+                        }
                     }
                     else
                     {
-                        model.TemplateName = templateName;
-                        await _ixTemp.UpdateAsync(model);
-                        await _ixTemp.DeleteDetailsAsync(model.Id);
+                        Console.WriteLine("templateName not found.");
                     }
-                    model = new TblIXTemplate();
-                   
+
+                    StateHasChanged();
+
 
                 }
+            }
+            catch (Exception ex)
+            {
 
-                if (result.TryGetProperty("tempData", out JsonElement jsonelement))
-                {
-                    if (jsonelement.ValueKind == JsonValueKind.Array)
-                    {
-                        var ListData = jsonelement.EnumerateArray()
-                            .Select(item => item.GetString())
-                            .ToList();
-
-                        if (ListData.Count() > 0)
-                        {
-
-                            templateDetails = new List<TblIXDetails>();
-                            foreach (var item in ListData)
-                            {
-                                templateDetails.Add(new TblIXDetails
-                                {
-                                    Id = Guid.NewGuid(),
-                                    TblIXTempMasterId = model.Id,
-                                    Name = item
-                                });
-                            }
-                            var saveDetails = await _ixTemp.SaveTemplateDetails(templateDetails);
-                            await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("templateName not found.");
-                }
-
-                StateHasChanged();
-
-
+                throw;
             }
 
 
 
+
         }
-        protected async Task OnEditClick(TblIXTemplate data)
+        [JSInvokable("OnEditClick")]
+        public async Task OnEditClick(string Id)
+        {
+            await OnEditClicks(models.FirstOrDefault(x => x.Id == Guid.Parse(Id)));
+            StateHasChanged(); // Re-render the component with the updated model
+        }
+        protected async Task OnEditClicks(TblIXTemplate data)
         {
             model = data;
             await IXTempChange(data.Id.ToString());
@@ -156,7 +192,8 @@ namespace QuickMed.BaseComponent
                 throw;
             }
         }
-        protected async Task OnDeleteClick(Guid id)
+        [JSInvokable("OnDeleteClick")]
+        public async Task OnDeleteClick(Guid id)
         {
             bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
 
@@ -169,6 +206,7 @@ namespace QuickMed.BaseComponent
                     await JS.InvokeVoidAsync("showAlert", "Delete Successful", "Record has been successfully deleted.", "success", "swal-danger");
 
                     // Refresh the list after deletion
+                    await InitializeDataTable();
                     StateHasChanged();  // Update the UI after deletion
                 }
                 else

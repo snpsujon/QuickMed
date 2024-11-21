@@ -284,10 +284,12 @@ function onAdviceChange(selectElement) {
 
 }
 function GetIXTempData() {
+
     const tableBody = $("#makeEditable_IxTemp tbody")[0];
     const secondColumnData = [];
     const tempname = $("#TempName").val();
     $(tableBody).find("tr").each(function () {
+        debugger;
         const secondCell = $(this).children("td").eq(1);
         const cellData = secondCell.find("input").val().trim();
         secondColumnData.push(cellData);
@@ -329,9 +331,22 @@ function populateIXTable(dataArray, tblId) {
             { text: data?.name || "N/A", value: data?.id || "" }
         ];
 
-        cells.forEach(cellData => {
+        cells.forEach((cellData, index) => {
             const cell = document.createElement("td");
-            cell.textContent = cellData.text;
+
+            if (index != 0) {
+                const input = document.createElement("input");
+                input.type = "text"; // Specify input type
+                input.value = cellData.text; // Set the value of the input
+                input.classList.add("form-control"); // Add the 'form-control' class
+
+                cell.appendChild(input); // Append the input to the cell
+
+            } else {
+                cell.textContent = cellData.text;
+            }
+
+
             cell.setAttribute("data-value", cellData.value);
             newRow.appendChild(cell);
         });
