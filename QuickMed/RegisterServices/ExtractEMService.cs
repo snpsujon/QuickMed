@@ -21,6 +21,7 @@ namespace QuickMed.RegisterServices
             services.AddScoped<IDurationTemp, DurationTempService>();
             services.AddScoped<IFavouriteDrug, FavouriteDrugService>();
             services.AddScoped<IPrescription, PrescriptionService>();
+            services.AddScoped<IRefferenceTemp, RefferenceService>();
 
         }
 

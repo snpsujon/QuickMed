@@ -2,32 +2,30 @@
 using Microsoft.JSInterop;
 using QuickMed.DB;
 using QuickMed.Interface;
-using System.Text.Json;
 
 namespace QuickMed.BaseComponent
 {
     public class BaseRefferenceTemp : ComponentBase
     {
         [Inject]
-        public INotesTemp _notes { get; set; }
+        public IRefferenceTemp _ref { get; set; }
 
         [Inject]
         public IJSRuntime JS { get; set; }
 
 
-        public TblNotesTemplate noteTemp = new();
-        public IEnumerable<TblNotesTemplate>? noteTemps { get; set; }
-        public List<TblNotesTempDetails> templateDetails { get; set; }
+        public TblRefferTemplate tblReffer = new();
+        public IEnumerable<TblRefferTemplate>? tblReffers { get; set; }
+
 
         public DotNetObjectReference<BaseRefferenceTemp> ObjectReference { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
             ObjectReference = DotNetObjectReference.Create(this);
+
             await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
-            noteTemps = await _notes.GetAsync(); // Load the initial data
-            noteTemps = await App.Database.GetTableRowsAsync<TblNotesTemplate>("TblNotesTemplate");
-            templateDetails = await _notes.GetDetailsAsync();
+            tblReffers = await _ref.GetAsync(); // Load the initial data
             await RefreshDataTable();
 
 
@@ -50,7 +48,7 @@ namespace QuickMed.BaseComponent
         protected async Task RefreshDataTable()
         {
 
-            var tableData = noteTemps?.Select((note, index) => new[]
+            var tableData = tblReffers?.Select((note, index) => new[]
                 {
                     (index + 1).ToString(), // Serial number starts from 1
                     note.Name?.ToString() ?? string.Empty, // Note name
@@ -62,115 +60,65 @@ namespace QuickMed.BaseComponent
                     " // Action buttons
                 }).ToArray();
 
-            await JS.InvokeVoidAsync("makeDataTableQ", "datatable-noteTemp", tableData);
+            await JS.InvokeVoidAsync("makeDataTableQ", "datatable-reffTemp", tableData);
 
         }
 
         protected async Task InitializeJS()
         {
-            await JS.InvokeVoidAsync("setupEditableTable", "notesMainTbl", "add_new_notes", false);
             await JS.InvokeVoidAsync("makeSelect2", false);
-            await JS.InvokeVoidAsync("OnChangeEvent", "notesTempSelect", "NotesTempChange", ObjectReference);
-            await JS.InvokeVoidAsync("makeTableDragable", "notesMainTbl");
+            await JS.InvokeVoidAsync("initializeQuill", "#editors");
+            StateHasChanged();
         }
-        [JSInvokable]
-        public async Task NotesTempChange(string selectedData)
-        {
-            try
-            {
-                //var selectedData = await JS.InvokeAsync<string>("getAdviceValue");
-                if (selectedData is not null)
-                {
-                    templateDetails = await _notes.GetDataById(selectedData);
-                    await JS.InvokeVoidAsync("populateNotesTable", templateDetails, "notesMainTbl");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
+
 
         protected async Task OnSaveBtnClick()
         {
-            var result = await JS.InvokeAsync<JsonElement>("GetNotesTempData");
-            if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
+            try
             {
-                if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
+                var content = await JS.InvokeAsync<string>("getQuillContent", "#editors");
+                tblReffer.Details = content;
+                if (tblReffer.Id != Guid.Empty)
                 {
-                    var templateName = templateNameElement.GetString();
-                    if (noteTemp.Id == Guid.Empty)
-                    {
-                        noteTemp = new()
-                        {
-                            Id = Guid.NewGuid(),
-                            Name = templateName
-                        };
-                        await _notes.SaveAsync(noteTemp);
-                    }
-                    else
-                    {
-                        noteTemp.Name = templateName;
-                        await _notes.UpdateAsync(noteTemp);
-                        await _notes.DeleteDetailsAsync(noteTemp.Id);
-                    }
-
-
-                }
-
-                if (result.TryGetProperty("tempData", out JsonElement jsonelement))
-                {
-                    if (jsonelement.ValueKind == JsonValueKind.Array)
-                    {
-                        var ListData = jsonelement.EnumerateArray()
-                            .Select(item => item.GetString())
-                            .ToList();
-
-                        if (ListData.Count() > 0)
-                        {
-
-                            templateDetails = new List<TblNotesTempDetails>();
-                            foreach (var item in ListData)
-                            {
-                                templateDetails.Add(new TblNotesTempDetails
-                                {
-                                    Id = Guid.NewGuid(),
-                                    TblNotesTempMasterId = noteTemp.Id,
-                                    Name = item
-                                });
-                            }
-                            var saveDetails = await _notes.SaveTemplateDetails(templateDetails);
-                            await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
-                        }
-                    }
+                    await App.Database.UpdateAsync(tblReffer);
                 }
                 else
                 {
-                    Console.WriteLine("templateName not found.");
+                    tblReffer.Id = Guid.NewGuid();
+                    await App.Database.CreateAsync(tblReffer);
                 }
-
-                //await RefreshDataTable();
-
+                tblReffer = new();
+                // Clear the Quill editor after saving
+                await JS.InvokeVoidAsync("clearQuillContent", "#editors");
                 await OnInitializedAsync();
 
                 StateHasChanged();
 
-
             }
+            catch (Exception)
+            {
 
-
-
+                throw;
+            }
         }
 
         [JSInvokable("OnEditClick")]
         public async Task OnEditClick(string Id)
         {
-            //noteTemp = data;
-            //noteTemp = await _notes.GetByIdAsync(Guid.Parse(Id));
-            noteTemp.Name = noteTemps.FirstOrDefault(x => x.Id == Guid.Parse(Id)).Name;
-            noteTemp.Id = Guid.Parse(Id);
-            await NotesTempChange(Id);
-            StateHasChanged(); // Re-render the component with the updated model
+            // Fetch the data based on the ID
+            var data = tblReffers.FirstOrDefault(x => x.Id == Guid.Parse(Id));
+            if (data != null)
+            {
+                tblReffer.Name = data.Name;
+                tblReffer.Id = Guid.Parse(Id);
+                tblReffer.Details = data.Details;
+
+                // Pass the details content to the Quill editor
+                await JS.InvokeVoidAsync("setQuillContent", "#editors", tblReffer.Details);
+            }
+
+            // Re-render the component with the updated model
+            StateHasChanged();
         }
 
         [JSInvokable("OnDeleteClick")]
@@ -180,7 +128,7 @@ namespace QuickMed.BaseComponent
 
             if (isConfirmed)
             {
-                var isDeleted = await _notes.DeleteAsync(id);
+                var isDeleted = await _ref.DeleteAsync(id);
                 if (isDeleted)
                 {
                     // Show success alert with red color
