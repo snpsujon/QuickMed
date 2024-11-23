@@ -90,7 +90,7 @@ function populateCCSelect() {
                 setSelectOptions('ccLoads2', data.duration);
                 setSelectOptions('ccLoads3', data.dM);
 
-                //console.log("Data received from Blazor:", data);
+
             })
             .catch(error => {
                 console.error("Error:", error);
@@ -107,7 +107,6 @@ function populateDXSelect() {
 
                 setSelectOptions('dxLoads1', data.dx);
 
-                //console.log("Data received from Blazor:", data);
             })
             .catch(error => {
                 console.error("Error:", error);
@@ -126,7 +125,6 @@ function populateDHSelect() {
                 setSelectOptions('dhLoads1', data.brands);
                 makeSelect2Custom("dhLoads1", "GetMedicines", 3);
 
-                //console.log("Data received from Blazor:", data);
             })
             .catch(error => {
                 console.error("Error:", error);
@@ -266,7 +264,6 @@ function GetPetaintData() {
         bmiweight: $("#bmiWeight").val()
     };
 
-    console.log(data); // To check the retrieved data
     return data; // Return the object if needed elsewhere
 }
 
@@ -278,7 +275,6 @@ function GetNextMeetData() {
         referredBy: $("#Reffer-Book").val()                // Value of the referred by input
     };
 
-    console.log(data); // For debugging, logs the collected data
     return data;       // Returns the data object
 }
 
@@ -322,7 +318,6 @@ function getTableDataById(tableId) {
 
         tableData.push(rowData); // Add row data to table data
     });
-    console.log(tableData);
     return tableData;
 }
 
@@ -337,7 +332,6 @@ function getHOTableData() {
         data[key] = isChecked;
     });
     data['FreeTextHO'] = $('#FreeTextHO').val();
-    console.log(data);
     return data;
 }
 
@@ -390,6 +384,5 @@ function getDataColumnAsKey(tableId, isUnit = false) {
         });
         tableData.push(rowData);
     });
-    console.log(tableData);
     return tableData;
 }
