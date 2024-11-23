@@ -227,6 +227,7 @@ function getPresData() {
     var noteTableData = getTableDataById('TretmentTmpNotesTbl');
     var reportTableData = getTableDataById('rptEntryTbl');
     var adviceTableData = GetAdviceTblData();
+    var refferData = getQuillContent('#editors_pres');
 
     var data = {
         pdata: Pdata,
@@ -241,7 +242,8 @@ function getPresData() {
         noteTableData: noteTableData,
         reportTableData: reportTableData,
         treatments: treatments,
-        advice: adviceTableData
+        advice: adviceTableData,
+        reffer: refferData
     };
 
     console.log(data); // To check the retrieved data

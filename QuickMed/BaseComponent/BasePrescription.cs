@@ -131,6 +131,11 @@ namespace QuickMed.BaseComponent
             await JS.InvokeVoidAsync("OnChangeEvent", "noteTempSelect", "NotesChange", ObjectReference);
 
 
+            await JS.InvokeVoidAsync("initializeQuill", "#editors_pres");
+
+            //await JS.InvokeVoidAsync("clearQuillContent", "#editors_pres");
+
+
             //await JS.InvokeVoidAsync("setupEditableTable", "MixTempTbl", "add_MixTemp");
             //await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpTbl");
 
@@ -200,8 +205,7 @@ namespace QuickMed.BaseComponent
                 //var selectedData = await JS.InvokeAsync<string>("getAdviceValue");
                 if (selectedData is not null)
                 {
-                    //adviceDetails = await _teatmentTemp.GetAdviceDataById(selectedData);
-                    //await JS.InvokeVoidAsync("populateAdviceTable", adviceDetails, "TretmentTmpAdviceTbl");
+                    await JS.InvokeVoidAsync("setQuillContent", "#editors_pres", RefferTemps.FirstOrDefault(x => x.Id == Guid.Parse(selectedData)).Details);
 
                 }
             }
