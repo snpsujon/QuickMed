@@ -9,5 +9,10 @@ namespace QuickMed.Interface
         Task<FavouriteDrugTempVM> GetFavDrugbyId(Guid id);
 
         Task<List<FavouriteDrugTempVM>> TblTreatmentTempDetails(Guid id);
+        Task<dynamic> GetCCList();
+        Task<dynamic> GetDXList();
+        Task<dynamic> GetDurationsList();
+
+
     }
 }

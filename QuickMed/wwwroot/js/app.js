@@ -128,7 +128,7 @@ function ClearTable(tableid) {
 }
 
 
-function myrowAddNew(tabId, isSelect2 = true) {  // Adds a new row to the specified table.
+function myrowAddNew(tabId, isSelect2 = true, nameCalledFunction = '', className = 'customClass') {  // Adds a new row to the specified table.
     var $tab_en_edic = $("#" + tabId);  // Table to edit
     var $filas = $tab_en_edic.find('tbody tr');
 
@@ -165,7 +165,7 @@ function myrowAddNew(tabId, isSelect2 = true) {  // Adds a new row to the specif
                 var div = '<div style="display: none;"></div>';  // Store content
                 var input = '';
                 if (isSelect2) {
-                    input = '<select class="form-control customselect2 custom-select" value=""></select>';
+                    input = '<select class="form-control customselect2 custom-select ' + className + index + '" value=""></select>';
 
                 } else {
                     input = '<input class="form-control" value="" />';
@@ -191,13 +191,24 @@ function myrowAddNew(tabId, isSelect2 = true) {  // Adds a new row to the specif
     });
 
     $tab_en_edic.find('tr:last').find('td:last').html(deletebun);
+    if (nameCalledFunction !== '' && nameCalledFunction !== "" && nameCalledFunction !== null) {
+        if (typeof window[nameCalledFunction] === 'function') {
+            window[nameCalledFunction](); // Pass parameters using spread syntax
+        } else {
+            console.log(`Function ${nameCalledFunction} does not exist.`);
+        }
+    }
+
     customSelect2(true);
+
     // Trigger the onAdd callback function if defined
     if (typeof params !== 'undefined' && typeof params.onAdd === 'function') {
         params.onAdd();
     }
 
 }
+
+
 
 function customSelect2(isTags) {
     $('.customselect2').select2({
@@ -461,17 +472,19 @@ function getRandomInteger(min, max) {
 }
 
 
-function setSelectOptions(selectClass, options, defaultValue) {
+function setSelectOptions(selectClass, options, defaultValue = '') {
     var $select = $('.' + selectClass);
 
     if ($select.length) {
-        $select.find('option:not(:first)').remove();
-
+        //$select.find('option:not(:first)').remove();
+        $select.find('option').remove();
+        var firstOption = '<option value="0">Select</option>';
+        $select.append(firstOption);
         options.forEach(option => {
             var $opt = $('<option></option>').val(option.value).text(option.text);
 
             // Set default selected option
-            if (option.value === defaultValue) {
+            if (defaultValue != '' && option.value === defaultValue) {
                 $opt.attr('selected', 'selected');
             }
 

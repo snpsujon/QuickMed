@@ -57,6 +57,8 @@ namespace QuickMed.BaseComponent
         public List<TblInstruction> Instructions = new List<TblInstruction>();
         public List<TblAdviceTemplateDetails> adviceDetails = new List<TblAdviceTemplateDetails>();
         public List<TblAdviceTemplate> adviceMasters = new List<TblAdviceTemplate>();
+        public List<TblNotesTemplate> notesMasters = new List<TblNotesTemplate>();
+        public List<TblIXTemplate> ixMasters = new List<TblIXTemplate>();
         public int SelectedDays { get; set; } = 0;
         public DateTime NextMeetingDate { get; set; } = DateTime.Now;
 
@@ -86,6 +88,11 @@ namespace QuickMed.BaseComponent
             Duration = await App.Database.GetTableRowsAsync<TblDuration>("TblDuration");
             Instructions = new();
             Instructions = await App.Database.GetTableRowsAsync<TblInstruction>("TblInstruction");
+            notesMasters = new();
+            notesMasters = await App.Database.GetTableRowsAsync<TblNotesTemplate>("TblNotesTemplate");
+            ixMasters = new();
+            ixMasters = await App.Database.GetTableRowsAsync<TblIXTemplate>("TblIXTemplate");
+
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -214,9 +221,9 @@ namespace QuickMed.BaseComponent
             StateHasChanged();
         }
 
-        public async Task AddaRow(string tblid, bool isSelect = false)
+        public async Task AddaRow(string tblid, bool isSelect = false, string functionName = "", string className = "")
         {
-            await JS.InvokeVoidAsync("myrowAddNew", tblid, isSelect);
+            await JS.InvokeVoidAsync("myrowAddNew", tblid, isSelect, functionName, className);
         }
 
 
@@ -368,7 +375,67 @@ namespace QuickMed.BaseComponent
         }
 
 
+        [JSInvokable("GetCCSelectData")]
+        public async Task<dynamic> GetCCSelectData()
+        {
+            var CC = await _pres.GetCCList();
+            var duration = await _pres.GetDurationsList();
+            var DM = new List<object>
+            {
+                new
+                {
+                    text = "দিন",
+                    value = "Day"
+                },
+                new
+                {
+                    text = "সপ্তাহ",
+                    value = "Week"
+                },
+                new
+                {
+                    text = "মাস",
+                    value = "Month"
+                },
+                new
+                {
+                    text = "বছর",
+                    value = "Year"
+                }
+            };
 
+            var returndata = new
+            {
+                ccList = CC,
+                duration = duration,
+                dM = DM
+            };
+            return returndata;
+        }
+
+        [JSInvokable("GetDHSelectData")]
+        public async Task<dynamic> GetDHSelectData()
+        {
+            var dh = new
+            {
+                Brands = Brands.Select(x => new SelectVM
+                {
+                    text = x.Name,
+                    value = x.Id
+                }).ToList(),
+            };
+            return dh;
+        }
+        [JSInvokable("GetDXSelectData")]
+        public async Task<dynamic> GetDXSelectData()
+        {
+            var dx = await _pres.GetCCList();
+            var dh = new
+            {
+                dx = dx
+            };
+            return dh;
+        }
 
 
     }
