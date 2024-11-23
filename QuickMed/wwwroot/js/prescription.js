@@ -81,6 +81,7 @@ function updateIdealWeight(totalHeightInches) {
 }
 
 function populateCCSelect() {
+
     if (instanceReference) {
         instanceReference.invokeMethodAsync("GetCCSelectData")
             .then(data => {
@@ -133,4 +134,260 @@ function populateDHSelect() {
     } else {
         console.error("Instance reference is not set.");
     }
+}
+
+
+function populateIXTablePres(dataArray, tblId) {
+
+    if (!Array.isArray(dataArray) && typeof dataArray === 'object') {
+        dataArray = Object.values(dataArray);
+    }
+
+    if (!Array.isArray(dataArray)) {
+        console.error("Expected an array but received:", dataArray);
+        return;
+    }
+
+    const tableBody = $("#" + tblId + " tbody")[0];
+
+    tableBody.innerHTML = "";
+    dataArray.forEach((data, index) => {
+        const newRow = document.createElement("tr");
+        newRow.setAttribute("data-value", index + 1);
+
+        const cells = [
+            { text: index + 1, value: index + 1 },
+            { text: data?.name || "N/A", value: data?.id || "" }
+        ];
+
+        cells.forEach(cellData => {
+            const cell = document.createElement("td");
+            cell.textContent = cellData.text;
+            cell.setAttribute("data-value", cellData.value);
+            newRow.appendChild(cell);
+        });
+
+        var buttonCell = document.createElement("td");
+        buttonCell.setAttribute("name", "buttons");
+
+        buttonCell.innerHTML = deletebun;
+        newRow.appendChild(buttonCell);
+        tableBody.appendChild(newRow);
+    });
+}
+function populateNoteTablePres(dataArray, tblId) {
+
+    if (!Array.isArray(dataArray) && typeof dataArray === 'object') {
+        dataArray = Object.values(dataArray);
+    }
+
+    if (!Array.isArray(dataArray)) {
+        console.error("Expected an array but received:", dataArray);
+        return;
+    }
+
+    const tableBody = $("#" + tblId + " tbody")[0];
+
+    tableBody.innerHTML = "";
+    dataArray.forEach((data, index) => {
+        const newRow = document.createElement("tr");
+        newRow.setAttribute("data-value", index + 1);
+
+        const cells = [
+            { text: index + 1, value: index + 1 },
+            { text: data?.name || "N/A", value: data?.id || "" }
+        ];
+
+        cells.forEach(cellData => {
+            const cell = document.createElement("td");
+            cell.textContent = cellData.text;
+            cell.setAttribute("data-value", cellData.value);
+            newRow.appendChild(cell);
+        });
+
+        var buttonCell = document.createElement("td");
+        buttonCell.setAttribute("name", "buttons");
+
+        buttonCell.innerHTML = deletebun;
+        newRow.appendChild(buttonCell);
+        tableBody.appendChild(newRow);
+    });
+}
+
+function getPresData() {
+    var Pdata = GetPetaintData();
+    var nxtMeetData = GetNextMeetData();
+    var ccTableData = getTableDataById('ccTable');
+    var hoTableData = getHOTableData();
+    var mhTableData = getDataColumnAsKey('mhTable');
+    var oeTableData = getDataColumnAsKey('oeTable', true);
+    var dhTableData = getTableDataById('dhTable');
+    var dxTableData = getTableDataById('Dxtable');
+    var ixTableData = getTableDataById('TretmentTmpIXTbl');
+    var noteTableData = getTableDataById('TretmentTmpNotesTbl');
+    var reportTableData = getTableDataById('rptEntryTbl');
+    var adviceTableData = GetAdviceTblData();
+
+    var data = {
+        pdata: Pdata,
+        nxtMeetData: nxtMeetData,
+        ccTableData: ccTableData,
+        hoTableData: hoTableData,
+        mhTableData: mhTableData,
+        oeTableData: oeTableData,
+        dhTableData: dhTableData,
+        dxTableData: dxTableData,
+        ixTableData: ixTableData,
+        noteTableData: noteTableData,
+        reportTableData: reportTableData,
+        treatments: treatments,
+        advice: adviceTableData
+    };
+
+    console.log(data); // To check the retrieved data
+
+}
+
+
+function GetPetaintData() {
+    var heightInc = (parseFloat($("#bmiHeightft").val()) * 12) + parseFloat($("#bmiHeightin").val());
+    var data = {
+        name: $("#Patient-Name").val(),
+        age: $("#Patient-Age").val(),
+        sex: $("#Patient-Sex").val(),
+        address: $("#Patient-Address").val(),
+        mobile: $("#Patient-Mobile").val(),
+        regNo: $("#Patient-Reg").val(),
+        weight: $("#Patient-Wt").val(),
+        date: $("#Practicum-Date").val(),
+        height: heightInc,
+        bmiweight: $("#bmiWeight").val()
+    };
+
+    console.log(data); // To check the retrieved data
+    return data; // Return the object if needed elsewhere
+}
+
+function GetNextMeetData() {
+    var data = {
+        nextMeetingDuration: $("#nxtMeetDateSelect").val(), // Value of the dropdown
+        nextMeetingDate: $("#nxtMeetDate").val(),          // Value of the date input
+        payment: $("#Payment").val(),                      // Value of the payment input
+        referredBy: $("#Reffer-Book").val()                // Value of the referred by input
+    };
+
+    console.log(data); // For debugging, logs the collected data
+    return data;       // Returns the data object
+}
+
+
+function getTableDataById(tableId) {
+    const table = document.getElementById(tableId); // Select the table by ID
+    if (!table) {
+        console.error(`Table with ID "${tableId}" not found.`);
+        return [];
+    }
+
+    const tableData = [];
+    const rows = table.querySelectorAll('tbody tr'); // Get all rows in the table's tbody
+
+    rows.forEach((row) => {
+        const rowData = {};
+
+        row.querySelectorAll('td').forEach((cell, cellIndex) => {
+            let value = '';
+
+            // Check for input fields
+            const input = cell.querySelector('input');
+            if (input) {
+                value = input.value.trim(); // Get value from input
+            }
+
+            // Check for select fields
+            const select = cell.querySelector('select');
+            if (select) {
+                value = select.value.trim(); // Get the selected option's value
+            }
+
+            // Default to cell text if no input/select
+            if (!input && !select) {
+                value = cell.innerText.trim();
+            }
+
+            // Store data using generic column names
+            rowData[`column_${cellIndex + 1}`] = value;
+        });
+
+        tableData.push(rowData); // Add row data to table data
+    });
+    console.log(tableData);
+    return tableData;
+}
+
+
+function getHOTableData() {
+    let data = {};
+
+    // Loop through all checkboxes with the unique class
+    $('.health-checkbox').each(function () {
+        let key = $(this).val(); // Use value as key
+        let isChecked = $(this).is(':checked') ? 1 : 0; // Checked = 1, Unchecked = 0
+        data[key] = isChecked;
+    });
+    data['FreeTextHO'] = $('#FreeTextHO').val();
+    console.log(data);
+    return data;
+}
+
+
+function getDataColumnAsKey(tableId, isUnit = false) {
+    const table = document.getElementById(tableId); // Select the table by ID
+    if (!table) {
+        console.error(`Table with ID "${tableId}" not found.`);
+        return [];
+    }
+
+    const tableData = [];
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach((row) => {
+        const rowData = {};
+        var key = '';
+        var value = '';
+        var unit = '';
+
+
+        row.querySelectorAll('td').forEach((cell, cellIndex) => {
+
+            if (cellIndex == 1) {
+                const input = cell.querySelector('input');
+                if (input) {
+                    key = input.value.trim();
+                }
+            }
+            if (cellIndex == 2) {
+                const input = cell.querySelector('input');
+                if (input) {
+                    value = input.value.trim();
+                }
+            }
+            if (cellIndex == 3) {
+                const input = cell.querySelector('input');
+                if (input) {
+                    unit = input.value.trim();
+                }
+            }
+
+            if ((key != '' && value != '')) {
+                if (isUnit) {
+                    rowData[key] = { value: value, unit: unit };
+                } else {
+                    rowData[key] = value;
+                }
+            }
+
+        });
+        tableData.push(rowData);
+    });
+    console.log(tableData);
+    return tableData;
 }

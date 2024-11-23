@@ -474,21 +474,17 @@ function getRandomInteger(min, max) {
 
 function setSelectOptions(selectClass, options, defaultValue = '') {
     var $select = $('.' + selectClass);
-
     if ($select.length) {
-        //$select.find('option:not(:first)').remove();
-        $select.find('option').remove();
+        var $lastSelect = $select.last();
+        $lastSelect.find('option').remove();
         var firstOption = '<option value="0">Select</option>';
-        $select.append(firstOption);
+        $lastSelect.append(firstOption);
         options.forEach(option => {
             var $opt = $('<option></option>').val(option.value).text(option.text);
-
-            // Set default selected option
             if (defaultValue != '' && option.value === defaultValue) {
                 $opt.attr('selected', 'selected');
             }
-
-            $select.append($opt);
+            $lastSelect.append($opt);
         });
     }
 }

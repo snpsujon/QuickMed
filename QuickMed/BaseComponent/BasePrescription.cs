@@ -118,15 +118,17 @@ namespace QuickMed.BaseComponent
             await JS.InvokeVoidAsync("makeSelect2", true);
             await JS.InvokeVoidAsync("makeSelect2Custom", "select2C", "GetMedicines", 3);
             await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpAdviceTbl", "add_Advice");
+            await JS.InvokeVoidAsync("setupEditableTable", "refferTable", "but_reffer");
             await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpTbl");
             await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpAdviceTbl");
             await JS.InvokeVoidAsync("MakeAvro", "avrotranslate");
             await JS.InvokeVoidAsync("OnChangeEvent", "adviceSelect", "AdviceChange", ObjectReference);
+            await JS.InvokeVoidAsync("OnChangeEvent", "presRefferTempSelect", "RefferChange", ObjectReference);
             await JS.InvokeVoidAsync("OnChangeEvent", "nxtMeetDateSelect", "NextMeetDateChange", ObjectReference);
             await JS.InvokeVoidAsync("OnChangeEvent", "presDrugTempSelect", "LoadFavDrugTemplate", ObjectReference);
             await JS.InvokeVoidAsync("OnChangeEvent", "presTreatTempSelect", "LoadTreatMentTemplate", ObjectReference);
-            await JS.InvokeVoidAsync("OnChangeEvent", "ixTempSelect", "LoadTreatMentTemplate", ObjectReference);
-            await JS.InvokeVoidAsync("OnChangeEvent", "noteTempSelect", "LoadTreatMentTemplate", ObjectReference);
+            await JS.InvokeVoidAsync("OnChangeEvent", "ixTempSelect", "IxChange", ObjectReference);
+            await JS.InvokeVoidAsync("OnChangeEvent", "noteTempSelect", "NotesChange", ObjectReference);
 
 
             //await JS.InvokeVoidAsync("setupEditableTable", "MixTempTbl", "add_MixTemp");
@@ -189,6 +191,28 @@ namespace QuickMed.BaseComponent
                 throw;
             }
         }
+
+        [JSInvokable]
+        public async Task RefferChange(string selectedData)
+        {
+            try
+            {
+                //var selectedData = await JS.InvokeAsync<string>("getAdviceValue");
+                if (selectedData is not null)
+                {
+                    //adviceDetails = await _teatmentTemp.GetAdviceDataById(selectedData);
+                    //await JS.InvokeVoidAsync("populateAdviceTable", adviceDetails, "TretmentTmpAdviceTbl");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+
+
         [JSInvokable]
         public async Task IxChange(string selectedData)
         {
@@ -198,7 +222,7 @@ namespace QuickMed.BaseComponent
                 if (selectedData is not null)
                 {
                     ixDetails = await _teatmentTemp.GetIXDataById(selectedData);
-                    await JS.InvokeVoidAsync("populateIXTable", ixDetails, "TretmentTmpIXTbl");
+                    await JS.InvokeVoidAsync("populateIXTablePres", ixDetails, "TretmentTmpIXTbl");
 
                 }
             }
@@ -216,7 +240,7 @@ namespace QuickMed.BaseComponent
                 if (selectedData is not null)
                 {
                     noteDetails = await _teatmentTemp.GetNoteDataById(selectedData);
-                    await JS.InvokeVoidAsync("populateNoteTable", noteDetails, "TretmentTmpNotesTbl");
+                    await JS.InvokeVoidAsync("populateNoteTablePres", noteDetails, "TretmentTmpNotesTbl");
 
                 }
             }
@@ -476,6 +500,43 @@ namespace QuickMed.BaseComponent
                 dx = dx
             };
             return dh;
+        }
+
+
+        public async Task SaveOnly()
+        {
+            try
+            {
+                var result = await JS.InvokeAsync<object>("getPresData");
+                if (result is not null)
+                {
+                    //var jsonString = result.ToString();
+                    //var treatments = JsonSerializer.Deserialize<List<TreatmentPopVM>>(jsonString);
+                    //var prescription = new TblPrescription()
+                    //{
+                    //    Id = Guid.NewGuid(),
+                    //    PatientId = patient.Id,
+                    //    Date = DateTime.Now,
+                    //    Dx = "Dx",
+                    //    CC = "CC",
+                    //    NextMeetingDate = NextMeetingDate,
+                    //    PrescriptionDetails = treatments.Select(x => new TblPrescriptionDetails()
+                    //    {
+                    //        Id = Guid.NewGuid(),
+                    //        PrescriptionId = Guid.NewGuid(),
+                    //        BrandId = Guid.Parse(x.brand.value),
+                    //        DoseId = Guid.Parse(x.dose.value),
+                    //        DurationId = Guid.Parse(x.duration.value),
+                    //        InstructionId = Guid.Parse(x.instruction.value)
+                    //    }).ToList()
+                    //};
+                    //await App.Database.InsertAsync(prescription);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
 
