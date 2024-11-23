@@ -57,6 +57,51 @@ namespace QuickMed.Services
             }
         }
 
+        public async Task<dynamic> GetCCList()
+        {
+            try
+            {
+                var sql = $@"SELECT Id as value,Name as text FROM TblCCTemplate";
+                var cc = await _context.ExecuteSqlQueryAsync<SelectVM>(sql);
+                return cc;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public async Task<dynamic> GetDXList()
+        {
+            try
+            {
+                var sql = $@"SELECT Id as value,Name as text FROM TblDXTemplate";
+                var cc = await _context.ExecuteSqlQueryAsync<SelectVM>(sql);
+                return cc;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+
+        public async Task<dynamic> GetDurationsList()
+        {
+            try
+            {
+                var sql = $@"SELECT Id as value,Name as text FROM TblDuration";
+                var cc = await _context.ExecuteSqlQueryAsync<SelectVM>(sql);
+                return cc;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
         public Task<FavouriteDrugTempVM> GetFavDrugbyId(Guid id)
         {
             var gg = "";

@@ -74,6 +74,34 @@ namespace QuickMed.Services
 
         }
 
+        public async Task<dynamic> GetIXDataById(string Id)
+        {
+            try
+            {
+                var sql = $"SELECT * FROM TblIXDetails WHERE TblIXTempMasterId = '{Id}'";
+                var data = await _context.ExecuteSqlQueryAsync<TblIXDetails>(sql);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<dynamic> GetNoteDataById(string Id)
+        {
+            try
+            {
+                var sql = $"SELECT * FROM TblNotesTempDetails WHERE TblNotesTempMasterId = '{Id}'";
+                var data = await _context.ExecuteSqlQueryAsync<TblNotesTempDetails>(sql);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<dynamic> SaveTreatmentTemp(TblTreatmentTemplate data)
         {
             try

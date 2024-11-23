@@ -79,3 +79,58 @@ function updateIdealWeight(totalHeightInches) {
         return 0;
     }
 }
+
+function populateCCSelect() {
+    if (instanceReference) {
+        instanceReference.invokeMethodAsync("GetCCSelectData")
+            .then(data => {
+
+                setSelectOptions('ccLoads1', data.ccList);
+                setSelectOptions('ccLoads2', data.duration);
+                setSelectOptions('ccLoads3', data.dM);
+
+                //console.log("Data received from Blazor:", data);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    } else {
+        console.error("Instance reference is not set.");
+    }
+
+}
+function populateDXSelect() {
+    if (instanceReference) {
+        instanceReference.invokeMethodAsync("GetDXSelectData")
+            .then(data => {
+
+                setSelectOptions('dxLoads1', data.dx);
+
+                //console.log("Data received from Blazor:", data);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    } else {
+        console.error("Instance reference is not set.");
+    }
+
+}
+
+function populateDHSelect() {
+    if (instanceReference) {
+        instanceReference.invokeMethodAsync("GetDHSelectData")
+            .then(data => {
+
+                setSelectOptions('dhLoads1', data.brands);
+                makeSelect2Custom("dhLoads1", "GetMedicines", 3);
+
+                //console.log("Data received from Blazor:", data);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    } else {
+        console.error("Instance reference is not set.");
+    }
+}
