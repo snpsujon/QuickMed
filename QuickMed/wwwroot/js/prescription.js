@@ -328,7 +328,7 @@ function getHOTableData() {
     // Loop through all checkboxes with the unique class
     $('.health-checkbox').each(function () {
         let key = $(this).val(); // Use value as key
-        let isChecked = $(this).is(':checked') ? 1 : 0; // Checked = 1, Unchecked = 0
+        let isChecked = $(this).is(':checked') ? true : false; // Checked = 1, Unchecked = 0
         data[key] = isChecked;
     });
     data['FreeTextHO'] = $('#FreeTextHO').val();

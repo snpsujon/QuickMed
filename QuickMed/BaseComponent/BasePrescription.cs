@@ -541,9 +541,10 @@ namespace QuickMed.BaseComponent
                             Gender = pt.GetProperty("sex").GetString(),
                             Address = pt.GetProperty("address").GetString(),
                             Mobile = pt.GetProperty("mobile").GetString(),
-                            Weight = pt.GetProperty("weight").GetDecimal(),
-                            AdmissionDate = pt.GetProperty("date").GetDateTime(),
-                            HeightInch = pt.GetProperty("height").GetDecimal()
+                            Weight = Convert.ToDecimal(pt.GetProperty("weight").GetString() != "" ? pt.GetProperty("weight").GetString() : 0),
+                            AdmissionDate = Convert.ToDateTime(pt.GetProperty("date").GetString() != "" ? pt.GetProperty("date").GetString() : DateTime.Now),
+                            HeightInch = Convert.ToDecimal(pt.GetProperty("height").GetString() != "" ? pt.GetProperty("height").GetString() : 0)
+
                         };
 
                     }
@@ -561,7 +562,7 @@ namespace QuickMed.BaseComponent
                                     Id = AdviceId,
                                     AdviceTemplateName = regNo + "_Advice"
                                 };
-                                await _adviceTemp.SaveAdviceTemplate(adviceTemplate);
+                                //await _adviceTemp.SaveAdviceTemplate(adviceTemplate);
                                 adviceDetails = new List<TblAdviceTemplateDetails>();
                                 foreach (var advice in adviceList)
                                 {
@@ -572,34 +573,73 @@ namespace QuickMed.BaseComponent
                                         Advice = advice
                                     });
                                 }
-                                await _adviceTemp.SaveAdviceTemplateDetails(adviceDetails);
+                                //await _adviceTemp.SaveAdviceTemplateDetails(adviceDetails);
                             }
 
                         }
                     }
 
+
                     if (result.TryGetProperty("ccTableData", out JsonElement ccTableDataArray))
                     {
-                        var CCdataList = ccTableDataArray.EnumerateArray()
+                        // Check if column_2 exists in the first element
+                        if (ccTableDataArray.ValueKind == JsonValueKind.Array && ccTableDataArray.GetArrayLength() > 0 &&
+                            ccTableDataArray[0].TryGetProperty("column_2", out _))
+                        {
+                            var CCdataList = ccTableDataArray.EnumerateArray()
                                 .Select(item => new
                                 {
                                     cc = item.GetProperty("column_2").GetString(),
                                     duration = item.GetProperty("column_3").GetString(),
                                     dm = item.GetProperty("column_4").GetString(),
                                 }).ToList();
-                        tblPres_Ccs = new List<TblPres_Cc>();
-                        foreach (var cc in CCdataList)
-                        {
-                            tblPres_Ccs.Add(new TblPres_Cc
+
+                            tblPres_Ccs = new List<TblPres_Cc>();
+
+                            foreach (var cc in CCdataList)
                             {
-                                Id = Guid.NewGuid(),
-                                Pres_ID = PresId,
-                                CcName = cc.cc,
-                                DurationId = Guid.Parse(cc.duration),
-                                Dm_Id = cc.dm
-                            });
+                                tblPres_Ccs.Add(new TblPres_Cc
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Pres_ID = PresId,
+                                    CcName = cc.cc,
+                                    DurationId = Guid.Parse(cc.duration),
+                                    Dm_Id = cc.dm
+                                });
+                            }
+                        }
+                        else
+                        {
+                            // Handle the case where column_2 is missing
+                            Console.WriteLine("column_2 is not present in the data. Skipping CCdataList creation.");
                         }
                     }
+
+
+
+
+                    //if (result.TryGetProperty("ccTableData", out JsonElement ccTableDataArray))
+                    //{
+                    //    var CCdataList = ccTableDataArray.EnumerateArray()
+                    //            .Select(item => new
+                    //            {
+                    //                cc = item.GetProperty("column_2").GetString(),
+                    //                duration = item.GetProperty("column_3").GetString(),
+                    //                dm = item.GetProperty("column_4").GetString(),
+                    //            }).ToList();
+                    //    tblPres_Ccs = new List<TblPres_Cc>();
+                    //    foreach (var cc in CCdataList)
+                    //    {
+                    //        tblPres_Ccs.Add(new TblPres_Cc
+                    //        {
+                    //            Id = Guid.NewGuid(),
+                    //            Pres_ID = PresId,
+                    //            CcName = cc.cc,
+                    //            DurationId = Guid.Parse(cc.duration),
+                    //            Dm_Id = cc.dm
+                    //        });
+                    //    }
+                    //}
 
                     if (result.TryGetProperty("hoTableData", out JsonElement hoTableData))
                     {
@@ -654,45 +694,58 @@ namespace QuickMed.BaseComponent
 
                     if (result.TryGetProperty("dhTableData", out JsonElement dhTableData))
                     {
-                        var dhdataList = dhTableData.EnumerateArray()
-                                .Select(item => new
-                                {
-                                    dh = item.GetProperty("column_2").GetString()
-                                }).ToList();
-                        List<TblPres_DH> tblPres_DHs = new List<TblPres_DH>();
-                        foreach (var cc in dhdataList)
+
+                        if (dhTableData.ValueKind == JsonValueKind.Array && dhTableData.GetArrayLength() > 0 &&
+                           dhTableData[0].TryGetProperty("column_2", out _))
                         {
-                            tblPres_DHs.Add(new TblPres_DH
+                            var dhdataList = dhTableData.EnumerateArray()
+                               .Select(item => new
+                               {
+                                   dh = item.GetProperty("column_2").GetString()
+                               }).ToList();
+                            List<TblPres_DH> tblPres_DHs = new List<TblPres_DH>();
+                            foreach (var cc in dhdataList)
                             {
-                                Id = Guid.NewGuid(),
-                                Pres_ID = PresId,
-                                BrandID = Guid.Parse(cc.dh)
-                            });
+                                tblPres_DHs.Add(new TblPres_DH
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Pres_ID = PresId,
+                                    BrandID = Guid.Parse(cc.dh)
+                                });
+                            }
                         }
+
+
                     }
 
                     if (result.TryGetProperty("dxTableData", out JsonElement dxTableData))
                     {
-                        var dXdataList = dxTableData.EnumerateArray()
-                                .Select(item => new
-                                {
-                                    dX = item.GetProperty("column_2").GetString()
-                                }).ToList();
-                        List<TblPres_DX> ListData = new List<TblPres_DX>();
-                        foreach (var cc in dXdataList)
+                        if (dxTableData.ValueKind == JsonValueKind.Array && dxTableData.GetArrayLength() > 0 &&
+                          dxTableData[0].TryGetProperty("column_2", out _))
                         {
-                            ListData.Add(new TblPres_DX
+                            var dXdataList = dxTableData.EnumerateArray()
+                            .Select(item => new
                             {
-                                Id = Guid.NewGuid(),
-                                Pres_ID = PresId,
-                                DxTempId = Guid.Parse(cc.dX)
-                            });
+                                dX = item.GetProperty("column_2").GetString()
+                            }).ToList();
+                            List<TblPres_DX> ListData = new List<TblPres_DX>();
+                            foreach (var cc in dXdataList)
+                            {
+                                ListData.Add(new TblPres_DX
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Pres_ID = PresId,
+                                    DxTempId = Guid.Parse(cc.dX)
+                                });
+                            }
                         }
+
                     }
 
                     if (result.TryGetProperty("ixTableData", out JsonElement ixTableData))
                     {
-                        if (ixTableData.ValueKind == JsonValueKind.Array)
+                        if (ixTableData.ValueKind == JsonValueKind.Array && ixTableData.GetArrayLength() > 0 &&
+                          ixTableData[0].TryGetProperty("column_2", out _))
                         {
                             var ixList = ixTableData.EnumerateArray()
                                 .Select(item => new
@@ -724,7 +777,8 @@ namespace QuickMed.BaseComponent
 
                     if (result.TryGetProperty("noteTableData", out JsonElement noteTableData))
                     {
-                        if (noteTableData.ValueKind == JsonValueKind.Array)
+                        if (noteTableData.ValueKind == JsonValueKind.Array && noteTableData.GetArrayLength() > 0 &&
+                           noteTableData[0].TryGetProperty("column_2", out _))
                         {
                             var noteList = noteTableData.EnumerateArray()
                                 .Select(item => new
@@ -756,7 +810,8 @@ namespace QuickMed.BaseComponent
 
                     if (result.TryGetProperty("reportTableData", out JsonElement reportTableData))
                     {
-                        if (reportTableData.ValueKind == JsonValueKind.Array)
+                        if (reportTableData.ValueKind == JsonValueKind.Array && reportTableData.GetArrayLength() > 0 &&
+                          reportTableData[0].TryGetProperty("column_2", out _))
                         {
                             var presList = reportTableData.EnumerateArray()
                                 .Select(item => new
