@@ -9,6 +9,6 @@ namespace QuickMed.DB
         public Guid? Pres_ID { get; set; }
         public string? CcName { get; set; }
         public Guid? DurationId { get; set; }
-        public Guid? Dm_Id { get; set; }
+        public string? Dm_Id { get; set; }
     }
 }

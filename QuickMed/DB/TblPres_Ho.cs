@@ -21,6 +21,6 @@ namespace QuickMed.DB
         public bool? Allergy { get; set; }
         public bool? DrugAbuse { get; set; }
         public bool? Depression { get; set; }
-        public string? FreeText { get; set; }
+        public string? FreeTextHO { get; set; }
     }
 }

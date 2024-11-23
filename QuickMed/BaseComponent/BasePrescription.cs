@@ -21,6 +21,8 @@ namespace QuickMed.BaseComponent
 
         [Inject]
         public ITeatmentTemp _teatmentTemp { get; set; }
+        [Inject]
+        public IAdvice _adviceTemp { get; set; }
 
 
         public TblPatient patient = new();
@@ -61,6 +63,11 @@ namespace QuickMed.BaseComponent
         public List<TblNotesTempDetails> noteDetails = new List<TblNotesTempDetails>();
         public List<TblIXTemplate> ixMasters = new List<TblIXTemplate>();
         public List<TblIXDetails> ixDetails = new List<TblIXDetails>();
+        public List<TblPres_Cc> tblPres_Ccs = new List<TblPres_Cc>();
+        public List<TblPres_MH> tblPres_MHs = new List<TblPres_MH>();
+
+        public TblAdviceTemplate adviceTemplate = new();
+
         public int SelectedDays { get; set; } = 0;
         public DateTime NextMeetingDate { get; set; } = DateTime.Now;
 
@@ -511,30 +518,343 @@ namespace QuickMed.BaseComponent
         {
             try
             {
-                var result = await JS.InvokeAsync<object>("getPresData");
-                if (result is not null)
+                var result = await JS.InvokeAsync<JsonElement>("getPresData");
+
+
+                var PatientId = Guid.NewGuid();
+                var AdviceId = Guid.NewGuid();
+                var IxId = Guid.NewGuid();
+                var PresId = Guid.NewGuid();
+                var regNo = "";
+
+
+                if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
                 {
-                    //var jsonString = result.ToString();
-                    //var treatments = JsonSerializer.Deserialize<List<TreatmentPopVM>>(jsonString);
-                    //var prescription = new TblPrescription()
-                    //{
-                    //    Id = Guid.NewGuid(),
-                    //    PatientId = patient.Id,
-                    //    Date = DateTime.Now,
-                    //    Dx = "Dx",
-                    //    CC = "CC",
-                    //    NextMeetingDate = NextMeetingDate,
-                    //    PrescriptionDetails = treatments.Select(x => new TblPrescriptionDetails()
-                    //    {
-                    //        Id = Guid.NewGuid(),
-                    //        PrescriptionId = Guid.NewGuid(),
-                    //        BrandId = Guid.Parse(x.brand.value),
-                    //        DoseId = Guid.Parse(x.dose.value),
-                    //        DurationId = Guid.Parse(x.duration.value),
-                    //        InstructionId = Guid.Parse(x.instruction.value)
-                    //    }).ToList()
-                    //};
-                    //await App.Database.InsertAsync(prescription);
+                    if (result.TryGetProperty("pdata", out JsonElement pt))
+                    {
+                        regNo = pt.GetProperty("regNo").GetString();
+                        var patientInfo = new TblPatient()
+                        {
+                            Id = PatientId,
+                            Name = pt.GetProperty("name").GetString(),
+                            Age = pt.GetProperty("age").GetString(),
+                            Gender = pt.GetProperty("sex").GetString(),
+                            Address = pt.GetProperty("address").GetString(),
+                            Mobile = pt.GetProperty("mobile").GetString(),
+                            Weight = pt.GetProperty("weight").GetDecimal(),
+                            AdmissionDate = pt.GetProperty("date").GetDateTime(),
+                            HeightInch = pt.GetProperty("height").GetDecimal()
+                        };
+
+                    }
+                    if (result.TryGetProperty("advice", out JsonElement adviceArrayElement))
+                    {
+                        if (adviceArrayElement.ValueKind == JsonValueKind.Array)
+                        {
+                            var adviceList = adviceArrayElement.EnumerateArray()
+                                .Select(item => item.GetString())
+                                .ToList();
+                            if (adviceList.Count() > 0)
+                            {
+                                adviceTemplate = new TblAdviceTemplate
+                                {
+                                    Id = AdviceId,
+                                    AdviceTemplateName = regNo + "_Advice"
+                                };
+                                await _adviceTemp.SaveAdviceTemplate(adviceTemplate);
+                                adviceDetails = new List<TblAdviceTemplateDetails>();
+                                foreach (var advice in adviceList)
+                                {
+                                    adviceDetails.Add(new TblAdviceTemplateDetails
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        AdviceTemplateId = AdviceId,
+                                        Advice = advice
+                                    });
+                                }
+                                await _adviceTemp.SaveAdviceTemplateDetails(adviceDetails);
+                            }
+
+                        }
+                    }
+
+                    if (result.TryGetProperty("ccTableData", out JsonElement ccTableDataArray))
+                    {
+                        var CCdataList = ccTableDataArray.EnumerateArray()
+                                .Select(item => new
+                                {
+                                    cc = item.GetProperty("column_2").GetString(),
+                                    duration = item.GetProperty("column_3").GetString(),
+                                    dm = item.GetProperty("column_4").GetString(),
+                                }).ToList();
+                        tblPres_Ccs = new List<TblPres_Cc>();
+                        foreach (var cc in CCdataList)
+                        {
+                            tblPres_Ccs.Add(new TblPres_Cc
+                            {
+                                Id = Guid.NewGuid(),
+                                Pres_ID = PresId,
+                                CcName = cc.cc,
+                                DurationId = Guid.Parse(cc.duration),
+                                Dm_Id = cc.dm
+                            });
+                        }
+                    }
+
+                    if (result.TryGetProperty("hoTableData", out JsonElement hoTableData))
+                    {
+                        var hoTableDatas = JsonSerializer.Deserialize<TblPres_Ho>(hoTableData.ToString());
+                        hoTableDatas.Id = Guid.NewGuid();
+                        hoTableDatas.Pres_ID = PresId;
+                    }
+                    if (result.TryGetProperty("mhTableData", out JsonElement mhTableData))
+                    {
+                        tblPres_MHs = new List<TblPres_MH>();
+                        foreach (JsonElement element in mhTableData.EnumerateArray())
+                        {
+                            foreach (var property in element.EnumerateObject())
+                            {
+
+                                tblPres_MHs.Add(new TblPres_MH
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Pres_ID = PresId,
+                                    MH = property.Name,
+                                    Value = property.Value.GetString()
+                                });
+                            }
+                        }
+
+                    }
+                    if (result.TryGetProperty("oeTableData", out JsonElement oeTableData))
+                    {
+                        List<TblPres_OE> tblPres_OEs = new List<TblPres_OE>();
+                        foreach (JsonElement element in oeTableData.EnumerateArray())
+                        {
+                            foreach (var property in element.EnumerateObject())
+                            {
+                                string key = property.Name; // Extract the key (e.g., BP, Pulse)
+                                JsonElement valueElement = property.Value;
+
+                                if (valueElement.TryGetProperty("value", out JsonElement value) &&
+                                    valueElement.TryGetProperty("unit", out JsonElement unit))
+                                {
+                                    tblPres_OEs.Add(new TblPres_OE
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        Pres_ID = PresId,
+                                        Name = key,
+                                        value = value.GetString(),
+                                        Unit = unit.GetString()
+                                    });
+                                }
+                            }
+                        }
+                    }
+
+                    if (result.TryGetProperty("dhTableData", out JsonElement dhTableData))
+                    {
+                        var dhdataList = dhTableData.EnumerateArray()
+                                .Select(item => new
+                                {
+                                    dh = item.GetProperty("column_2").GetString()
+                                }).ToList();
+                        List<TblPres_DH> tblPres_DHs = new List<TblPres_DH>();
+                        foreach (var cc in dhdataList)
+                        {
+                            tblPres_DHs.Add(new TblPres_DH
+                            {
+                                Id = Guid.NewGuid(),
+                                Pres_ID = PresId,
+                                BrandID = Guid.Parse(cc.dh)
+                            });
+                        }
+                    }
+
+                    if (result.TryGetProperty("dxTableData", out JsonElement dxTableData))
+                    {
+                        var dXdataList = dxTableData.EnumerateArray()
+                                .Select(item => new
+                                {
+                                    dX = item.GetProperty("column_2").GetString()
+                                }).ToList();
+                        List<TblPres_DX> ListData = new List<TblPres_DX>();
+                        foreach (var cc in dXdataList)
+                        {
+                            ListData.Add(new TblPres_DX
+                            {
+                                Id = Guid.NewGuid(),
+                                Pres_ID = PresId,
+                                DxTempId = Guid.Parse(cc.dX)
+                            });
+                        }
+                    }
+
+                    if (result.TryGetProperty("ixTableData", out JsonElement ixTableData))
+                    {
+                        if (ixTableData.ValueKind == JsonValueKind.Array)
+                        {
+                            var ixList = ixTableData.EnumerateArray()
+                                .Select(item => new
+                                {
+                                    ix = item.GetProperty("column_2").GetString()
+                                }).ToList();
+                            if (ixList.Count() > 0)
+                            {
+                                TblIXTemplate ixTemplate = new TblIXTemplate
+                                {
+                                    Id = IxId,
+                                    TemplateName = regNo + "_IX"
+                                };
+                                List<TblIXDetails> ixDetails = new List<TblIXDetails>();
+                                foreach (var item in ixList)
+                                {
+                                    ixDetails.Add(new TblIXDetails
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        TblIXTempMasterId = IxId,
+                                        Name = item.ix
+
+                                    });
+                                }
+                            }
+
+                        }
+                    }
+
+                    if (result.TryGetProperty("noteTableData", out JsonElement noteTableData))
+                    {
+                        if (noteTableData.ValueKind == JsonValueKind.Array)
+                        {
+                            var noteList = noteTableData.EnumerateArray()
+                                .Select(item => new
+                                {
+                                    note = item.GetProperty("column_2").GetString()
+                                }).ToList();
+                            if (noteList.Count() > 0)
+                            {
+                                TblNotesTemplate notesTemplate = new TblNotesTemplate
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Name = regNo + "_Notes"
+                                };
+                                List<TblNotesTempDetails> noteDetails = new List<TblNotesTempDetails>();
+                                foreach (var item in noteList)
+                                {
+                                    noteDetails.Add(new TblNotesTempDetails
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        TblNotesTempMasterId = notesTemplate.Id,
+                                        Name = item.note
+
+                                    });
+                                }
+                            }
+
+                        }
+                    }
+
+                    if (result.TryGetProperty("reportTableData", out JsonElement reportTableData))
+                    {
+                        if (reportTableData.ValueKind == JsonValueKind.Array)
+                        {
+                            var presList = reportTableData.EnumerateArray()
+                                .Select(item => new
+                                {
+                                    date = item.GetProperty("column_2").GetDateTime(),
+                                    rptName = item.GetProperty("column_3").GetString(),
+                                    res = item.GetProperty("column_4").GetString(),
+                                    unit = item.GetProperty("column_5").GetString()
+                                }).ToList();
+
+                            List<TblPatientReport> tblPatientReports = new List<TblPatientReport>();
+                            foreach (var item in presList)
+                            {
+                                tblPatientReports.Add(new TblPatientReport
+                                {
+                                    Id = Guid.NewGuid(),
+                                    PatientId = PatientId,
+                                    PresId = PresId,
+                                    ReportName = item.rptName,
+                                    ReportDate = item.date,
+                                    Result = item.res,
+                                    Unit = item.unit
+
+                                });
+
+                            }
+
+                        }
+                    }
+
+                    if (result.TryGetProperty("treatment", out JsonElement treatmentArrayElement))
+                    {
+                        if (treatmentArrayElement.ValueKind == JsonValueKind.Array)
+                        {
+                            var treatmentList = treatmentArrayElement.EnumerateArray()
+                                .Select(item => new
+                                {
+                                    Index = item.GetProperty("index").GetInt32(),
+                                    Brand = item.GetProperty("brand").GetProperty("value").GetString(),
+                                    Dose = item.GetProperty("dose").GetProperty("value").GetString(),
+                                    Duration = item.GetProperty("duration").GetProperty("value").GetString(),
+                                    Instruction = item.GetProperty("instruction").GetProperty("value").GetString()
+                                }).ToList();
+                            if (treatmentList.Count() > 0)
+                            {
+                                List<TblPrescriptionDetails> rxDetails = new List<TblPrescriptionDetails>();
+                                foreach (var item in treatmentList)
+                                {
+                                    rxDetails.Add(new TblPrescriptionDetails
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        Brand = Guid.Parse(item.Brand),
+                                        Dose = Guid.Parse(item.Dose),
+                                        Duration = Guid.Parse(item.Duration),
+                                        Instruction = Guid.Parse(item.Instruction),
+                                        PrescriptionMasterId = PresId
+                                    });
+                                }
+                                //await _teatmentTemp.SaveTreatmentTempDetails(templateDetails);
+                            }
+                        }
+                    }
+
+                    if (result.TryGetProperty("treatment", out JsonElement pres))
+                    {
+                        var LicenceKey = await App.Database.GetTableRowsAsync<TblLicenseInfo>("TblLicenseInfo");
+                        var key = "";
+                        if (LicenceKey != null)
+                        {
+                            key = LicenceKey.FirstOrDefault().LicenseKey;
+                        }
+                        var PresInfo = new TblPrescription
+                        {
+                            Id = PresId,
+                            PatientId = PatientId,
+                            AdviceId = AdviceId,
+                            IxId = IxId,
+                            PrescriptionDate = DateTime.Now,
+                            NextMeetingDate = result.GetProperty("nxtMeetData").GetProperty("nextMeetingDate").GetDateTime(),
+                            NextMeetingValue = result.GetProperty("nxtMeetData").GetProperty("nextMeetingDuration").GetInt32(),
+                            Payment = result.GetProperty("nxtMeetData").GetProperty("payment").GetInt32(),
+                            RefferedBy = result.GetProperty("nxtMeetData").GetProperty("refferedBy").GetString(),
+                            IsSynced = false,
+                            RefferedTo = result.GetProperty("reffer").GetString(),
+                            Height = result.GetProperty("pdata").GetProperty("height").GetInt32(),
+                            weight = result.GetProperty("pdata").GetProperty("bmiweight").GetInt32(),
+                            PrescriptionCode = regNo,
+                            CreatedBy = key,
+                            CreatedAt = DateTime.Now,
+                            LicenseKey = key
+                        };
+                    }
+
+
+
+
+
+
                 }
             }
             catch (Exception ex)

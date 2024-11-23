@@ -15,8 +15,9 @@ namespace QuickMed.DB
         public int? NextMeetingValue { get; set; }
         public int? Payment { get; set; }
         public string? RefferedBy { get; set; }
-        public int? AdviceTempId { get; set; }
-        public int? TreatmentTempId { get; set; }
+        public string? RefferedTo { get; set; }
+        public Guid? AdviceId { get; set; }
+        public Guid? IxId { get; set; }
         public int? Height { get; set; }
         public int? weight { get; set; }
         public string? CreatedBy { get; set; } = string.Empty;

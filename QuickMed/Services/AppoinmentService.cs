@@ -50,7 +50,7 @@ namespace QuickMed.Services
                     Id = Guid.NewGuid(),
                     Name = data.Name,
                     Age = data.Age,
-                    Gender = data.Gender,
+                    Gender = data.Gender.ToString(),
                     Address = data.Address,
                     Mobile = data.Mobile,
                     AdmissionDate = data.AdmissionDate,

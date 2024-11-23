@@ -243,8 +243,8 @@ function getPresData() {
         advice: adviceTableData,
         reffer: refferData
     };
-
-    console.log(data); // To check the retrieved data
+    return data;
+    //console.log(data); // To check the retrieved data
 
 }
 
@@ -382,7 +382,10 @@ function getDataColumnAsKey(tableId, isUnit = false) {
             }
 
         });
-        tableData.push(rowData);
+        if (Object.keys(rowData).length > 0) {
+            tableData.push(rowData);
+        }
+
     });
     return tableData;
 }
