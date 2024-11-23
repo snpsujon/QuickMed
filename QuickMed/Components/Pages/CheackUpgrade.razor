@@ -28,8 +28,10 @@
 
         StateHasChanged(); // Trigger UI update
         UpdateDB();
-        // Simulate an update check with a delay
-        await Task.Delay(3000); // Replace this with your actual update checking logic
+        await JS.InvokeVoidAsync("toggleLoadingIcon");
+        
+    // Simulate an update check with a delay
+    await Task.Delay(3000); // Replace this with your actual update checking logic
 
         StateHasChanged(); // Trigger UI update
     }
