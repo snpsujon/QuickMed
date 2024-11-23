@@ -58,7 +58,9 @@ namespace QuickMed.BaseComponent
         public List<TblAdviceTemplateDetails> adviceDetails = new List<TblAdviceTemplateDetails>();
         public List<TblAdviceTemplate> adviceMasters = new List<TblAdviceTemplate>();
         public List<TblNotesTemplate> notesMasters = new List<TblNotesTemplate>();
+        public List<TblNotesTempDetails> noteDetails = new List<TblNotesTempDetails>();
         public List<TblIXTemplate> ixMasters = new List<TblIXTemplate>();
+        public List<TblIXDetails> ixDetails = new List<TblIXDetails>();
         public int SelectedDays { get; set; } = 0;
         public DateTime NextMeetingDate { get; set; } = DateTime.Now;
 
@@ -123,6 +125,8 @@ namespace QuickMed.BaseComponent
             await JS.InvokeVoidAsync("OnChangeEvent", "nxtMeetDateSelect", "NextMeetDateChange", ObjectReference);
             await JS.InvokeVoidAsync("OnChangeEvent", "presDrugTempSelect", "LoadFavDrugTemplate", ObjectReference);
             await JS.InvokeVoidAsync("OnChangeEvent", "presTreatTempSelect", "LoadTreatMentTemplate", ObjectReference);
+            await JS.InvokeVoidAsync("OnChangeEvent", "ixTempSelect", "LoadTreatMentTemplate", ObjectReference);
+            await JS.InvokeVoidAsync("OnChangeEvent", "noteTempSelect", "LoadTreatMentTemplate", ObjectReference);
 
 
             //await JS.InvokeVoidAsync("setupEditableTable", "MixTempTbl", "add_MixTemp");
@@ -185,6 +189,43 @@ namespace QuickMed.BaseComponent
                 throw;
             }
         }
+        [JSInvokable]
+        public async Task IxChange(string selectedData)
+        {
+            try
+            {
+                //var selectedData = await JS.InvokeAsync<string>("getAdviceValue");
+                if (selectedData is not null)
+                {
+                    ixDetails = await _teatmentTemp.GetIXDataById(selectedData);
+                    await JS.InvokeVoidAsync("populateIXTable", ixDetails, "TretmentTmpIXTbl");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        [JSInvokable]
+        public async Task NotesChange(string selectedData)
+        {
+            try
+            {
+                //var selectedData = await JS.InvokeAsync<string>("getAdviceValue");
+                if (selectedData is not null)
+                {
+                    noteDetails = await _teatmentTemp.GetNoteDataById(selectedData);
+                    await JS.InvokeVoidAsync("populateNoteTable", noteDetails, "TretmentTmpNotesTbl");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
 
         [JSInvokable]
         public async Task NextMeetDateChange(string selectedData)
