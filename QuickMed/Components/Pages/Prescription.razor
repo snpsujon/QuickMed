@@ -13,15 +13,15 @@
                     <div class="col-lg-9">
                         <div class="mb-3 row">
 
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Name</label>
+                            <label id="Patient-Name" for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Name</label>
                             <div class="col-sm-3">
                                 <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
                             </div>
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Age</label>
+                            <label id="Patient-Age" for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Age</label>
                             <div class="col-sm-1">
                                 <input class="form-control form-control-sm" type="number" value="" id="example-text-input">
                             </div>
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Sex</label>
+                            <label id="Patient-Sex" for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Sex</label>
                             <div class="col-sm-1">
                                 <select class="form-select form-select-sm" aria-label="Default select example">
                                     <option selected>Select</option>
@@ -30,7 +30,7 @@
                                     <option value="3">O</option>
                                 </select>
                             </div>
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Address</label>
+                            <label id="Patient-Address" for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Address</label>
                             <div class="col-sm-3">
                                 <input class="form-control form-select-sm" type="text" value="" id="example-text-input">
                             </div>
@@ -39,19 +39,19 @@
 
                         <div class="mb-3 row">
 
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Mobile</label>
+                            <label id="Patient-Mobile" for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Mobile</label>
                             <div class="col-sm-3">
                                 <input class="form-control form-select-sm" type="text" value="" id="example-text-input">
                             </div>
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Reg No.</label>
+                            <label id="Patient-Reg" for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Reg No.</label>
                             <div class="col-sm-1">
                                 <input class="form-control form-select-sm" type="number" value="" id="example-text-input">
                             </div>
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Wt</label>
+                            <label id="Patient-Wt" for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Wt</label>
                             <div class="col-sm-1">
                                 <input class="form-control form-select-sm" type="number" value="" id="example-text-input">
                             </div>
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Date</label>
+                            <label id="Practicum-Date" for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Date</label>
                             <div class="col-sm-3">
                                 <input class="form-control form-select-sm" type="date" value="" id="example-text-input">
                             </div>
@@ -848,11 +848,11 @@
                                     </tr>
                                     <tr>
                                         <td>পেমেন্ট</td>
-                                        <td><input type="text" class="form-control" name="name" value="" /></td>
+                                        <td><input id="Payment" type="text" class="form-control" name="name" value="" /></td>
                                     </tr>
                                     <tr>
                                         <td>রেফার্ড বাই </td>
-                                        <td><input type="text" class="form-control" name="name" value="" /></td>
+                                        <td><input id="Reffer-Book" type="text" class="form-control" name="name" value="" /></td>
                                     </tr>
 
 
@@ -1015,27 +1015,27 @@
                                 <div class="mb-3 row">
 
                                     <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight</label>
+                                        <label id="Weight" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight</label>
                                         <input @onkeydown="UpdateBMI" class="form-control form-control-sm" type="text" value="" id="bmiWeight">
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Ft)</label>
+                                        <label id="Height-ft" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Ft)</label>
                                         <input @onkeydown="UpdateBMI" class="form-control form-control-sm" type="text" value="" id="bmiHeightft">
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Inch)</label>
+                                        <label id="Height-in" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Inch)</label>
                                         <input @onkeydown="UpdateBMI" class="form-control form-control-sm" type="text" value="" id="bmiHeightin">
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">BMI</label>
+                                        <label id="Bmi" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">BMI</label>
                                         <input class="form-control form-control-sm" type="text" value="" id="bmiValue" readonly>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Class</label>
+                                        <label id="Class" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Class</label>
                                         <input class="form-control form-control-sm" type="text" value="" id="bmiClass" readonly>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Idle Weight</label>
+                                        <label id="Idle-Weight" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Idle Weight</label>
                                         <input class="form-control form-control-sm" type="text" value="" id="bmiIdleWeight" readonly>
                                     </div>
                                 </div>
