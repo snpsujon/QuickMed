@@ -55,7 +55,7 @@
             <div class="card-header">
                 <div class="row mb-2 bg-light py-3">
                     <div class="col-sm-12 ">
-                        <select class="select2C  form-control custom-select" aria-label="Default select example" id="brandTempSelect">
+                        <select class="select2C  form-control custom-select" aria-label="Default select example" id="drugSearch">
                             <option selected disabled>Select Brand </option>
                             @foreach (var item in Brands)
                             {
@@ -69,7 +69,7 @@
             </div>
             <div class="card-body">
                 <span class="float-right">
-                    <button class="btn btn-success btn-sm float-end">Search</button>
+                    <button class="btn btn-success btn-sm float-end" @onclick="OnShowDataClick">Search</button>
                 </span>
             </div>
 
@@ -103,11 +103,11 @@
                         <th class="border-top-0"></th>
                     </tr>
                     <tr>
-                        <th class="border-top-0">Indication:</th>
+                        <th class="border-top-0">PackageContainer Price:</th>
                         <th class="border-top-0"></th>
                     </tr>
                     <tr>
-                        <th class="border-top-0">Price:</th>
+                        <th class="border-top-0">PackageSize Price:</th>
                         <th class="border-top-0"></th>
                     </tr>
 

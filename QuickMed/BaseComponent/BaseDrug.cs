@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using QuickMed.DB;
 using QuickMed.Interface;
+using QuickMed.ViewModels;
 
 namespace QuickMed.BaseComponent
 {
@@ -13,9 +14,11 @@ namespace QuickMed.BaseComponent
         public IDrug _drg { get; set; }
         public DotNetObjectReference<BaseDrug> ObjectReferences { get; private set; }
         public List<DrugMedicine> Brands = new List<DrugMedicine>();
+        public List<DrugDbVM> SelectedDrug = new List<DrugDbVM>();
 
         [Inject]
         public IJSRuntime JS { get; set; }
+
 
 
         protected override async Task OnInitializedAsync()
@@ -48,6 +51,13 @@ namespace QuickMed.BaseComponent
                 : Brands.Where(m => m.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
 
             return Task.FromResult(filtered);
+        }
+
+        protected async Task OnShowDataClick()
+        {
+            var selectedvalu =await JS.InvokeAsync<dynamic>("getDrug");
+            var getDataById = _drg.GetDataByIdAsync(selectedvalu);
+
         }
     }
 }
