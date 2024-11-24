@@ -1,83 +1,109 @@
 ﻿@page "/developers"
 
+<div class="container my-5">
+    <!-- Hero Section -->
+    <section class="text-center py-5 bg-gradient text-white rounded shadow" style="background: linear-gradient(to right, #ff7e5f, #feb47b);">
+        <h1 class="display-4 fw-bold">
+            Welcome to <span class="text-warning">TechStdio</span>
+        </h1>
+        <p class="fs-5">Innovating Solutions for a Smarter Future</p>
+        <div class="mt-4">
+            <a href="#services" class="btn btn-warning text-dark px-4 py-2 me-2 rounded-pill shadow-sm">
+                Explore Services
+            </a>
+            <a href="#contact" class="btn btn-outline-light px-4 py-2 rounded-pill shadow-sm">
+                Contact Us
+            </a>
+        </div>
+    </section>
 
-<div class="container my-2">
-    <!-- Header Section -->
-    <header class="text-center py-5 bg-primary text-white rounded shadow">
-        <h1 class="display-3">TechStdio </h1>
-        <p class="lead">Innovating Solutions for a Better Tomorrow</p>
-    </header>
 
     <!-- About Section -->
-    <section id="about" class="py-5">
+    <section id="about" class="my-5">
         <div class="row align-items-center">
-            <div class="col-md-6">
-                <img src="https://via.placeholder.com/600x400" class="img-fluid rounded shadow" alt="About Us">
+            <div class="col-lg-6">
+                <h2 class="text-primary fw-bold">Who We Are</h2>
+                <p class="text-muted">
+                    TechStdio is your trusted partner for innovative software solutions. Since 2010, we’ve been delivering top-tier web, mobile, and cloud services to empower businesses worldwide.
+                </p>
+                <p class="text-muted">
+                    Our mission is to create scalable, cutting-edge digital tools that drive growth and transform industries.
+                </p>
+                <a href="#services" class="btn btn-primary mt-3 rounded-pill shadow-sm">Explore Our Services</a>
             </div>
-            <div class="col-md-6">
-                <h2 class="text-primary">About Us</h2>
-                <p class="text-muted">
-                    At <strong>TechStdio</strong>, we specialize in delivering top-notch software solutions tailored to meet the unique needs of our clients.
-                    Our journey began in 2010, and since then, we have been at the forefront of web, mobile, and cloud development.
-                </p>
-                <p class="text-muted">
-                    Our mission is to empower businesses by offering scalable, innovative, and cutting-edge digital solutions that drive growth.
-                </p>
+            <div class="col-lg-6 text-center">
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid rounded shadow-sm" alt="About Us">
             </div>
         </div>
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="py-5 bg-light rounded shadow">
-        <h2 class="text-center text-primary mb-4">Our Services</h2>
-        <div class="row text-center">
+    <section id="services" class="bg-light py-5 rounded shadow-sm">
+        <h2 class="text-center fw-bold text-primary mb-4">What We Do</h2>
+        <div class="row text-center g-4">
+            <!-- Service 1 -->
             <div class="col-md-4">
-                <div class="card shadow border-0">
+                <div class="card border-0 shadow-sm h-100">
                     <div class="card-body">
-                        <i class="bi bi-code-slash display-4 text-primary mb-3"></i>
-                        <h5 class="card-title">Web Development</h5>
-                        <p class="card-text">Crafting responsive, high-performance websites to enhance your digital presence.</p>
+                        <div class="icon bg-primary text-white rounded-circle mx-auto mb-3" style="width: 70px; height: 70px; display: flex; justify-content: center; align-items: center;">
+                            <i class="bi bi-code-slash fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold">Web Development</h5>
+                        <p class="text-muted">We build fast, scalable, and visually stunning websites to boost your online presence.</p>
                     </div>
                 </div>
             </div>
+            <!-- Service 2 -->
             <div class="col-md-4">
-                <div class="card shadow border-0">
+                <div class="card border-0 shadow-sm h-100">
                     <div class="card-body">
-                        <i class="bi bi-phone display-4 text-primary mb-3"></i>
-                        <h5 class="card-title">Mobile App Development</h5>
-                        <p class="card-text">Building user-friendly mobile apps to connect with customers anytime, anywhere.</p>
+                        <div class="icon bg-primary text-white rounded-circle mx-auto mb-3" style="width: 70px; height: 70px; display: flex; justify-content: center; align-items: center;">
+                            <i class="bi bi-phone fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold">Mobile Apps</h5>
+                        <p class="text-muted">We create intuitive and engaging mobile applications for iOS and Android platforms.</p>
                     </div>
                 </div>
             </div>
+            <!-- Service 3 -->
             <div class="col-md-4">
-                <div class="card shadow border-0">
+                <div class="card border-0 shadow-sm h-100">
                     <div class="card-body">
-                        <i class="bi bi-cloud-arrow-up display-4 text-primary mb-3"></i>
-                        <h5 class="card-title">Cloud Solutions</h5>
-                        <p class="card-text">Providing scalable and secure cloud-based services for your growing business needs.</p>
+                        <div class="icon bg-primary text-white rounded-circle mx-auto mb-3" style="width: 70px; height: 70px; display: flex; justify-content: center; align-items: center;">
+                            <i class="bi bi-cloud-upload fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold">Cloud Solutions</h5>
+                        <p class="text-muted">Secure and scalable cloud services tailored to your business needs.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Info Section -->
-    <section id="contact" class="py-5">
-        <div class="text-center">
-            <h2 class="text-primary">Get in Touch</h2>
-            <p class="lead text-muted mb-4">We’d love to hear from you. Reach out to us today!</p>
-        </div>
+    <!-- Contact Section -->
+    <section id="contact" class="my-5">
+        <h2 class="text-center fw-bold text-primary">Get in Touch</h2>
+        <p class="text-center text-muted fs-5 mb-4">We’d love to hear about your next project. Contact us today!</p>
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow border-0 text-center p-4">
-                    <h4 class="text-primary">Contact Info</h4>
-                    <p class="text-muted"><i class="bi bi-envelope-fill text-primary"></i> Email: contact@techdtdio.com</p>
-                    <p class="text-muted"><i class="bi bi-telephone-fill text-primary"></i> Phone: +1 234 567 890</p>
-                    <p class="text-muted"><i class="bi bi-geo-alt-fill text-primary"></i> Address: 1234 Street Name, City, Country</p>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm p-4">
+                    <form>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Your Name</label>
+                            <input type="text" id="name" class="form-control shadow-sm" placeholder="Enter your name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Your Email</label>
+                            <input type="email" id="email" class="form-control shadow-sm" placeholder="Enter your email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Your Message</label>
+                            <textarea id="message" class="form-control shadow-sm" rows="4" placeholder="Write your message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 shadow-sm rounded-pill">Send Message</button>
+                    </form>
                 </div>
             </div>
         </div>
     </section>
 </div>
-
-@* Include Bootstrap JS *@
