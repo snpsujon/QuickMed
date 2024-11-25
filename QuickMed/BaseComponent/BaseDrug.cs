@@ -14,7 +14,8 @@ namespace QuickMed.BaseComponent
         public IDrug _drg { get; set; }
         public DotNetObjectReference<BaseDrug> ObjectReferences { get; private set; }
         public List<DrugMedicine> Brands = new List<DrugMedicine>();
-        public List<DrugDbVM> SelectedDrug = new List<DrugDbVM>();
+
+        public DrugDbVM drugDbVM = new();
 
         [Inject]
         public IJSRuntime JS { get; set; }
@@ -55,9 +56,16 @@ namespace QuickMed.BaseComponent
 
         protected async Task OnShowDataClick()
         {
-            var selectedvalu =await JS.InvokeAsync<dynamic>("getDrug");
-            var getDataById = _drg.GetDataByIdAsync(selectedvalu);
+            var selectedvalu = await JS.InvokeAsync<string>("getDrug");
+            var Id = selectedvalu;
 
+            // Await the asynchronous call to get the actual data
+            var data = await _drg.GetDataByIdAsync(Guid.Parse(Id));
+
+            if (data != null)
+            {
+                drugDbVM = data;
+            }
         }
     }
 }

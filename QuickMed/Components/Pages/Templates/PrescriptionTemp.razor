@@ -1,5 +1,6 @@
 ﻿@page "/prescriptionTemp"
-@inject IJSRuntime JS
+@using QuickMed.BaseComponent
+@inherits BasePrescriptionTemp
 
 
 
@@ -7,9 +8,9 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header  bg-info">
-                <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Patient Information</h3>
+                <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Prescription Form</h3>
             </div><!--end card-header-->
-            <div class="card-body">
+            <!--<div class="card-body">
                 <div class="row">
                     <div class="col-lg-9">
                         <div class="mb-3 row">
@@ -74,7 +75,8 @@
 
                     </div>
                 </div>
-            </div><!--end card-body-->
+            </div>-->
+            <!--end card-body-->
         </div><!--end card-->
     </div><!--end col-->
 </div><!--end row-->
@@ -399,23 +401,17 @@
                                 </h3>
                             </div>
                         </div>
-                        
+
                     </div><!--end card-header-->
 
                     <div class="card-body">
-                        <textarea id="textarea" class="form-control mb-3" maxlength="225" rows="3" placeholder="Type in English here. (limit 225 chars)" spellcheck="false" data-ms-editor="true"></textarea>
+                        <textarea id="avrotranslate" class="form-control mb-3" maxlength="1000" rows="3" placeholder="Type in English here. (limit 1000 chars)" spellcheck="false" data-ms-editor="true"></textarea>
 
-                        <div class="d-flex justify-content-center mb-3">
-                            <button id="but_converter" class="btn btn-success btn-sm">Convert</button>
-                            <div class="spinner-border spinner-border-custom-2 text-primary" role="status"></div>
-                        </div>
-
-                        <textarea id="textarea" class="form-control" maxlength="225" rows="3" placeholder="Result of English text" spellcheck="false" data-ms-editor="true"></textarea>
                     </div><!--end card-body-->
                 </div><!--end card-->
             </div> <!-- end col -->
 
-           
+
 
 
         </div> <!-- end row -->
@@ -426,34 +422,51 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                   
+
                     <div class="card-header bg-info text-light">
                         <div class="row mb-2">
                             <div class="col-sm-3 text-center">
                                 <p style="font-size:20px; font-weight: 700;font-family:Brush Script MT, Brush Script Std, cursive">RX.</p>
                             </div>
                             <div class="col-sm-3">
-                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                                    <option selected disabled>Drug Template</option>
-                                    <option value="1">M</option>
-                                    <option value="2">F</option>
-                                    <option value="3">O</option>
+                                <select class="select2W form-control mb-3 custom-select" id="presDrugTemp" aria-label="Default select example">
+                                    <option selected value="0" disabled>Drug Template</option>
+                                    @if (FavDrugTemps != null && FavDrugTemps.Any())
+                                    {
+                                        @foreach (var item in FavDrugTemps)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+
                                 </select>
                             </div>
                             <div class="col-sm-3">
-                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                                    <option selected disabled>Treatment Template</option>
-                                    <option value="1">M</option>
-                                    <option value="2">F</option>
-                                    <option value="3">O</option>
+
+                                <select class="select2W form-control mb-3 custom-select" id="presTreatTemp" aria-label="Default select example">
+                                    <option selected value="0" disabled>Treatment Template</option>
+                                    @if (treatmentTemps != null && treatmentTemps.Any())
+                                    {
+                                        @foreach (var item in treatmentTemps)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+
                                 </select>
+
                             </div>
                             <div class="col-sm-3">
-                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                                    <option selected disabled>Prescription Template</option>
-                                    <option value="1">M</option>
-                                    <option value="2">F</option>
-                                    <option value="3">O</option>
+
+                                <select class="select2W form-control mb-3 custom-select" id="presPrescTemp" aria-label="Default select example">
+                                    <option selected value="0" disabled>Prescription Template</option>
+                                    @if (PrescTemps != null && PrescTemps.Any())
+                                    {
+                                        @foreach (var item in PrescTemps)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
                                 </select>
                             </div>
 
@@ -461,40 +474,47 @@
                         <hr style="border-top: 1px dashed #f1f5fa;" />
                         <div class="row">
                             <div class="col-sm-3">
-                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                                    <option selected disabled>Select Brand</option>
-                                    <option value="1">M</option>
-                                    <option value="2">F</option>
-                                    <option value="3">O</option>
+
+                                <select class="select2C form-control mb-3 custom-select" id="brandSelectTemp" aria-label="Default select example" style="appearance: none;">
+                                    <option selected value="0" disabled>Select Brand</option>
+                                    @foreach (var item in Brands)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
                                 </select>
                             </div>
                             <div class="col-sm-3">
-                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                                    <option selected disabled>Select Dose</option>
-                                    <option value="1">M</option>
-                                    <option value="2">F</option>
-                                    <option value="3">O</option>
+                                <select class="select2 form-control mb-3 custom-select" id="doseSelectTemp" aria-label="Default select example">
+                                    <option selected value="0" disabled>Select Dose</option>
+                                    @foreach (var item in Dose)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
                                 </select>
                             </div>
                             <div class="col-sm-3">
-                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                                    <option selected disabled>Select Instruction</option>
-                                    <option value="1">M</option>
-                                    <option value="2">F</option>
-                                    <option value="3">O</option>
+
+                                <select class="select2 form-control mb-3 custom-select" id="instructionSelectTemp" aria-label="Default select example">
+                                    <option selected value="0" disabled>Select Instruction</option>
+                                    @foreach (var item in Instructions)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
                                 </select>
                             </div>
                             <div class="col-sm-2">
-                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                                    <option selected disabled>Select Duration</option>
-                                    <option value="1">M</option>
-                                    <option value="2">F</option>
-                                    <option value="3">O</option>
+
+                                <select class="select2 form-control mb-3 custom-select" id="durationSelectTemp" aria-label="Default select example">
+                                    <option selected value="0" disabled>Select Duration</option>
+                                    @foreach (var item in Duration)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
                                 </select>
                             </div>
 
                             <div class="col-sm-1 text-end">
-                                <button class="btn btn-success btn-sm" title="Add"><i class="fas fa-plus"></i></button>
+                                <button class="btn btn-success btn-sm"  title="Add"><i class="fas fa-plus"></i></button>
 
                             </div>
                         </div>
@@ -503,32 +523,24 @@
                     <div class="card-body">
                         <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
                         <div class="table-responsive">
-                            <table class="table  table-borde#f1f5fa table-sm" id="makeEditable">
+                            <table class="table  table-borde#f1f5fa table-sm" id="TretmentTmpTbl">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>Brand</th>
                                         <th>Dose</th>
+                                        <th>Instruction</th>
+                                        <th>Duration</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>1</td>
-                                        <td>fucker1</td>
-                                        <td>def@somemail.com</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>fucker2</td>
-                                        <td>def@somemail.com</td>
+                                        <td colspan="5" class="text-center text-blue">No data Available</td>
                                     </tr>
 
                                 </tbody>
                             </table>
                         </div>
-                        <span class="float-right">
-                            <button id="but_add" class="btn btn-success btn-sm">Add New Row</button>
-                        </span><!--end table-->
                     </div><!--end card-body-->
                 </div><!--end card-->
             </div> <!-- end col -->
@@ -554,8 +566,8 @@
                                 </select>
                             </div>
                         </div>
-                        
-                        
+
+
                     </div><!--end card-header-->
 
                     <div class="card-body">
@@ -592,11 +604,276 @@
             </div> <!-- end col -->
         </div> <!-- end row -->
 
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Reffer</h3>
+                            </div>
+
+                            <div class="col-sm-8">
+                                <select class="select2W form-control mb-3 custom-select" id="presRefferTempSelect" aria-label="Default select example">
+                                    <option selected value="0" disabled>Reffer Template</option>
+                                    @*@if (RefferTemps != null && RefferTemps.Any())
+                                        {
+                                            @foreach (var item in RefferTemps)
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        }*@
+                                </select>
+                            </div>
+                        </div>
+
+
+                    </div><!--end card-header-->
+
+
+                    <div class="card-body">
+                        <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
+                        <div style="min-height:350px; min-width:100%" id="editors_pres"></div>
+
+                    </div><!--end card-body-->
+                </div><!--end card-->
+            </div> <!-- end col -->
+
+
+
+        </div> <!-- end row -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Report Entry</h3>
+                    </div><!--end card-header-->
+
+                    <div class="card-body">
+                        <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
+                        <div class="table-responsive">
+                            <table class="table  table-borde#f1f5fa table-sm" id="rptEntryTbl">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Date</th>
+                                        <th>Report Namer</th>
+                                        <th>Result/Value</th>
+                                        <th>Unit</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr name="bogichogi">
+                                        <td colspan="6">No Data Available</td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <span class="float-right">
+
+                            <button id="but_add" class="btn btn-success btn-sm">Add New Row</button>
+                        </span><!--end table-->
+                    </div><!--end card-body-->
+                </div><!--end card-->
+            </div> <!-- end col -->
+
+
+        </div> <!-- end row -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-header bg-info">
+                        <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Some Other Info</h3>
+                    </div><!--end card-header-->
+
+
+                    <div class="card-body">
+
+                        <!-- Nav tabs -->
+                        <div class="nav-tabs-custom text-center">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link text-center active" data-bs-toggle="tab" href="#cu_bmi" role="tab" aria-selected="false">BMI</a>
+                                </li>
+                                @* <li class="nav-item">
+                                    <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_insulin" role="tab" aria-selected="false">Insulin</a>
+                                    </li>
+                                    <li class="nav-item">
+                                    <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_score" role="tab" aria-selected="true">Z-Score</a>
+                                    </li>
+                                    <li class="nav-item">
+                                    <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_bmr" role="tab" aria-selected="true">BMR</a>
+                                    </li>
+                                    <li class="nav-item">
+                                    <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_edd" role="tab" aria-selected="true">EDD</a>
+                                    </li> *@
+
+                            </ul>
+                        </div>
+
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane p-3 active" id="cu_bmi" role="tabpanel">
+
+                                <div class="mb-3 row">
+
+                                    <div class="form-group col-md-4">
+                                        <label id="Weight" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="bmiWeight">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label id="Height-ft" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Ft)</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="bmiHeightft">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label id="Height-in" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Inch)</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="bmiHeightin">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label id="Bmi" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">BMI</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="bmiValue" readonly>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label id="Class" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Class</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="bmiClass" readonly>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label id="Idle-Weight" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Idle Weight</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="bmiIdleWeight" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane p-3" id="cu_insulin" role="tabpanel">
+                                <div class="mb-3 row">
+
+                                    <div class="form-group col-md-3">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Unit/Kg</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Time(Inch)</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Total Unit</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Dose</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane p-3" id="cu_score" role="tabpanel">
+                                <div class="mb-3 row">
+
+                                    <div class="form-group col-md-4">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Date Of Birth</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Gender</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight(Kg)</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Result</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Age</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="tab-pane p-3" id="cu_bmr" role="tabpanel">
+
+                                <div class="mb-3 row">
+
+                                    <div class="form-group col-md-3">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight(KG)</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Ft)</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Inch)</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Gender</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Age</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Activity</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">BMR</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Calorie Need</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="tab-pane p-3" id="cu_edd" role="tabpanel">
+
+                                <div class="mb-3 row">
+
+                                    <div class="form-group col-md-4">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">LMP</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Gestational Age (LMP)</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">EDD (LMP)</label>
+                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div> <!--end tab-content-->
+                    </div>
+                </div><!--end card-->
+            </div> <!-- end col -->
+
+        </div> <!-- end row -->
     </div><!--end col-->
 
 </div>
 
-@code {
+@*@code {
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -607,4 +884,4 @@
             await JS.InvokeVoidAsync("makeSelect2", true);
         }
     }
-}
+}*@

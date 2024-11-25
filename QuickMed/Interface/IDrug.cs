@@ -1,7 +1,10 @@
-﻿namespace QuickMed.Interface
+﻿using QuickMed.ViewModels;
+
+namespace QuickMed.Interface
 {
     public interface IDrug : IBase
     {
-        Task<dynamic> GetDataByIdAsync();
+        Task<DrugDbVM> GetDataByIdAsync(Guid? Id);
+
     }
 }

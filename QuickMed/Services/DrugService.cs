@@ -10,18 +10,19 @@ namespace QuickMed.Services
         {
         }
 
-        public async Task<DrugDbVM> GetDataByIdAsync()
+        public async Task<DrugDbVM> GetDataByIdAsync(Guid? Id)
         {
             try
             {
-                var query = @"
+                var sql = $@"
                          SELECT 
-                          dm.Id,dm.Name,dg.Id as GenericId,dg.Name as GenericName,c.Id as ManufacturerId,c.Name as CompanyName
+                          dm.Id,dm.Name,dg.Id as GenericId,dg.Name as GenericName,c.Id as ManufacturerId,c.Name as CompanyName, dm.PackageContainer, dm.PackageSize
                           FROM DrugMedicine dm
                           LEFT JOIN DrugGeneric dg ON dm.GenericId = dg.Id
-                          LEFT JOIN DrugManufacturer c ON dm.ManufacturerId = c.Id";
+                          LEFT JOIN DrugManufacturer c ON dm.ManufacturerId = c.Id 
+                        Where dm.Id = '{Id}'";
 
-                var result = await _context.ExecuteSqlQueryAsync<DrugDbVM>(query);
+                var result = await _context.ExecuteSqlQueryFirstorDefultAsync<DrugDbVM>(sql);
                 return result;
             }
             catch (Exception ex)
