@@ -143,5 +143,159 @@ namespace QuickMed.Services
 
             return (List<FavouriteDrugTempVM>)await _context.ExecuteSqlQueryAsync<FavouriteDrugTempVM>(sql);
         }
+
+        public async Task<dynamic> SavePresCC(List<TblPres_Cc> datas)
+        {
+            try
+            {
+                var saveDetails = await _context.CreateMultipleAsync<TblPres_Cc>(datas);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<dynamic> SavePresMH(List<TblPres_MH> datas)
+        {
+            try
+            {
+                var saveDetails = await _context.CreateMultipleAsync<TblPres_MH>(datas);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+        public async Task<dynamic> SavePresHO(TblPres_Ho data)
+        {
+            try
+            {
+                var saveDetails = await _context.CreateAsync<TblPres_Ho>(data);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<dynamic> SavePresDH(List<TblPres_DH> datas)
+        {
+            try
+            {
+                var saveDetails = await _context.CreateMultipleAsync<TblPres_DH>(datas);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<dynamic> SavePresOE(List<TblPres_OE> datas)
+        {
+            try
+            {
+                var saveDetails = await _context.CreateMultipleAsync<TblPres_OE>(datas);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<dynamic> SavePresDX(List<TblPres_DX> datas)
+        {
+            try
+            {
+                var saveDetails = await _context.CreateMultipleAsync<TblPres_DX>(datas);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<dynamic> SavePatientReport(List<TblPatientReport> datas)
+        {
+            try
+            {
+                var saveDetails = await _context.CreateMultipleAsync<TblPatientReport>(datas);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<dynamic> SavePrescriptionDetails(List<TblPrescriptionDetails> datas)
+        {
+            try
+            {
+                var saveDetails = await _context.CreateMultipleAsync<TblPrescriptionDetails>(datas);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<dynamic> SavePrescription(TblPrescription data)
+        {
+            try
+            {
+                var saveDetails = await _context.CreateAsync<TblPrescription>(data);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<dynamic> GetPorPResult(string input, bool isMobile)
+        {
+            try
+            {
+                var sql = "";
+                if (isMobile)
+                {
+                    sql = $@"SELECT * FROM TblPatient WHERE Mobile = '{input}'";
+                    var data = await _context.ExecuteSqlQueryAsync<TblPatient>(sql);
+                    return data.LastOrDefault();
+                }
+                else
+                {
+                    sql = $@"SELECT *  FROM TblPrescription WHERE PrescriptionCode = '{input}'";
+                    var data = await _context.ExecuteSqlQueryAsync<TblPrescription>(sql);
+                    return data.FirstOrDefault();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+
+        }
     }
 }

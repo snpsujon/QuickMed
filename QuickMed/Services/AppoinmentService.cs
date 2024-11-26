@@ -50,12 +50,14 @@ namespace QuickMed.Services
                     Id = Guid.NewGuid(),
                     Name = data.Name,
                     Age = data.Age,
-                    Gender = data.Gender.ToString(),
+                    Gender = data.Gender,
                     Address = data.Address,
                     Mobile = data.Mobile,
                     AdmissionDate = data.AdmissionDate,
                     Weight = data.Weight,
-                    Code = await AutoGenCode()
+                    Code = await AutoGenCode(),
+                    HeightInch = data.HeightInch
+
                 };
                 var saveTemplate = await _context.CreateAsync<TblPatient>(tblData);
                 return true;

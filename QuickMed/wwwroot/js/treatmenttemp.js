@@ -456,8 +456,15 @@ function GetAdviceTblData() {
     const adviceData = [];
     $(tableBody).find("tr").each(function () {
         const secondCell = $(this).children("td").eq(1);
-        const cellData = secondCell.text().trim();
-        adviceData.push(cellData);
+        const select = secondCell.find("select");
+        if (select.length) {
+            adviceData.push(select.find("option:selected").text());
+        }
+        else {
+            const cellData = secondCell.text().trim();
+            adviceData.push(cellData);
+        }
+
     });
     return adviceData;
 }

@@ -1,4 +1,27 @@
-﻿
+﻿@font-face {
+    font-family: 'BarCode';
+    src: url('../fonts/myfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AdorshoLipi';
+    src: url('../fonts/AdorshoLipi.eot');
+    src: url('../fonts/AdorshoLipi.woff') format('woff'), url('../fonts/AdorshoLipi.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Siyam';
+    src: url('../fonts/SiyamRupali.woff2') format('woff2'), url('../fonts/SiyamRupali.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
 
 #blazor-error-ui {
     background: lightyellow;

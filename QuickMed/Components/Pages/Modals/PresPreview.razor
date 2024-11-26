@@ -1,0 +1,520 @@
+﻿@using QuickMed.BaseComponent.Modals
+@inherits BasePresPreview
+
+<div class="modal fade bd-example-modal-xl" id="bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="myExtraLargeModalLabel">Prescription Preview</h6> &nbsp; &nbsp;
+
+                <button type="button" @onclick="PreviewBtn" class="btn btn-soft-success btn-sm"><span title="Print">Print</span></button>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            </div><!--end modal-header-->
+            <div class="modal-body">
+                <div class="container" style="height: 29.7cm;width: 21cm;display: flex;flex-direction: column;position: relative;box-sizing: border-box;overflow: hidden;margin: 0 auto; font-family: 'AdorshoLipi','Palatino Linotype', sans-serif;">
+                    <div class="content" style="flex: 1;">
+
+
+
+                        <!-- Header section -->
+                        <header class="mt-4" style="line-height: 1.2;">
+                            <div class="row">
+                                <!-- Left Column -->
+                                <div class="col-6 text-start">
+                                    <span style="font-size:medium;" class="fw-bold">ডা. সালেহ্‌ আহমেদ শাহীন</span><br>
+                                    <span style="font-size: x-small;">এমবিবিএস, এমডি (বঙ্গবন্ধু শেখ মুজিব মেডিকেল বিশ্ববিদ্যালয়)</span><br>
+                                    <span style="font-size: x-small;">উচ্চতর প্রশিক্ষণ (এবারহার্ড কার্লস বিশ্ববিদ্যালয়, জার্মানী)</span><br>
+                                    <span style="font-size: small;" class="fw-bold">সহযোগী অধ্যাপক ও বিভাগীয় প্রধাণ</span><br>
+                                    <span style="font-size: x-small;" class="fw-bold">চর্ম ও যৌনরোগ বিভাগ</span><br>
+                                    <span style="font-size: x-small;">সিলেট এম.এ.জি. ওসমানী মেডিকেল কলেজ ও হাসপাতাল</span><br>
+                                    <span style="font-size: x-small;">০১৭১২-৮৪৬১৩১ (জরুরী প্রয়োজনে)</span><br>
+                                </div>
+
+                                <!-- Right Column -->
+                                <div class="col-6 text-end">
+                                    <span style="font-size:medium;" class="fw-bold">Dr. Saleh Ahmed Shaheen</span><br>
+                                    <span style="font-size: x-small;">MBBS, MD (B.S.M Medical University)</span><br>
+                                    <span style="font-size: x-small;">Heigher Training (Eberhard Karls University, Germany)</span><br>
+                                    <span style="font-size: x-small;" class="fw-bold">Associate Professor & Head Of Dept.</span><br>
+                                    <span style="font-size: x-small;" class="fw-bold">Dermatology & Venereology Dept.</span><br>
+                                    <span style="font-size: x-small;">Sylhet M.A.G. Osmani Medical College & Hospital</span><br>
+                                    <span style="font-size: x-small;">01712-846131 (In Emergency)</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <span style="font-size: x-small; background-color:black;color:#fff;" class="fw-bold fst-italic px-2">
+                                        যখন আমি রোগাক্রান্ত হই, তখন তিনিই (আল্লাহতায়ালা) আমাকে আরোগ্য দান করেন। সূরা
+                                        আশ-শুআরা-৮০
+                                    </span>
+                                </div>
+
+                            </div>
+                        </header>
+
+                        <!-- Patient Information -->
+                        <section class="mt-5 fw-bold" style="font-size: x-small; line-height: 1.2;">
+                            <!-- Single Row with Name, Age, Date -->
+                            <div class="row border-top border-bottom py-2">
+                                <!-- Name -->
+                                <div class="col" style="padding-left: 10px;">
+                                    @{
+                                        var sex = PrescriptionViewModelss?.PData?.Sex == "Select" ? "" : "(" + (@PrescriptionViewModelss?.PData?.Sex) + ")";
+                                    }
+                                    <span>@PrescriptionViewModelss?.PData?.Name @sex - @PrescriptionViewModelss?.PData?.RegNo</span>
+                                </div>
+                                <!-- Age -->
+                                <div class="col text-center">
+                                    <span>বয়সঃ @PrescriptionViewModelss?.PData?.Age</span>
+                                </div>
+                                <!-- Date -->
+                                <div class="col text-end">
+                                    <span>তারিখঃ @PrescriptionViewModelss?.PData?.date</span>
+                                </div>
+                            </div>
+                        </section>
+                        <!-- bar code section -->
+                        <section class="mt-2" style="line-height: 1.2;">
+                            <!-- Single Row with Name, Age, Date -->
+                            <div class="row">
+                                <!-- Name -->
+                                <div class="col text-center">
+                                    <span id="barCodeNo" style="font-family: 'BarCode', sans-serif;font-size: 30px;">*@PrescriptionViewModelss?.PData?.RegNo*</span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Prescription Body Section -->
+
+                        <section class="mt-1" style="line-height: 1.2;">
+                            <!-- Single Row with Vertical Borders -->
+                            <div class="row" style="height: 690px;">
+                                <!-- Name -->
+                                <div class="col-4 border-end">
+                                    <div class="ccPresc">
+                                        <span style="font-size: small;" class="fw-bold"><u>C/C</u></span>
+                                        <span style="font-size: x-small;">
+                                            <ul class="list-inline" style="padding-left: 1.5em;">
+                                                @{
+                                                    if (PrescriptionViewModelss.CCTableData.Count() > 0)
+                                                    {
+                                                        foreach (var cc in PrescriptionViewModelss.CCTableData)
+                                                        {
+                                                            var dd = "";
+                                                            foreach (var kvp in cc) // kvp is the KeyValuePair<string, string>
+                                                            {
+                                                                
+                                                                if (kvp.Key == "column_2")
+                                                                {
+                                                                    dd = kvp.Value;
+                                                                }
+                                                                if (kvp.Key == "column_3")
+                                                                {
+                                                                    dd += " " + kvp.Value;
+                                                                }
+                                                                if (kvp.Key == "column_4")
+                                                                {
+                                                                    dd += " " + kvp.Value;
+                                                                }
+                                                            }
+                                                            <li class='list-inline-item'>▪ @dd</li>
+
+                                                        }
+                                                    }
+                                                }
+                                                
+                                            </ul>
+                                        </span>
+                                    </div>
+                                    @{
+                                        if (PrescriptionViewModelss.HOTableData?.HealthCheckData?.Any(x => x.Value) == true)
+                                        {
+                                            <div class="hoPresc">
+                                                <span style="font-size: small;" class="fw-bold"><u>Known Case Of</u></span>
+                                                <span style="font-size: x-small;">
+                                                    <ul class="list-inline" style="padding-left: 1.5em;">
+                                                        @foreach (var item in PrescriptionViewModelss.HOTableData.HealthCheckData.Where(x => x.Value))
+                                                        {
+                                                            <li class="list-inline-item">@item.Key</li>
+                                                        }
+                                                        @if (PrescriptionViewModelss.HOTableData.FreeTextHO != "")
+                                                        {
+                                                            <li class="list-inline-item">@PrescriptionViewModelss.HOTableData.FreeTextHO</li>
+                                                        }
+                                                    </ul>
+                                                </span>
+                                            </div>
+                                        }
+                                    }
+                                    
+                                    @{
+                                        if (PrescriptionViewModelss.OETableData != null && PrescriptionViewModelss.OETableData.Count() > 0)
+                                        {
+                                            <div class="oePresc">
+                                                <span style="font-size: small;" class="fw-bold"><u>O/E</u></span>
+                                                <span style="font-size: x-small;">
+                                                    <table style="margin-left: 1.5em;">
+                                                        @foreach (var row in PrescriptionViewModelss.OETableData)
+                                                        {
+                                                            foreach (var kvp in row)
+                                                            {
+                                                                var key = kvp.Key; // Dynamic key
+                                                                var measurement = kvp.Value; // Dynamic value
+
+                                                                // Handle MeasurementData type
+                                                                if (measurement is MeasurementData md && !string.IsNullOrEmpty(md.Value))
+                                                                {
+                                                                    <tr>
+                                                                        <th>@key</th>
+                                                                        <td>@($"{md.Value} {md.Unit}")</td> <!-- Display value and unit -->
+                                                                    </tr>
+                                                                }
+                                                               
+                                                            }
+                                                        }
+                                                    </table>
+                                                </span>
+                                            </div>
+                                        }
+                                    }
+
+                                   
+                                    @{
+                                        bool hasColumnrd = PrescriptionViewModelss.ReportTableData.Any(row => row.ContainsKey("column_2"));
+                                        if (PrescriptionViewModelss.ReportTableData != null && PrescriptionViewModelss.ReportTableData.Count() > 0 && hasColumnrd)
+                                        {
+                                            <div class="rptPresc">
+                                                <span style="font-size: small;" class="fw-bold"><u>Reports</u></span>
+                                                <span style="font-size: x-small;">
+                                                    <table>
+                                                        @foreach (var row in PrescriptionViewModelss.ReportTableData)
+                                                        {
+                                                            var tr = "";
+                                                            var col2 = "";
+                                                            var col3 = "";
+                                                            var col4 = "";
+                                                            var col5 = "";
+                                                            
+                                                            foreach (var kvp in row)
+                                                            {
+                                                                var key = kvp.Key; // Dynamic key
+                                                                var val = kvp.Value; // Dynamic value
+
+                                                                // Handle MeasurementData type
+                                                                if (key == "column_3")
+                                                                {
+                                                                    col3 += "<th>"+val+"</th>";
+                                                                }
+                                                                if (key == "column_4")
+                                                                {
+                                                                    col4 += "<td>"+val+"</td>";
+                                                                }
+                                                                if (key == "column_5")
+                                                                {
+                                                                    col5 += "<td>"+val+"</td>";
+                                                                }
+                                                                if (key == "column_2")
+                                                                {
+                                                                    col2 += "<td style='font-size: xl-small;'>" + val + "</td>";
+                                                                }
+                                                            }
+                                                            tr = col3 + col4 + col5 + col2;
+                                                            <tr>@((MarkupString)tr)</tr>
+                                                        }
+                                                    </table>
+                                                </span>
+                                            </div>
+                                        }
+                                    }
+
+                                    
+                                    @{
+                                        bool hasColumn2 = PrescriptionViewModelss.DHTableData.Any(row => row.ContainsKey("column_2"));
+                                        if (PrescriptionViewModelss.DHTableData != null && PrescriptionViewModelss.DHTableData.Count() > 0 && hasColumn2)
+                                        {
+                                            
+                                            <div class="dhPresc">
+                                                <span style="font-size: small;" class="fw-bold"><u>D/H</u></span>
+                                                <span style="font-size: x-small;">
+                                                    <ul class="list-inline">
+                                                        @foreach (var row in PrescriptionViewModelss.DHTableData)
+                                                        {
+                                                            foreach (var kvp in row)
+                                                            {
+                                                                if(kvp.Key == "column_2")
+                                                                {
+                                                                    <li class="list-inline-item">○ @kvp.Value</li>
+                                                                }
+                                                            }
+                                                        }
+                                                        
+                                                    </ul>
+                                                </span>
+                                            </div>
+                                            
+                                        }
+                                    }
+
+                                    @{
+                                        bool hasValidData = PrescriptionViewModelss.NoteTableData != null
+                                        && PrescriptionViewModelss.NoteTableData.Count() > 0
+                                        && PrescriptionViewModelss.NoteTableData.Any(row => row.ContainsKey("column_2") && row["column_2"] != "No Data");
+
+                                        if (hasValidData)
+                                        {
+
+                                            <div class="dhPresc">
+                                                <span style="font-size: small;" class="fw-bold"><u>Notes</u></span>
+                                                <span style="font-size: x-small;">
+                                                    <ul class="list-inline">
+                                                        @foreach (var row in PrescriptionViewModelss.NoteTableData)
+                                                        {
+                                                            foreach (var kvp in row)
+                                                            {
+                                                                if (kvp.Key == "column_2")
+                                                                {
+                                                                    if (@kvp.Value != "No Data")
+                                                                    {
+                                                                        <li class="list-inline-item">○ @kvp.Value</li>
+
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+
+                                                    </ul>
+                                                </span>
+                                            </div>
+
+                                        }
+                                    }
+
+                                    
+                                    @{
+                                        if (PrescriptionViewModelss.MHTableData != null && PrescriptionViewModelss.MHTableData.Count() > 0)
+                                        {
+                                            <div class="rptPresc">
+                                                <span style="font-size: small;" class="fw-bold"><u>M/H</u></span>
+                                                <span style="font-size: x-small;">
+                                                    <table>
+                                                        @foreach (var row in PrescriptionViewModelss.MHTableData)
+                                                        {
+                                                            var tr = "";
+
+                                                            foreach (var kvp in row)
+                                                            {
+                                                                var key = kvp.Key; // Dynamic key
+                                                                var val = kvp.Value; // Dynamic value
+
+                                                                tr += "<td>" + key + "</td>";
+                                                                tr += "<td>" + val + "</td>";
+
+                                                            }
+                                                            <tr>@((MarkupString)tr)</tr>
+                                                        }
+                                                    </table>
+                                                </span>
+                                            </div>
+                                        }
+                                    }
+
+
+                                    @{
+                                        int firstdx = 1;
+                                        if (PrescriptionViewModelss.DXTableData != null && PrescriptionViewModelss.DXTableData.Count() > 0)
+                                        {
+
+                                            <div id="dxPress" style="margin-top: 30px; font-size: small;">
+                                                <span>
+                                                    <ul class="list-inline">
+                                                        @foreach (var row in PrescriptionViewModelss.DXTableData)
+                                                        {
+                                                            foreach (var kvp in row)
+                                                            {
+                                                                if (kvp.Key == "column_2")
+                                                                {
+                                                                    
+                                                                    if(firstdx == 1)
+                                                                    {
+                                                                        <li class="list-inline-item fw-bold">∆ @kvp.Value</li>
+                                                                        firstdx = 0;
+                                                                    }
+                                                                    else{
+                                                                        <li class="list-inline-item fw-bold">ē @kvp.Value</li>
+                                                                    }
+                                                                    // <li class="list-inline-item fw-bold">○ @kvp.Value</li>
+                                                                }
+                                                            }
+                                                        }
+
+                                                    </ul>
+                                                </span>
+                                            </div>
+
+                                        }
+                                    }
+
+
+
+                                </div>
+
+                                <div class="col-6 border-end">
+                                    <span style="font-family: Lucida Calligraphy; margin-left: 10px; margin-top: 7px; font-size: 18pt;">
+                                        RX.
+                                    </span>
+                                    <div id="rxListPresc" style="padding-left: 1.5em;">
+                                        <ol>
+                                            @foreach (var row in PrescriptionViewModelss.Treatments)
+                                            {
+                                                var brandText = row.brand?.text?.ToString(); // Get the brand text (check for null)
+                                                var parts = brandText?.Split('-').TakeWhile((part, index) => index < brandText.Split('-').Length - 1);
+
+                                                <li>
+                                                    <!-- Medicine Name -->
+                                                    <span style="font-size: small;" class="fw-bold d-block">
+
+                                                        @string.Join(" - ", parts)
+                                                    
+                                                    </span>
+                                                    <!-- Dosage and Duration -->
+                                                    <div class="d-flex justify-content-between" style="font-size: x-small;">
+                                                        <span>@row.dose.text - @row.instruction.text</span>
+                                                        <span>-@row.duration.text</span>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ol>
+                                    </div>
+
+                                    @{
+                                        if (PrescriptionViewModelss.Reffer != null || PrescriptionViewModelss.Reffer != "")
+                                        {
+                                            <div id="advicePresc" style="padding-left: 1.5em; margin-top:40px;font-size: x-small;">
+                                                @((MarkupString)PrescriptionViewModelss.Reffer)
+                                            </div>
+                                            // <p><strong style="color: rgb(0, 0, 0);"><u>রেফার/পরবর্তী চিকিৎসার জন্যঃ</u></strong></p>
+
+                                            // <p><strong style="color: rgb(0, 0, 0);">ডা. এস. আলম চৌধুরী</strong></p>
+
+                                            // <p><span style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">এমবিবিএস, এফসিপিএস (মেডিসিন),</span></p>
+
+                                            // <p><strong style="color: rgb(0, 0, 0);">মেডিসিন বিশেষজ্ঞ</strong></p>
+
+                                            // <p><span style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">জিলসফট ডায়াগনোস্টিক সেন্টার, ঢাকা।</span></p>
+                                        }                                       
+                                    }                                   
+
+                                    @{
+                                        bool hasValidDataAdv = PrescriptionViewModelss.Advice != null
+                                        && PrescriptionViewModelss.Advice.Count() > 0
+                                        && PrescriptionViewModelss.Advice.Any(row => row != "No data Available");
+
+
+                                        if (hasValidDataAdv)
+                                        {
+                                            <div id="advicePresc" style="padding-left: 1.5em; margin-top:40px">
+                                                <span style="font-size: small;" class="fw-bold"><u>উপদেশ</u></span>
+                                                <ul style="font-size: x-small;">
+                                                @foreach (var item in PrescriptionViewModelss.Advice)
+                                                    {
+                                                        <li>@item</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        }
+                                    }
+                                    
+
+                                </div>
+
+                                @{
+                                    bool hasValidDataIX = PrescriptionViewModelss.IXTableData != null
+                                    && PrescriptionViewModelss.IXTableData.Count() > 0
+                                    && PrescriptionViewModelss.IXTableData.Any(row => row.ContainsKey("column_2") && row["column_2"] != "No Data");
+
+                                    if (hasValidDataIX)
+                                    {
+                                        <div class="col-2">
+                                            <div class="ixPresc">
+                                                <span style="font-size: small;" class="fw-bold"><u>Investigation</u></span>
+                                                <span style="font-size: x-small;">
+                                                    <ul class="list-inline" style="padding-left: 1.5em;">
+
+                                                        @foreach (var row in PrescriptionViewModelss.IXTableData)
+                                                        {
+                                                            foreach (var kvp in row)
+                                                            {
+                                                                if (kvp.Key == "column_2")
+                                                                {
+                                                                    <li class="list-inline-item fw-bold"> @kvp.Value</li>
+                                                                }
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                      
+
+                                    }
+                                }
+
+                                
+                            </div>
+                        </section>
+
+                        <footer style="line-height: 1.2;position: absolute;bottom: 0;width: 100%;padding: 10px 0;text-align: center;font-size: x-small;padding-right: 3%;">
+                            <div class="row border-top pt-2">
+                                <div class="col-2">
+                                    <img src="ibn.png" height="120" width="120" alt="">
+                                </div>
+                                <div class="col-4">
+                                    <div class="chemberPresc">
+                                        <span style="font-size: medium;" class="fw-bold"><u>চেম্বারঃ</u></span> <br>
+                                        <span style="font-size: small;" class="fw-bold">ইবনে সিনা হাসপাতাল সিলেট লিঃ</span> <br>
+                                        <span style="font-size: x-small;">সোবহানীঘাট পয়েন্ট, সিলেট। রুম নং- ৪২৮</span> <br>
+                                        <span style="font-size: x-small;">ফোনঃ ০২ ৯৯ ৬৬ ৪০০ ১০-১৯</span>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="SLPresc">
+                                        <span style="font-size: medium;" class="fw-bold"><u>ডাক্তার সিরিয়াল</u></span> <br>
+                                        <span style="font-size: small;">০৯ ৬৩৬ ৩০০ ৩০০</span> <br>
+                                        <span style="font-size: x-small;">(সকাল ৮ টা)</span> <br>
+                                        <span style="font-size: small;">০১৭২৬-৩৪৮৭৬১</span> <br>
+                                        <span style="font-size: x-small;">(সকাল ৮ টা - বিকাল ৩ টা)</span>
+                                    </div>
+                                </div>
+                                <div class="col-3 text-end">
+                                    <span style="font-size: small;" class="fw-bold">রোগী দেখার সময়</span><br>
+                                    <span style="font-size: small;" class="fw-bold">প্রতিদিন</span><br>
+                                    <span style="font-size: x-small;">বিকাল ৪ টা থেকে রাত ৯ টা</span><br>
+                                    <span style="font-size: x-small;" class="fw-bold">(শুক্রবার যোগাযোগ সাপেক্ষে)</span><br>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+
+
+
+                </div>
+
+
+
+
+            </div><!--end modal-body-->
+            <div class="modal-footer">
+
+
+                <button type="button" class="btn btn-soft-success btn-sm"><span title="Print">Print</span></button>
+
+                <button type="button" class="btn btn-soft-danger btn-sm" data-bs-dismiss="modal">Close</button>
+
+            </div><!--end modal-footer-->
+        </div><!--end modal-content-->
+    </div><!--end modal-dialog-->
+</div><!--end modal-->
+
