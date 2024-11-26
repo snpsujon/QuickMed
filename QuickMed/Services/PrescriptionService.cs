@@ -33,16 +33,14 @@ namespace QuickMed.Services
             try
             {
                 var query = @"
-            SELECT 
+              SELECT 
             p.Id,
             p.PrescriptionCode,
             p.PrescriptionDate,
             pp.Id AS PatientId,
             pp.Name as PatientName,
-            p.MobileNumber,
-            p.Address,
-            p.Plan,
-            p.Dx
+            pp.Mobile,
+            pp.Address
         FROM TblPrescription p
         LEFT JOIN TblPatient pp 
             ON p.PatientId = pp.Id";

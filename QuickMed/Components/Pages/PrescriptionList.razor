@@ -1,61 +1,89 @@
 ﻿@page "/prescription-list"
 @using QuickMed.BaseComponent
-@using QuickMed.DB
 @inherits BasePrescriptionList
 
-@*<h3 class="text-primary"> <i class="fas fa-prescription"></i> Prescription List</h3>*@
+
+<style>
+    input[disabled] {
+        background-color: #e9ecef; /* Light grey background for disabled input */
+        color: #6c757d; /* Grey text color */
+        border: 1px solid #ced4da; /* Border color for disabled state */
+    }
+</style>
+
+
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header bg-info">
-                <h4 class="card-title text-light"> <i class="dripicons-view-list"></i> &nbsp;&nbsp;Prescription List</h4>
-            </div><!--end card-header-->
+            <div class="card-header bg-info d-flex justify-content-between align-items-center">
+                <h4 class="card-title text-light mb-0">
+                    <i class="dripicons-view-list"></i> &nbsp;&nbsp;Prescription List
+                </h4>
+                <!-- Toggle Button -->
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#searchForm" aria-expanded="false" aria-controls="searchForm">
+                    <i class="dripicons-chevron-down"></i>Search
+                </button>
+               
+            </div>
+            <!--end card-header-->
+            <!-- Search Form -->
+            <div class="collapse" id="searchForm">
+                <div class="card-body bg-light">
+                    <form id="searchPrescriptionForm">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="searchReg" class="form-label">Registration No:</label>
+                                <input type="text" id="searchReg" class="form-control" placeholder="Enter Reg. No">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="searchMobile" class="form-label">Mobile:</label>
+                                <input type="text" id="searchMobile" class="form-control" placeholder="Enter Mobile">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="searchMobile" class="form-label">D/X:</label>
+                                <select class="select2W form-control" id="dxSelect" aria-label="Default select example">
+                                    <option selected value="0" disabled>Select D/X</option>
+                                    @foreach (var item in Dxs)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="searchMobile" class="form-label">Brand:</label>
+                                <select class="select2C  form-control" style="width:100%" aria-label="Default select example" id="brandTempSelect">
+                                    <option selected disabled>Select Brand</option>
+                                    @if (Brands != null && Brands.Any())
+                                    {
+                                        @foreach (var item in Brands)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="fromDate" class="form-label">From Date:</label>
+                                <input type="date" id="fromDate" class="form-control" onchange="enableToDate()">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="toDate" class="form-label">To Date:</label>
+                                <input type="date" id="toDate" class="form-control" disabled onchange="checkToDate()">
+                            </div>
+
+                        </div>
+                        <div class="mt-3 text-end">
+                            <button type="button" class="btn btn-secondary" @onclick="OnClearClick">Reset</button>
+                            <button class="btn btn-primary" @onclick="OnSearchClick">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <div class="card-body">
-
-                @*<table id="datatable-prescriptionList" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                    <thead>
-                        <tr>
-                            <th class="border-top-0">Reg.</th>
-                            <th class="border-top-0">Date</th>
-                            <th class="border-top-0">Name</th>
-                            <th class="border-top-0">Mobile</th>
-                            <th class="border-top-0">Address</th>
-                            <th class="border-top-0">Dx/Condition</th>
-                            <th class="border-top-0">Plan</th>
-                            <th class="border-top-0 text-end">Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @if (prescriptions != null && prescriptions.Any())
-                        {
-                            @foreach (var item in prescriptions.Select((value, index) => new { value, index }))
-                            {
-                                <tr>
-                                    <td>@(item.index + 1)</td> 
-                                    <td>@item.value.PrescriptionCode</td>
-                                    <td>@item.value.PrescriptionDate</td>
-                                    <td>@item.value.MobileNumber</td>
-                                    <td>@item.value.Address</td>
-                                    <td>@item.value.Dx</td>
-                                    <td>@item.value.Plan</td>
-
-
-                                    <td class="text-end">
-                                        <span class="text-primary mx-1 cursor-pointer" @onclick="() => OnPreviewClick(item.value)"><i class="dripicons-view"></i></span>
-                                        <span class="text-primary mx-1 cursor-pointer" @onclick="() => OnEditClick(item.value)"><i class="dripicons-pencil"></i></span>
-                                        <span class="text-danger mx-1 cursor-pointer" @onclick="() => OnDeleteClick(item.value.Id)"><i class="dripicons-trash"></i></span>
-                                    </td>
-
-
-                                </tr>
-                            }
-
-
-                        }
-                    </tbody>
-                </table>*@
-
                 <table id="datatable-prescriptionList" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
@@ -70,9 +98,8 @@
                             <th class="border-top-0 text-end">Action</th>
                         </tr>
                     </thead>
-
-
                     <tbody>
+                        <!-- Add dynamic rows here -->
                     </tbody>
                 </table>
             </div>
