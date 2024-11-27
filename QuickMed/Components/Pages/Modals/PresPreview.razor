@@ -7,15 +7,15 @@
             <div class="modal-header">
                 <h6 class="modal-title m-0" id="myExtraLargeModalLabel">Prescription Preview</h6> &nbsp; &nbsp;
 
-                <a href="javascript:window.print();" class="btn btn-soft-success btn-sm"><span title="Print">Print</span></a>
-                @* <button type="button" @onclick="PreviewBtn" class="btn btn-soft-success btn-sm"><span title="Print">Print</span></button> *@
+                @* <a href="javascript:window.print();" class="btn btn-soft-success btn-sm"><span title="Print">Print</span></a> *@
+                <button type="button" @onclick="PreviewBtn" class="btn btn-soft-success btn-sm"><span title="Print">Print</span></button>
 
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
             </div><!--end modal-header-->
             <div class="modal-body">
                 <div class="container" style="height: 29.7cm;width: 21cm;display: flex;flex-direction: column;position: relative;box-sizing: border-box;overflow: hidden;margin: 0 auto; font-family: 'AdorshoLipi','Palatino Linotype', sans-serif;">
-                    <div class="content" style="flex: 1;">
+                    <div class="content" style="flex: 1;" id="printDiv">
 
 
 
@@ -24,18 +24,18 @@
                             <div class="row">
                                 <!-- Left Column -->
                                 <div class="col-6 text-start">
-                                    <span style="font-size:medium;" class="fw-bold">ডা. সালেহ্‌ আহমেদ শাহীন</span><br>
-                                    <span style="font-size: x-small;">এমবিবিএস, এমডি (বঙ্গবন্ধু শেখ মুজিব মেডিকেল বিশ্ববিদ্যালয়)</span><br>
-                                    <span style="font-size: x-small;">উচ্চতর প্রশিক্ষণ (এবারহার্ড কার্লস বিশ্ববিদ্যালয়, জার্মানী)</span><br>
-                                    <span style="font-size: small;" class="fw-bold">সহযোগী অধ্যাপক ও বিভাগীয় প্রধাণ</span><br>
-                                    <span style="font-size: x-small;" class="fw-bold">চর্ম ও যৌনরোগ বিভাগ</span><br>
-                                    <span style="font-size: x-small;">সিলেট এম.এ.জি. ওসমানী মেডিকেল কলেজ ও হাসপাতাল</span><br>
-                                    <span style="font-size: x-small;">০১৭১২-৮৪৬১৩১ (জরুরী প্রয়োজনে)</span><br>
+                                    <span style="font-size:large;" class="fw-bold">ডা. সালেহ্‌ আহমেদ শাহীন</span><br>
+                                    <span style="font-size: small;">এমবিবিএস, এমডি (বঙ্গবন্ধু শেখ মুজিব মেডিকেল বিশ্ববিদ্যালয়)</span><br>
+                                    <span style="font-size: small;">উচ্চতর প্রশিক্ষণ (এবারহার্ড কার্লস বিশ্ববিদ্যালয়, জার্মানী)</span><br>
+                                    <span style="font-size: medium;" class="fw-bold">সহযোগী অধ্যাপক ও বিভাগীয় প্রধাণ</span><br>
+                                    <span style="font-size: small;" class="fw-bold">চর্ম ও যৌনরোগ বিভাগ</span><br>
+                                    <span style="font-size: small;">সিলেট এম........এ.জি. ওসমানী মেডিকেল কলেজ ও হাসপাতাল</span><br>
+                                    <span style="font-size: small;">০১৭১২-৮৪৬১৩১ (জরুরী প্রয়োজনে)</span><br>
                                 </div>
 
                                 <!-- Right Column -->
                                 <div class="col-6 text-end">
-                                    <span style="font-size:medium;" class="fw-bold">Dr. Saleh Ahmed Shaheen</span><br>
+                                    <span style="font-size:large;" class="fw-bold">Dr. Saleh Ahmed Shaheen</span><br>
                                     <span style="font-size: x-small;">MBBS, MD (B.S.M Medical University)</span><br>
                                     <span style="font-size: x-small;">Heigher Training (Eberhard Karls University, Germany)</span><br>
                                     <span style="font-size: x-small;" class="fw-bold">Associate Professor & Head Of Dept.</span><br>
@@ -91,7 +91,7 @@
 
                         <section class="mt-1" style="line-height: 1.2;">
                             <!-- Single Row with Vertical Borders -->
-                            <div class="row" style="height: 690px;">
+                            <div class="row" style="height: 600px;">
                                 <!-- Name -->
                                 <div class="col-4 border-end">
                                     <div class="ccPresc">
@@ -106,7 +106,7 @@
                                                             var dd = "";
                                                             foreach (var kvp in cc) // kvp is the KeyValuePair<string, string>
                                                             {
-                                                                
+
                                                                 if (kvp.Key == "column_2")
                                                                 {
                                                                     dd = kvp.Value;
@@ -125,7 +125,7 @@
                                                         }
                                                     }
                                                 }
-                                                
+
                                             </ul>
                                         </span>
                                     </div>
@@ -149,7 +149,7 @@
                                             </div>
                                         }
                                     }
-                                    
+
                                     @{
                                         if (PrescriptionViewModelss.OETableData != null && PrescriptionViewModelss.OETableData.Count() > 0)
                                         {
@@ -172,7 +172,7 @@
                                                                         <td>@($"{md.Value} {md.Unit}")</td> <!-- Display value and unit -->
                                                                     </tr>
                                                                 }
-                                                               
+
                                                             }
                                                         }
                                                     </table>
@@ -181,7 +181,7 @@
                                         }
                                     }
 
-                                   
+
                                     @{
                                         bool hasColumnrd = PrescriptionViewModelss.ReportTableData.Any(row => row.ContainsKey("column_2"));
                                         if (PrescriptionViewModelss.ReportTableData != null && PrescriptionViewModelss.ReportTableData.Count() > 0 && hasColumnrd)
@@ -197,7 +197,7 @@
                                                             var col3 = "";
                                                             var col4 = "";
                                                             var col5 = "";
-                                                            
+
                                                             foreach (var kvp in row)
                                                             {
                                                                 var key = kvp.Key; // Dynamic key
@@ -206,15 +206,15 @@
                                                                 // Handle MeasurementData type
                                                                 if (key == "column_3")
                                                                 {
-                                                                    col3 += "<th>"+val+"</th>";
+                                                                    col3 += "<th>" + val + "</th>";
                                                                 }
                                                                 if (key == "column_4")
                                                                 {
-                                                                    col4 += "<td>"+val+"</td>";
+                                                                    col4 += "<td>" + val + "</td>";
                                                                 }
                                                                 if (key == "column_5")
                                                                 {
-                                                                    col5 += "<td>"+val+"</td>";
+                                                                    col5 += "<td>" + val + "</td>";
                                                                 }
                                                                 if (key == "column_2")
                                                                 {
@@ -230,12 +230,12 @@
                                         }
                                     }
 
-                                    
+
                                     @{
                                         bool hasColumn2 = PrescriptionViewModelss.DHTableData.Any(row => row.ContainsKey("column_2"));
                                         if (PrescriptionViewModelss.DHTableData != null && PrescriptionViewModelss.DHTableData.Count() > 0 && hasColumn2)
                                         {
-                                            
+
                                             <div class="dhPresc">
                                                 <span style="font-size: small;" class="fw-bold"><u>D/H</u></span>
                                                 <span style="font-size: x-small;">
@@ -244,17 +244,17 @@
                                                         {
                                                             foreach (var kvp in row)
                                                             {
-                                                                if(kvp.Key == "column_2")
+                                                                if (kvp.Key == "column_2")
                                                                 {
                                                                     <li class="list-inline-item">○ @kvp.Value</li>
                                                                 }
                                                             }
                                                         }
-                                                        
+
                                                     </ul>
                                                 </span>
                                             </div>
-                                            
+
                                         }
                                     }
 
@@ -292,7 +292,7 @@
                                         }
                                     }
 
-                                    
+
                                     @{
                                         if (PrescriptionViewModelss.MHTableData != null && PrescriptionViewModelss.MHTableData.Count() > 0)
                                         {
@@ -336,13 +336,14 @@
                                                             {
                                                                 if (kvp.Key == "column_2")
                                                                 {
-                                                                    
-                                                                    if(firstdx == 1)
+
+                                                                    if (firstdx == 1)
                                                                     {
                                                                         <li class="list-inline-item fw-bold">∆ @kvp.Value</li>
                                                                         firstdx = 0;
                                                                     }
-                                                                    else{
+                                                                    else
+                                                                    {
                                                                         <li class="list-inline-item fw-bold">ē @kvp.Value</li>
                                                                     }
                                                                     // <li class="list-inline-item fw-bold">○ @kvp.Value</li>
@@ -377,7 +378,7 @@
                                                     <span style="font-size: small;" class="fw-bold d-block">
 
                                                         @string.Join(" - ", parts)
-                                                    
+
                                                     </span>
                                                     <!-- Dosage and Duration -->
                                                     <div class="d-flex justify-content-between" style="font-size: x-small;">
@@ -404,8 +405,8 @@
                                             // <p><strong style="color: rgb(0, 0, 0);">মেডিসিন বিশেষজ্ঞ</strong></p>
 
                                             // <p><span style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">জিলসফট ডায়াগনোস্টিক সেন্টার, ঢাকা।</span></p>
-                                        }                                       
-                                    }                                   
+                                        }
+                                    }
 
                                     @{
                                         bool hasValidDataAdv = PrescriptionViewModelss.Advice != null
@@ -418,7 +419,7 @@
                                             <div id="advicePresc" style="padding-left: 1.5em; margin-top:40px">
                                                 <span style="font-size: small;" class="fw-bold"><u>উপদেশ</u></span>
                                                 <ul style="font-size: x-small;">
-                                                @foreach (var item in PrescriptionViewModelss.Advice)
+                                                    @foreach (var item in PrescriptionViewModelss.Advice)
                                                     {
                                                         <li>@item</li>
                                                     }
@@ -426,7 +427,7 @@
                                             </div>
                                         }
                                     }
-                                    
+
 
                                 </div>
 
@@ -458,20 +459,16 @@
                                             </div>
                                         </div>
 
-                                      
-
                                     }
                                 }
 
-                                
+
                             </div>
                         </section>
 
-                        <footer style="line-height: 1.2;position: absolute;bottom: 0;width: 100%;padding: 10px 0;text-align: center;font-size: x-small;padding-right: 3%;">
+                        <footer style="line-height: 1.2;position: absolute;bottom: 0;width: 100%;text-align: center;font-size: x-small; height:130px;">
                             <div class="row border-top pt-2">
-                                <div class="col-2">
-                                    <img src="ibn.png" height="120" width="120" alt="">
-                                </div>
+
                                 <div class="col-4">
                                     <div class="chemberPresc">
                                         <span style="font-size: medium;" class="fw-bold"><u>চেম্বারঃ</u></span> <br>
@@ -480,7 +477,7 @@
                                         <span style="font-size: x-small;">ফোনঃ ০২ ৯৯ ৬৬ ৪০০ ১০-১৯</span>
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-4">
                                     <div class="SLPresc">
                                         <span style="font-size: medium;" class="fw-bold"><u>ডাক্তার সিরিয়াল</u></span> <br>
                                         <span style="font-size: small;">০৯ ৬৩৬ ৩০০ ৩০০</span> <br>
@@ -489,7 +486,7 @@
                                         <span style="font-size: x-small;">(সকাল ৮ টা - বিকাল ৩ টা)</span>
                                     </div>
                                 </div>
-                                <div class="col-3 text-end">
+                                <div class="col-4 text-end">
                                     <span style="font-size: small;" class="fw-bold">রোগী দেখার সময়</span><br>
                                     <span style="font-size: small;" class="fw-bold">প্রতিদিন</span><br>
                                     <span style="font-size: x-small;">বিকাল ৪ টা থেকে রাত ৯ টা</span><br>
@@ -518,4 +515,3 @@
         </div><!--end modal-content-->
     </div><!--end modal-dialog-->
 </div><!--end modal-->
-

@@ -78,11 +78,11 @@
 
                     </div>
 
-                    <div class="col-lg-2">
+                   @*  <div class="col-lg-2">
                         <div class="mb-3 row">
                             <div class="col-sm-12 text-end">
                                 <button type="button" class="btn btn-outline-info btn-icon-circle btn-icon-circle-sm" title="Preview" @onclick="PreviewOnly" ><i class="fa fa-expand"></i></button>
-                                @* data-bs-toggle="modal" data-bs-target="#bd-example-modal-xl" *@
+                               
                                 <button type="button" class="btn btn-outline-success btn-icon-circle btn-icon-circle-sm" title="Save & Print"><i class="fa fa-print"></i></button>
                                 <button type="button" class="btn btn-outline-danger btn-icon-circle btn-icon-circle-sm" title="Save & Print Without Header"><i class="far fa-file-alt"></i></button>
                                 <button type="button" @onclick="SaveOnly" class="btn btn-outline-primary btn-icon-circle btn-icon-circle-sm" title="Save Only"><i class="far fa-save"></i></button>
@@ -90,7 +90,47 @@
                             </div>
                         </div>
 
+                    </div> *@
+
+                    <div class="col-lg-2">
+                        <div class="mb-3 row">
+                            <div class="col-sm-12 text-center">
+                                <div class="d-inline-block text-center me-2">
+                                    <button type="button" class="btn btn-outline-info btn-icon-circle btn-icon-circle-sm" title="Preview" @onclick="PreviewOnly">
+                                        <i class="fa fa-expand"></i>
+                                    </button>
+                                    <div class="mt-1">Preview</div>
+                                </div>
+                                <div class="d-inline-block text-center me-2">
+                                    <button type="button" class="btn btn-outline-success btn-icon-circle btn-icon-circle-sm" title="Save & Print">
+                                        <i class="fa fa-print"></i>
+                                    </button>
+                                    <div class="mt-1">Save & Print</div>
+                                </div>
+                                <div class="d-inline-block text-center me-2">
+                                    <button type="button" @onclick="SaveOnly" class="btn btn-outline-primary btn-icon-circle btn-icon-circle-sm" title="Save Only">
+                                        <i class="far fa-save"></i>
+                                    </button>
+                                    <div class="mt-1">Save Only</div>
+                                </div>
+                                <div class="d-inline-block text-center me-2">
+                                    <button type="button" class="btn btn-outline-danger btn-icon-circle btn-icon-circle-sm" title="Save & Print Without Header">
+                                        <i class="far fa-file-alt"></i>
+                                    </button>
+                                    <div class="mt-1">Save & Print <br /> Without Header</div>
+                                </div>
+                               
+                               @*  <div class="d-inline-block text-center me-2">
+                                    <button type="button" class="btn btn-outline-info btn-icon-circle btn-icon-circle-sm" title="Save as Template">
+                                        <i class="far fa-bookmark"></i>
+                                    </button>
+                                    <div class="mt-1">Save as Template</div>
+                                </div> *@
+                            </div>
+                        </div>
                     </div>
+
+
                 </div>
             </div><!--end card-body-->
         </div><!--end card-->
