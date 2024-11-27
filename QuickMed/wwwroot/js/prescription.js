@@ -212,18 +212,18 @@ function populateNoteTablePres(dataArray, tblId) {
     });
 }
 
-function getPresData() {
+function getPresData(isPreview = false) {
     var Pdata = GetPetaintData();
     var nxtMeetData = GetNextMeetData();
-    var ccTableData = getTableDataById('ccTable');
-    var hoTableData = getHOTableData();
+    var ccTableData = getTableDataById('ccTable', isPreview);
+    var hoTableData = getHOTableData(isPreview);
     var mhTableData = getDataColumnAsKey('mhTable');
     var oeTableData = getDataColumnAsKey('oeTable', true);
-    var dhTableData = getTableDataById('dhTable');
-    var dxTableData = getTableDataById('Dxtable');
-    var ixTableData = getTableDataById('TretmentTmpIXTbl');
-    var noteTableData = getTableDataById('TretmentTmpNotesTbl');
-    var reportTableData = getTableDataById('rptEntryTbl');
+    var dhTableData = getTableDataById('dhTable', isPreview);
+    var dxTableData = getTableDataById('Dxtable', isPreview);
+    var ixTableData = getTableDataById('TretmentTmpIXTbl', isPreview);
+    var noteTableData = getTableDataById('TretmentTmpNotesTbl', isPreview);
+    var reportTableData = getTableDataById('rptEntryTbl', isPreview);
     var adviceTableData = GetAdviceTblData();
     var refferData = getQuillContent('#editors_pres');
 
@@ -243,8 +243,9 @@ function getPresData() {
         advice: adviceTableData,
         reffer: refferData
     };
+    console.log(data); // To check the retrieved data
+
     return data;
-    //console.log(data); // To check the retrieved data
 
 }
 
@@ -279,7 +280,7 @@ function GetNextMeetData() {
 }
 
 
-function getTableDataById(tableId) {
+function getTableDataById(tableId, isPreview) {
     const table = document.getElementById(tableId); // Select the table by ID
     if (!table) {
         console.error(`Table with ID "${tableId}" not found.`);
@@ -305,6 +306,10 @@ function getTableDataById(tableId) {
             const select = cell.querySelector('select');
             if (select) {
                 value = select.value.trim(); // Get the selected option's value
+                if (isPreview) {
+                    value = select.selectedOptions[0].text.trim(); // Get the selected option's text
+                }
+
             }
 
             // Default to cell text if no input/select
@@ -322,7 +327,9 @@ function getTableDataById(tableId) {
 }
 
 
-function getHOTableData() {
+
+
+function getHOTableData(isPreview) {
     let data = {};
 
     // Loop through all checkboxes with the unique class
@@ -331,8 +338,20 @@ function getHOTableData() {
         let isChecked = $(this).is(':checked') ? true : false; // Checked = 1, Unchecked = 0
         data[key] = isChecked;
     });
-    data['FreeTextHO'] = $('#FreeTextHO').val();
-    return data;
+
+    if (isPreview) {
+        let dataho = {
+            HealthCheckData: data, // This maps to the C# HealthCheckData property
+            FreeTextHO: $('#FreeTextHO').val() // This maps to the FreeTextHO property
+        };
+
+        return dataho; // Return the structured object
+
+    } else {
+        data['FreeTextHO'] = $('#FreeTextHO').val();
+        return data;
+    }
+
 }
 
 
@@ -388,4 +407,69 @@ function getDataColumnAsKey(tableId, isUnit = false) {
 
     });
     return tableData;
+}
+
+function SearchPorP(id) {
+    var value = document.getElementById(id).value;
+    if (id == "Patient-Mobile") {
+        if (value.length > 9 && value.length < 12) {
+            if (instanceReference) {
+                instanceReference.invokeMethodAsync("GetPorPResult", value, true)
+                    .then(data => {
+
+                        if (data != null) {
+                            setPatientData(data);
+                        }
+                        else {
+                            showAlert("Oh No!!", "No Data Found.", "info", "swal-info");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            } else {
+                console.error("Instance reference is not set.");
+            }
+        }
+        else {
+            showAlert("Oh No!!", "Mobile number will be 11 Digits.", "error", "swal-error");
+        }
+    }
+    else {
+        if (value.length == 6) {
+            if (instanceReference) {
+                instanceReference.invokeMethodAsync("GetPorPResult", value, false)
+                    .then(data => {
+
+                        if (data != null) {
+                            //setPatientData(data);
+                            console.log(data);
+                        }
+                        else {
+                            showAlert("Oh No!!", "No Data Found.", "info", "swal-info");
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            } else {
+                console.error("Instance reference is not set.");
+            }
+        }
+        else {
+            showAlert("Oh No!!", "Reg No will be 6 Digits.", "error", "swal-error");
+        }
+    }
+
+
+}
+
+function setPatientData(data) {
+    document.getElementById("Patient-Name").value = data.name || '';
+    document.getElementById("Patient-Address").value = data.address || '';
+    document.getElementById("Patient-Mobile").value = data.mobile || '';
+    document.getElementById("Patient-Wt").value = data.weight || '';
+    document.getElementById("Patient-Age").value = data.age || '';
+    document.getElementById("Patient-Sex").value = data.gender || '';
 }

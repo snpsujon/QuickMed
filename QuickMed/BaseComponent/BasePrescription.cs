@@ -13,7 +13,12 @@ namespace QuickMed.BaseComponent
         public IPrescription _pres { get; set; }
         [Inject]
         public IMixTemp _mix { get; set; }
-
+        [Inject]
+        public IAppoinment _appoinment { get; set; }
+        [Inject]
+        public INotesTemp _notes { get; set; }
+        [Inject]
+        public IIXTemp _ixTemp { get; set; }
 
 
         [Inject]
@@ -23,6 +28,12 @@ namespace QuickMed.BaseComponent
         public ITeatmentTemp _teatmentTemp { get; set; }
         [Inject]
         public IAdvice _adviceTemp { get; set; }
+        [Inject]
+        public IDXTemp _dXTemp { get; set; }
+        [Inject]
+        public ICCTemp _cCTemp { get; set; }
+        [Inject]
+        public IDurationTemp _duration { get; set; }
 
 
         public TblPatient patient = new();
@@ -50,7 +61,7 @@ namespace QuickMed.BaseComponent
         public IEnumerable<TblRefferTemplate> RefferTemps { get; set; }
 
         public string tblid { get; set; }
-
+        public PrescriptionViewModel presmodal { get; set; } = new PrescriptionViewModel();
         public DotNetObjectReference<BasePrescription> ObjectReference { get; private set; }
 
         public List<DrugMedicine> Brands = new List<DrugMedicine>();
@@ -69,6 +80,7 @@ namespace QuickMed.BaseComponent
         public TblAdviceTemplate adviceTemplate = new();
 
         public int SelectedDays { get; set; } = 0;
+        public string PresCode { get; set; } = "";
         public DateTime NextMeetingDate { get; set; } = DateTime.Now;
 
 
@@ -101,6 +113,7 @@ namespace QuickMed.BaseComponent
             notesMasters = await App.Database.GetTableRowsAsync<TblNotesTemplate>("TblNotesTemplate");
             ixMasters = new();
             ixMasters = await App.Database.GetTableRowsAsync<TblIXTemplate>("TblIXTemplate");
+            PresCode = await AutoGenCode();
 
         }
 
@@ -533,7 +546,8 @@ namespace QuickMed.BaseComponent
                     if (result.TryGetProperty("pdata", out JsonElement pt))
                     {
                         regNo = pt.GetProperty("regNo").GetString();
-                        var patientInfo = new TblPatient()
+                        var ssss = pt.GetProperty("sex").GetString();
+                        var patientInfo = new PatientVM()
                         {
                             Id = PatientId,
                             Name = pt.GetProperty("name").GetString(),
@@ -546,8 +560,11 @@ namespace QuickMed.BaseComponent
                             HeightInch = Convert.ToDecimal(pt.GetProperty("height").GetString() != "" ? pt.GetProperty("height").GetString() : 0)
 
                         };
+                        await _appoinment.SaveAsync(patientInfo);
 
                     }
+
+
                     if (result.TryGetProperty("advice", out JsonElement adviceArrayElement))
                     {
                         if (adviceArrayElement.ValueKind == JsonValueKind.Array)
@@ -562,7 +579,7 @@ namespace QuickMed.BaseComponent
                                     Id = AdviceId,
                                     AdviceTemplateName = regNo + "_Advice"
                                 };
-                                //await _adviceTemp.SaveAdviceTemplate(adviceTemplate);
+                                await _adviceTemp.SaveAdviceTemplate(adviceTemplate);
                                 adviceDetails = new List<TblAdviceTemplateDetails>();
                                 foreach (var advice in adviceList)
                                 {
@@ -573,7 +590,7 @@ namespace QuickMed.BaseComponent
                                         Advice = advice
                                     });
                                 }
-                                //await _adviceTemp.SaveAdviceTemplateDetails(adviceDetails);
+                                await _adviceTemp.SaveAdviceTemplateDetails(adviceDetails);
                             }
 
                         }
@@ -598,15 +615,39 @@ namespace QuickMed.BaseComponent
 
                             foreach (var cc in CCdataList)
                             {
+                                bool isCcGuid = Guid.TryParse(cc.cc, out Guid parsedGuidCc);
+                                bool isDurationGuid = Guid.TryParse(cc.duration, out Guid parsedGuidDur);
+                                TblCCTemplate tblCCTemplate = new();
+                                TblDuration duration = new();
+
+                                if (!isCcGuid)
+                                {
+                                    tblCCTemplate.Id = Guid.NewGuid();
+                                    tblCCTemplate.Name = cc.cc;
+                                    await _cCTemp.SaveCCTemplate(tblCCTemplate); // Create the new template
+                                }
+
+                                if (!isDurationGuid)
+                                {
+                                    duration.Id = Guid.NewGuid();
+                                    duration.Name = cc.duration;
+                                    await _duration.SaveAsync(duration); // Create the new duration template
+                                }
+
+                                // Add the new TblPres_Cc
                                 tblPres_Ccs.Add(new TblPres_Cc
                                 {
                                     Id = Guid.NewGuid(),
                                     Pres_ID = PresId,
-                                    CcName = cc.cc,
-                                    DurationId = Guid.Parse(cc.duration),
+                                    CcName = isCcGuid ? cc.cc : tblCCTemplate.Id.ToString(),
+                                    DurationId = isDurationGuid ? Guid.Parse(cc.duration) : duration.Id,
                                     Dm_Id = cc.dm
                                 });
+
+
                             }
+                            await _pres.SavePresCC(tblPres_Ccs);
+
                         }
                         else
                         {
@@ -646,6 +687,8 @@ namespace QuickMed.BaseComponent
                         var hoTableDatas = JsonSerializer.Deserialize<TblPres_Ho>(hoTableData.ToString());
                         hoTableDatas.Id = Guid.NewGuid();
                         hoTableDatas.Pres_ID = PresId;
+
+                        await _pres.SavePresHO(hoTableDatas);
                     }
                     if (result.TryGetProperty("mhTableData", out JsonElement mhTableData))
                     {
@@ -665,6 +708,7 @@ namespace QuickMed.BaseComponent
                             }
                         }
 
+                        await _pres.SavePresMH(tblPres_MHs);
                     }
                     if (result.TryGetProperty("oeTableData", out JsonElement oeTableData))
                     {
@@ -689,7 +733,9 @@ namespace QuickMed.BaseComponent
                                     });
                                 }
                             }
+
                         }
+                        await _pres.SavePresOE(tblPres_OEs);
                     }
 
                     if (result.TryGetProperty("dhTableData", out JsonElement dhTableData))
@@ -713,6 +759,8 @@ namespace QuickMed.BaseComponent
                                     BrandID = Guid.Parse(cc.dh)
                                 });
                             }
+
+                            await _pres.SavePresDH(tblPres_DHs);
                         }
 
 
@@ -731,13 +779,33 @@ namespace QuickMed.BaseComponent
                             List<TblPres_DX> ListData = new List<TblPres_DX>();
                             foreach (var cc in dXdataList)
                             {
-                                ListData.Add(new TblPres_DX
+                                bool isGuid = Guid.TryParse(cc.dX, out Guid parsedGuid);
+                                if (isGuid)
                                 {
-                                    Id = Guid.NewGuid(),
-                                    Pres_ID = PresId,
-                                    DxTempId = Guid.Parse(cc.dX)
-                                });
+                                    ListData.Add(new TblPres_DX
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        Pres_ID = PresId,
+                                        DxTempId = Guid.Parse(cc.dX)
+                                    });
+                                }
+                                else
+                                {
+                                    TblDXTemplate dxtemp = new();
+                                    dxtemp.Id = Guid.NewGuid(); // This line will be redundant as the default is already set
+                                    dxtemp.Name = cc.dX;
+                                    await _dXTemp.SaveCCTemplate(dxtemp); // Create the new template
+                                    ListData.Add(new TblPres_DX
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        Pres_ID = PresId,
+                                        DxTempId = dxtemp.Id
+                                    });
+                                }
+
+
                             }
+                            await _pres.SavePresDX(ListData);
                         }
 
                     }
@@ -759,6 +827,7 @@ namespace QuickMed.BaseComponent
                                     Id = IxId,
                                     TemplateName = regNo + "_IX"
                                 };
+                                await _ixTemp.SaveAsync(ixTemplate);
                                 List<TblIXDetails> ixDetails = new List<TblIXDetails>();
                                 foreach (var item in ixList)
                                 {
@@ -770,6 +839,7 @@ namespace QuickMed.BaseComponent
 
                                     });
                                 }
+                                await _ixTemp.SaveTemplateDetails(ixDetails);
                             }
 
                         }
@@ -792,6 +862,7 @@ namespace QuickMed.BaseComponent
                                     Id = Guid.NewGuid(),
                                     Name = regNo + "_Notes"
                                 };
+                                await _notes.SaveAsync(notesTemplate);
                                 List<TblNotesTempDetails> noteDetails = new List<TblNotesTempDetails>();
                                 foreach (var item in noteList)
                                 {
@@ -803,6 +874,7 @@ namespace QuickMed.BaseComponent
 
                                     });
                                 }
+                                await _notes.SaveTemplateDetails(noteDetails);
                             }
 
                         }
@@ -838,11 +910,12 @@ namespace QuickMed.BaseComponent
                                 });
 
                             }
+                            await _pres.SavePatientReport(tblPatientReports);
 
                         }
                     }
 
-                    if (result.TryGetProperty("treatment", out JsonElement treatmentArrayElement))
+                    if (result.TryGetProperty("treatments", out JsonElement treatmentArrayElement))
                     {
                         if (treatmentArrayElement.ValueKind == JsonValueKind.Array)
                         {
@@ -870,16 +943,17 @@ namespace QuickMed.BaseComponent
                                         PrescriptionMasterId = PresId
                                     });
                                 }
+                                await _pres.SavePrescriptionDetails(rxDetails);
                                 //await _teatmentTemp.SaveTreatmentTempDetails(templateDetails);
                             }
                         }
                     }
 
-                    if (result.TryGetProperty("treatment", out JsonElement pres))
+                    if (result.TryGetProperty("treatments", out JsonElement pres))
                     {
                         var LicenceKey = await App.Database.GetTableRowsAsync<TblLicenseInfo>("TblLicenseInfo");
                         var key = "";
-                        if (LicenceKey != null)
+                        if (LicenceKey.Count() > 0)
                         {
                             key = LicenceKey.FirstOrDefault().LicenseKey;
                         }
@@ -890,20 +964,30 @@ namespace QuickMed.BaseComponent
                             AdviceId = AdviceId,
                             IxId = IxId,
                             PrescriptionDate = DateTime.Now,
-                            NextMeetingDate = result.GetProperty("nxtMeetData").GetProperty("nextMeetingDate").GetDateTime(),
-                            NextMeetingValue = result.GetProperty("nxtMeetData").GetProperty("nextMeetingDuration").GetInt32(),
-                            Payment = result.GetProperty("nxtMeetData").GetProperty("payment").GetInt32(),
-                            RefferedBy = result.GetProperty("nxtMeetData").GetProperty("refferedBy").GetString(),
+                            NextMeetingDate = Convert.ToDateTime(result.GetProperty("nxtMeetData").GetProperty("nextMeetingDate").GetString() != "" ? result.GetProperty("nxtMeetData").GetProperty("nextMeetingDate").GetString() : DateTime.Now),
+
+                            NextMeetingValue = Convert.ToInt32(result.GetProperty("nxtMeetData").GetProperty("nextMeetingDuration").GetString() != "" ? result.GetProperty("nxtMeetData").GetProperty("nextMeetingDuration").GetString() : 0),
+
+                            Payment = Convert.ToInt32(result.GetProperty("nxtMeetData").GetProperty("payment").GetString() != "" ? result.GetProperty("nxtMeetData").GetProperty("payment").GetString() : 0),
+
+                            RefferedBy = result.GetProperty("nxtMeetData").GetProperty("referredBy").GetString(),
+
                             IsSynced = false,
                             RefferedTo = result.GetProperty("reffer").GetString(),
-                            Height = result.GetProperty("pdata").GetProperty("height").GetInt32(),
-                            weight = result.GetProperty("pdata").GetProperty("bmiweight").GetInt32(),
+                            Height = Convert.ToInt32(result.GetProperty("pdata").GetProperty("height").GetString() != "" ? result.GetProperty("pdata").GetProperty("height").GetString() : 0),
+                            weight = Convert.ToInt32(result.GetProperty("pdata").GetProperty("bmiweight").GetString() != "" ? result.GetProperty("pdata").GetProperty("bmiweight").GetString() : 0),
                             PrescriptionCode = regNo,
                             CreatedBy = key,
-                            CreatedAt = DateTime.Now,
+                            //CreatedAt = DateTime.Now,
                             LicenseKey = key
                         };
+
+                        await _pres.SavePrescription(PresInfo);
                     }
+
+
+
+
 
 
 
@@ -918,6 +1002,58 @@ namespace QuickMed.BaseComponent
             }
         }
 
+
+        private async Task<dynamic> AutoGenCode()
+        {
+            // Get the current number of ticks
+            long ticks = DateTime.Now.Ticks;
+
+            // Extract the last 6 digits
+            int uniqueNumber = (int)(ticks % 1000000);
+
+            // Ensure it's always a 6-digit number (pads with leading zeros if necessary)
+            string formattedNumber = uniqueNumber.ToString("D6");
+
+            return formattedNumber;
+
+
+        }
+
+        public async Task SearchPorP(string elementId)
+        {
+            var result = await JS.InvokeAsync<object>("SearchPorP", elementId);
+            if (result != null)
+            {
+
+            }
+
+        }
+
+        [JSInvokable("GetPorPResult")]
+        public async Task<dynamic> GetPorPResult(string input, bool isMobile)
+        {
+            var result = await _pres.GetPorPResult(input, isMobile);
+            return result;
+        }
+
+        public async Task PreviewOnly()
+        {
+            try
+            {
+                presmodal = await JS.InvokeAsync<PrescriptionViewModel>("getPresData", true);
+
+                //modal.PrescriptionViewModel = result;
+                //StateHasChanged();
+
+                await JS.InvokeVoidAsync("showQModal");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
 
     }
 }

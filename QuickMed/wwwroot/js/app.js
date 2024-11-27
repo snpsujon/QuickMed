@@ -488,3 +488,8 @@ function setSelectOptions(selectClass, options, defaultValue = '') {
         });
     }
 }
+
+function showQModal() {
+    var modal = new bootstrap.Modal(document.getElementById('bd-example-modal-xl'));
+    modal.show();
+}

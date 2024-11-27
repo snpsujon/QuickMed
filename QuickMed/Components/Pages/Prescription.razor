@@ -10,13 +10,57 @@
             </div><!--end card-header-->
             <div class="card-body">
                 <div class="row">
-                    <div class="col-lg-9">
+                    <div class="col-lg-10">
                         <div class="mb-3 row">
 
                             <label id="" for="Patient-Name" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Name</label>
                             <div class="col-sm-3">
-                                <input class="form-control form-control-sm" type="text" value="" id="Patient-Name">
+                                <input class="form-control form-control-sm" type="text" value="" id="Patient-Name" autocomplete="new-password">
                             </div>
+
+                            <label id="" for="Patient-Address" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Address</label>
+                            <div class="col-sm-3">
+                                <input class="form-control form-select-sm" type="text" value="" id="Patient-Address">
+                            </div>
+
+                            <label id="" for="Practicum-Date" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Date</label>
+                            <div class="col-sm-3">
+                                <input class="form-control form-select-sm"
+                                       type="date"
+                                       value="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                       id="Practicum-Date" />
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3 row">
+
+                            <label id="" for="Patient-Mobile" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Mobile</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search" id="Patient-Mobile" aria-label="Recipient's username" aria-describedby="button-addon3">
+                                    @{var pm = "Patient-Mobile";}
+                                    <button class="btn btn-secondary" type="button" id="button-addon3" @onclick="(e) => SearchPorP(pm)">Go!</button>
+                                </div>
+                                @* <input class="form-control form-select-sm" type="text" value="" id="Patient-Mobile"> *@
+                            </div>
+                            <label id="" for="Patient-Reg" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Reg No.</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" placeholder="Search" @bind-value=PresCode id="Patient-Reg" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                    @{
+                                        var pr = "Patient-Reg";
+                                    }
+                                    <button class="btn btn-secondary" type="button" id="button-addon2" @onclick="(e) => SearchPorP(pr)">Go!</button>
+                                </div>
+
+                                @* <input class="form-control form-select-sm" type="number" max="999999" @bind-value=PresCode id="Patient-Reg"> *@
+                            </div>
+                            <label id="" for="Patient-Wt" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Wt</label>
+                            <div class="col-sm-1">
+                                <input class="form-control form-select-sm" type="number" value="" id="Patient-Wt">
+                            </div>
+
                             <label id="" for="Patient-Age" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Age</label>
                             <div class="col-sm-1">
                                 <input class="form-control form-control-sm" type="number" value="" id="Patient-Age">
@@ -30,40 +74,15 @@
                                     <option value="O">O</option>
                                 </select>
                             </div>
-                            <label id="" for="Patient-Address" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Address</label>
-                            <div class="col-sm-3">
-                                <input class="form-control form-select-sm" type="text" value="" id="Patient-Address">
-                            </div>
-
-                        </div>
-
-                        <div class="mb-3 row">
-
-                            <label id="" for="Patient-Mobile" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Mobile</label>
-                            <div class="col-sm-3">
-                                <input class="form-control form-select-sm" type="text" value="" id="Patient-Mobile">
-                            </div>
-                            <label id="" for="Patient-Reg" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Reg No.</label>
-                            <div class="col-sm-1">
-                                <input class="form-control form-select-sm" type="number" value="" id="Patient-Reg">
-                            </div>
-                            <label id="" for="Patient-Wt" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Wt</label>
-                            <div class="col-sm-1">
-                                <input class="form-control form-select-sm" type="number" value="" id="Patient-Wt">
-                            </div>
-                            <label id="" for="Practicum-Date" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Date</label>
-                            <div class="col-sm-3">
-                                <input class="form-control form-select-sm" type="date" value="" id="Practicum-Date">
-                            </div>
-
                         </div>
 
                     </div>
 
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <div class="mb-3 row">
                             <div class="col-sm-12 text-end">
-                                <button type="button" class="btn btn-outline-info btn-icon-circle btn-icon-circle-sm" title="Preview"><i class="fa fa-expand"></i></button>
+                                <button type="button" class="btn btn-outline-info btn-icon-circle btn-icon-circle-sm" title="Preview" @onclick="PreviewOnly" ><i class="fa fa-expand"></i></button>
+                                @* data-bs-toggle="modal" data-bs-target="#bd-example-modal-xl" *@
                                 <button type="button" class="btn btn-outline-success btn-icon-circle btn-icon-circle-sm" title="Save & Print"><i class="fa fa-print"></i></button>
                                 <button type="button" class="btn btn-outline-danger btn-icon-circle btn-icon-circle-sm" title="Save & Print Without Header"><i class="far fa-file-alt"></i></button>
                                 <button type="button" @onclick="SaveOnly" class="btn btn-outline-primary btn-icon-circle btn-icon-circle-sm" title="Save Only"><i class="far fa-save"></i></button>
@@ -1141,3 +1160,9 @@
 
     </div><!--end col-->
 </div>
+
+
+    <PresPreview PrescriptionViewModelss="@presmodal"></PresPreview>
+
+
+
