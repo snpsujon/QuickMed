@@ -28,7 +28,7 @@ function checkToDate() {
     }
 }
 window.getSearchInput = function () {
-    debugger;
+    //debugger;
     // Get the values of the inputs and select elements
     var searchReg = document.getElementById('searchReg').value;
     var searchMobile = document.getElementById('searchMobile').value;

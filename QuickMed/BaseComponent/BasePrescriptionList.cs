@@ -71,8 +71,8 @@ namespace QuickMed.BaseComponent
         {
             try
             {
-                await JS.InvokeVoidAsync("getSearchInput");
-                //var searchValue = await JS.InvokeAsync<dynamic>("getSearchInput");
+                //await JS.InvokeVoidAsync("getSearchInput");
+                var searchValue = await JS.InvokeAsync<dynamic>("getSearchInput");
 
             }
             catch (Exception ex)
