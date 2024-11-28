@@ -111,6 +111,7 @@ namespace QuickMed.DB
             await _dbConnection.CreateTableAsync<TblPres_Note>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblPres_OE>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblPatientReportTemp>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblPatientReport>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblPres_CcTemp>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblPres_DHTemp>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblPres_DXTemp>().ConfigureAwait(false);

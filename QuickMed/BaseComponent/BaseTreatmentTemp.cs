@@ -17,6 +17,8 @@ namespace QuickMed.BaseComponent
         public ITeatmentTemp _teatmentTemp { get; set; }
         [Inject]
         public IAdvice _adviceTemp { get; set; }
+        [Inject]
+        public IPrescription _pres { get; set; }
         public DotNetObjectReference<BaseTreatmentTemp> ObjectReference { get; private set; }
 
         public TblTreatmentTemplate treatmentTemplate = new();
@@ -273,6 +275,82 @@ namespace QuickMed.BaseComponent
 
             }
         }
+
+        public async Task Edit(string selectedData)
+        {
+            List<FavouriteDrugTempVM> treatments = await _pres.TblTreatmentTempDetails(Guid.Parse(selectedData));
+            List<TreatmentPopVM> treatmentPopVMs = new List<TreatmentPopVM>();
+            var result = new object();
+            if (treatments.Count() > 0)
+            {
+                //Load the treatment template to the prescription table
+                foreach (var treatment in treatments)
+                {
+                    TreatmentPopVM treatmentPopVM = new TreatmentPopVM()
+                    {
+                        brand = new BrandVM()
+                        {
+                            text = treatment.BrandName,
+                            value = treatment.BrandId.ToString()
+                        },
+                        dose = new DoseVM()
+                        {
+                            text = treatment.DoseName,
+                            value = treatment.DoseId.ToString()
+                        },
+                        duration = new DurationVM()
+                        {
+                            text = treatment.DurationName,
+                            value = treatment.DurationId.ToString()
+                        },
+                        instruction = new InstructionVM()
+                        {
+                            text = treatment.InstructionName,
+                            value = treatment.InstructionId.ToString()
+                        },
+                        tempId = treatment.TempId.ToString()
+                    };
+                    treatmentPopVMs.Add(treatmentPopVM);
+                    result = await JS.InvokeAsync<object>("pushtoPrescription", treatmentPopVM);
+                }
+                if (result is not null)
+                {
+                    var jsonString = result.ToString();
+                    var treatments1 = JsonSerializer.Deserialize<List<TreatmentPopVM>>(jsonString);
+                    await JS.InvokeVoidAsync("populateTreatmentTable", treatments1, "TretmentTmpTbl");
+                }
+
+                adviceDetails = new();
+                //Load the advice template to the prescription table
+                adviceDetails = await _teatmentTemp.GetAdviceDataById(treatments.FirstOrDefault().Id.ToString());
+                await JS.InvokeVoidAsync("populateAdviceTable", adviceDetails, "TretmentTmpAdviceTbl");
+
+
+            }
+            await JS.InvokeVoidAsync("toggleButtonVisibility");
+        }
+
+        public async Task CancelTemplate()
+        {
+            await JS.InvokeVoidAsync("ClearTable", "TretmentTmpTbl");
+            await JS.InvokeVoidAsync("ClearTable", "TretmentTmpAdviceTbl");
+            await JS.InvokeVoidAsync("toggleButtonVisibility");
+        }
+        public async Task UpdateTemplate()
+        {
+            var result = await JS.InvokeAsync<JsonElement>("GetTretmentTempData");
+            if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
+            {
+                var tempId = result.GetProperty("tempId").GetString();
+                if (tempId != "NewCreated")
+                {
+
+                }
+            }
+        }
+
+
+
 
         [JSInvokable("GetOusudData")]
         public async Task<dynamic> GetOusudData(string ousudData)

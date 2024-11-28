@@ -1,92 +1,16 @@
 ﻿@page "/prescriptionTemp"
 @using QuickMed.BaseComponent
-@inherits BasePrescriptionTemp
+@inherits BasePrescription
 
 
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header  bg-info">
-                <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Prescription Form</h3>
-            </div><!--end card-header-->
-            <!--<div class="card-body">
-                <div class="row">
-                    <div class="col-lg-9">
-                        <div class="mb-3 row">
-
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Name</label>
-                            <div class="col-sm-3">
-                                <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                            </div>
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Age</label>
-                            <div class="col-sm-1">
-                                <input class="form-control form-control-sm" type="number" value="" id="example-text-input">
-                            </div>
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Sex</label>
-                            <div class="col-sm-1">
-                                <select class="form-select form-select-sm" aria-label="Default select example">
-                                    <option selected>Select</option>
-                                    <option value="1">M</option>
-                                    <option value="2">F</option>
-                                    <option value="3">O</option>
-                                </select>
-                            </div>
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Address</label>
-                            <div class="col-sm-3">
-                                <input class="form-control form-select-sm" type="text" value="" id="example-text-input">
-                            </div>
-
-                        </div>
-
-                        <div class="mb-3 row">
-
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Mobile</label>
-                            <div class="col-sm-3">
-                                <input class="form-control form-select-sm" type="text" value="" id="example-text-input">
-                            </div>
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Reg No.</label>
-                            <div class="col-sm-1">
-                                <input class="form-control form-select-sm" type="number" value="" id="example-text-input">
-                            </div>
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Wt</label>
-                            <div class="col-sm-1">
-                                <input class="form-control form-select-sm" type="number" value="" id="example-text-input">
-                            </div>
-                            <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Date</label>
-                            <div class="col-sm-3">
-                                <input class="form-control form-select-sm" type="date" value="" id="example-text-input">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-lg-3">
-                        <div class="mb-3 row">
-                            <div class="col-sm-12 text-end">
-                                <button type="button" class="btn btn-outline-info btn-icon-circle btn-icon-circle-sm" title="Preview"><i class="fa fa-expand"></i></button>
-                                <button type="button" class="btn btn-outline-success btn-icon-circle btn-icon-circle-sm" title="Save & Print"><i class="fa fa-print"></i></button>
-                                <button type="button" class="btn btn-outline-danger btn-icon-circle btn-icon-circle-sm" title="Save & Print Without Header"><i class="far fa-file-alt"></i></button>
-                                <button type="button" class="btn btn-outline-primary btn-icon-circle btn-icon-circle-sm" title="Save Only"><i class="far fa-save"></i></button>
-                                <button type="button" class="btn btn-outline-info btn-icon-circle btn-icon-circle-sm" title="Save as Template"><i class="far fa-bookmark"></i></button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>-->
-            <!--end card-body-->
-        </div><!--end card-->
-    </div><!--end col-->
-</div><!--end row-->
 <div class="row">
     <div class="col-lg-4">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header  bg-info">
-                        <h4 class="card-title text-light"><i class="dripicons-information"></i> &nbsp;&nbsp;Patient's Other Info'</h4>
+                        <h4 class="card-title text-light"><i class="dripicons-information"></i> &nbsp;&nbsp;Patient's Other Info</h4>
 
                     </div><!--end card-header-->
                     <div class="card-body">
@@ -100,125 +24,35 @@
                                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
+                                            <table class="table  table-borde#f1f5fa table-sm" id="ccTable">
                                                 <thead>
                                                     <tr>
+                                                        <th>#</th>
                                                         <th>C/C</th>
                                                         <th>Duration</th>
                                                         <th>D/M</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
+                                                    <tr name="bogichogi">
+                                                        <td colspan="3">No Data</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
+                                            @{
+                                                var tblid1 = "ccTable";
+                                                var function = "populateCCSelect";
+                                                var classname = "ccLoads";
+                                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid1,true,function,classname)">Add New Row</button>
                                         </span><!--end table-->
                                     </div>
                                 </div>
                             </div>
-                            <div class="accordion-item">
-                                <h5 class="accordion-header m-0" id="headingTwo">
-                                    <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        <h4 class="card-title text-primary"> <i class="dripicons-information"></i> &nbsp;&nbsp;H/O - History Of</h4>
-                                    </button>
-                                </h5>
-                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>C/C</th>
-                                                        <th>Duration</th>
-                                                        <th>D/M</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
-                                        </span><!--end table-->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h5 class="accordion-header m-0" id="headingThree">
-                                    <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                        <h4 class="card-title text-primary"> <i class="dripicons-information"></i> &nbsp;&nbsp;M/H Medical History</h4>
-                                    </button>
-                                </h5>
-                                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>C/C</th>
-                                                        <th>Duration</th>
-                                                        <th>D/M</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
-                                        </span><!--end table-->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h5 class="accordion-header m-0" id="headingThree">
-                                    <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                        <h4 class="card-title text-primary"> <i class="dripicons-information"></i> &nbsp;&nbsp;D/H Drug History</h4>
-                                    </button>
-                                </h5>
-                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>C/C</th>
-                                                        <th>Duration</th>
-                                                        <th>D/M</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
-                                        </span><!--end table-->
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="accordion-item">
                                 <h5 class="accordion-header m-0" id="headingThree">
                                     <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
@@ -231,22 +65,25 @@
                                             <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
                                                 <thead>
                                                     <tr>
-                                                        <th>C/C</th>
-                                                        <th>Duration</th>
-                                                        <th>D/M</th>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
+                                                    <tr name="bogichogi">
+                                                        <td colspan="3">No Data</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
+                                            @{
+                                                var tblid5 = "Dxtable";
+                                                var function2 = "populateDXSelect";
+                                                var classname1 = "dxLoads";
+                                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid5, true,function2,classname1)">Add New Row</button>
                                         </span><!--end table-->
                                     </div>
                                 </div>
@@ -260,30 +97,166 @@
                                 <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
+                                            <table class="table  table-borde#f1f5fa table-sm" id="oeTable">
                                                 <thead>
                                                     <tr>
-                                                        <th>C/C</th>
-                                                        <th>Duration</th>
-                                                        <th>D/M</th>
+                                                        <th>#</th>
+                                                        <th>O/E</th>
+                                                        <th>Value</th>
+                                                        <th>Unit</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
+                                                        <td>1</td>
+                                                        <td><input type="text" class="form-control" value="BP" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td><input type="text" class="form-control" value="Pulse" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>
+                                                            @* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td><input type="text" class="form-control" value="Temp" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>4</td>
+                                                        <td><input type="text" class="form-control" value="SpO2" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>5</td>
+                                                        <td><input type="text" class="form-control" value="Heart" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>6</td>
+                                                        <td><input type="text" class="form-control" value="Lungs" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>7</td>
+                                                        <td><input type="text" class="form-control" value="Abd" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>8</td>
+                                                        <td><input type="text" class="form-control" value="Anaemia" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>9</td>
+                                                        <td><input type="text" class="form-control" value="Jaundice" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>10</td>
+                                                        <td><input type="text" class="form-control" value="Cyanosis" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>11</td>
+                                                        <td><input type="text" class="form-control" value="Oedema" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td><input type="text" class="form-control" value="" /></td>
+                                                        <td>@* <button id="bElim" type="button" class="btn btn-sm btn-soft-danger btn-circle" onclick="Qdeleterow(this);"><i class="dripicons-trash" aria-hidden="true"></i></button> *@</td>
+                                                    </tr>
+
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <span class="float-right">
+                                            @{
+                                                var tblid6 = "oeTable";
+                                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid6)">Add New Row</button>
+                                        </span><!--end table-->
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="accordion-item">
+                                <h5 class="accordion-header m-0" id="headingSeven">
+                                    <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                        <h4 class="card-title text-primary"> <i class="dripicons-information"></i> &nbsp;&nbsp;I/X - Investigation</h4>
+                                    </button>
+                                </h5>
+                                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <select class="select2W form-control mb-3 custom-select" id="ixTempSelect" aria-label="Default select example">
+                                                    <option selected value="0" disabled>I/X Template</option>
+                                                    @if (ixMasters != null && ixMasters.Any())
+                                                    {
+                                                        @foreach (var item in ixMasters)
+                                                        {
+                                                            <option value="@item.Id">@item.TemplateName</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table  table-borde#f1f5fa table-sm" id="TretmentTmpIXTbl">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr name="bogichogi">
+                                                        <td></td>
+                                                        <td>No Data</td>
+                                                        <td></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
-                                        </span><!--end table-->
+                                            @{
+                                                var tblid7 = "TretmentTmpIXTbl";
+                                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid7)">Add New Row</button>
+                                        </span>
+                                        <!--end table-->
                                     </div>
                                 </div>
                             </div>
-                            <div class="accordion-item">
+
+                            <!--<div class="accordion-item">
                                 <h5 class="accordion-header m-0" id="headingSeven">
                                     <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
                                         <h4 class="card-title text-primary"> <i class="dripicons-information"></i> &nbsp;&nbsp;Allergy</h4>
@@ -292,7 +265,7 @@
                                 <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
+                                            <table class="table  table-borde#f1f5fa table-sm" id="allergyTable">
                                                 <thead>
                                                     <tr>
                                                         <th>C/C</th>
@@ -301,82 +274,68 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
+                                                    <tr name="bogichogi">
+                                                        <td colspan="3">No Data</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
-                                        </span><!--end table-->
-                                    </div>
+                            @{
+                                var tblid7 = "allergyTable";
+                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid7)">Add New Row</button>
+                                        </span>-->
+                            <!--end table-->
+                            <!--</div>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="accordion-item">
                                 <h5 class="accordion-header m-0" id="headingEight">
                                     <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
-                                        <h4 class="card-title text-primary"> <i class="dripicons-information"></i> &nbsp;&nbsp;Plan</h4>
+                                        <h4 class="card-title text-primary"> <i class="dripicons-information"></i> &nbsp;&nbsp;Notes</h4>
                                     </button>
                                 </h5>
                                 <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <select class="select2W form-control mb-3 custom-select" id="noteTempSelect" aria-label="Default select example">
+                                                    <option selected value="0" disabled>Notes Template</option>
+                                                    @if (notesMasters != null && notesMasters.Any())
+                                                    {
+                                                        @foreach (var item in notesMasters)
+                                                        {
+                                                            <option value="@item.Id">@item.Name</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="Dxtable">
+                                            <table class="table  table-borde#f1f5fa table-sm" id="TretmentTmpNotesTbl">
                                                 <thead>
                                                     <tr>
-                                                        <th>C/C</th>
-                                                        <th>Duration</th>
-                                                        <th>D/M</th>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
+                                                    <tr name="bogichogi">
+                                                        <td></td>
+                                                        <td>No Data</td>
+                                                        <td></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <span class="float-right">
-                                            <button id="Dxtable_but_add" class="btn btn-success btn-sm">Add New Row</button>
+                                            @{
+                                                var tblid8 = "TretmentTmpNotesTbl";
+                                            }
+                                            <button id="but_add" class="btn btn-success btn-sm" @onclick="(e) => AddaRow(tblid8)">Add New Row</button>
                                         </span><!--end table-->
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Start I/R table -->
-                            <div class="accordion-item">
-                                <h5 class="accordion-header m-0" id="headingIR">
-                                    <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIR" aria-expanded="false" aria-controls="collapseIR">
-                                        <h4 class="card-title text-primary"> <i class="dripicons-information"></i> &nbsp;&nbsp;	I/X (Investigations)</h4>
-                                    </button>
-                                </h5>
-                                <div id="collapseIR" class="accordion-collapse collapse" aria-labelledby="headingIR" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <div class="table-responsive">
-                                            <table class="table  table-borde#f1f5fa table-sm" id="DxtableIR">
-                                                <thead>
-                                                    <tr>
-                                                        <th>C/C</th>
-                                                        <th>Duration</th>
-                                                        <th>D/M</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Default</td>
-                                                        <td>Defaultson</td>
-                                                        <td>def@somemail.com</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <span class="float-right">
-                                            <button id="Dxtable_but_add_ir" class="btn btn-success btn-sm">Add New Row</button>
-                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -429,7 +388,7 @@
                                 <p style="font-size:20px; font-weight: 700;font-family:Brush Script MT, Brush Script Std, cursive">RX.</p>
                             </div>
                             <div class="col-sm-3">
-                                <select class="select2W form-control mb-3 custom-select" id="presDrugTemp" aria-label="Default select example">
+                                <select class="select2W form-control mb-3 custom-select" id="presDrugTempSelect" aria-label="Default select example">
                                     <option selected value="0" disabled>Drug Template</option>
                                     @if (FavDrugTemps != null && FavDrugTemps.Any())
                                     {
@@ -443,7 +402,7 @@
                             </div>
                             <div class="col-sm-3">
 
-                                <select class="select2W form-control mb-3 custom-select" id="presTreatTemp" aria-label="Default select example">
+                                <select class="select2W form-control mb-3 custom-select" id="presTreatTempSelect" aria-label="Default select example">
                                     <option selected value="0" disabled>Treatment Template</option>
                                     @if (treatmentTemps != null && treatmentTemps.Any())
                                     {
@@ -458,7 +417,7 @@
                             </div>
                             <div class="col-sm-3">
 
-                                <select class="select2W form-control mb-3 custom-select" id="presPrescTemp" aria-label="Default select example">
+                                <select class="select2W form-control mb-3 custom-select" id="presPrescTempSelect" aria-label="Default select example">
                                     <option selected value="0" disabled>Prescription Template</option>
                                     @if (PrescTemps != null && PrescTemps.Any())
                                     {
@@ -475,7 +434,7 @@
                         <div class="row">
                             <div class="col-sm-3">
 
-                                <select class="select2C form-control mb-3 custom-select" id="brandSelectTemp" aria-label="Default select example" style="appearance: none;">
+                                <select class="select2C form-control mb-3 custom-select" id="brandSelect" aria-label="Default select example" style="appearance: none;">
                                     <option selected value="0" disabled>Select Brand</option>
                                     @foreach (var item in Brands)
                                     {
@@ -484,7 +443,7 @@
                                 </select>
                             </div>
                             <div class="col-sm-3">
-                                <select class="select2 form-control mb-3 custom-select" id="doseSelectTemp" aria-label="Default select example">
+                                <select class="select2 form-control mb-3 custom-select" id="doseSelect" aria-label="Default select example">
                                     <option selected value="0" disabled>Select Dose</option>
                                     @foreach (var item in Dose)
                                     {
@@ -494,7 +453,7 @@
                             </div>
                             <div class="col-sm-3">
 
-                                <select class="select2 form-control mb-3 custom-select" id="instructionSelectTemp" aria-label="Default select example">
+                                <select class="select2 form-control mb-3 custom-select" id="instructionSelect" aria-label="Default select example">
                                     <option selected value="0" disabled>Select Instruction</option>
                                     @foreach (var item in Instructions)
                                     {
@@ -504,7 +463,7 @@
                             </div>
                             <div class="col-sm-2">
 
-                                <select class="select2 form-control mb-3 custom-select" id="durationSelectTemp" aria-label="Default select example">
+                                <select class="select2 form-control mb-3 custom-select" id="durationSelect" aria-label="Default select example">
                                     <option selected value="0" disabled>Select Duration</option>
                                     @foreach (var item in Duration)
                                     {
@@ -514,7 +473,7 @@
                             </div>
 
                             <div class="col-sm-1 text-end">
-                                <button class="btn btn-success btn-sm"  title="Add"><i class="fas fa-plus"></i></button>
+                                <button class="btn btn-success btn-sm" @onclick="OsudAddbtn" title="Add"><i class="fas fa-plus"></i></button>
 
                             </div>
                         </div>
@@ -549,7 +508,7 @@
         </div> <!-- end row -->
 
         <div class="row">
-            <div class="col-12">
+            <div class="col-6">
                 <div class="card">
                     <div class="card-header bg-info">
                         <div class="row">
@@ -558,11 +517,14 @@
                             </div>
 
                             <div class="col-sm-8">
-                                <select class="select2 form-control mb-3 custom-select" aria-label="Default select example">
-                                    <option selected disabled>Advice Template</option>
-                                    <option value="1">M</option>
-                                    <option value="2">F</option>
-                                    <option value="3">O</option>
+                                <select class="select2W form-control mb-3 custom-select"
+                                        id="adviceSelect"
+                                        aria-label="Default select example">
+                                    <option selected disabled>Select Advice Template</option>
+                                    @foreach (var item in adviceMasters)
+                                    {
+                                        <option value="@item.Id">@item.AdviceTemplateName</option>
+                                    }
                                 </select>
                             </div>
                         </div>
@@ -570,39 +532,94 @@
 
                     </div><!--end card-header-->
 
+
                     <div class="card-body">
                         <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
                         <div class="table-responsive">
-                            <table class="table  table-borde#f1f5fa table-sm" id="makeEditable">
+                            <table class="table  table-bordered table-sm" id="TretmentTmpAdviceTbl">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Brand</th>
-                                        <th>Dose</th>
+                                        <th>Name</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>fucker1</td>
-                                        <td>def@somemail.com</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>fucker2</td>
-                                        <td>def@somemail.com</td>
+                                    <tr name="bogichogi">
+                                        <td>
+                                        </td>
+                                        <td class="text-center text-blue">No data Available</td>
+                                        <td name="buttons" class="text-center text-blue"></td>
                                     </tr>
 
                                 </tbody>
                             </table>
                         </div>
                         <span class="float-right">
-                            <button id="but_add" class="btn btn-success btn-sm">Add New Row</button>
+                            <button id="add_Advice" class="btn btn-success btn-sm">Add A Advice</button>
                         </span><!--end table-->
                     </div><!--end card-body-->
                 </div><!--end card-->
             </div> <!-- end col -->
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;পরবর্তী সাক্ষাৎ</h3>
+                    </div><!--end card-header-->
+
+
+                    <div class="card-body">
+                        <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
+                        <div class="table-responsive">
+                            <table class="table  table-borde#f1f5fa table-sm" id="makeEditable">
+                                <thead>
+                                    <tr>
+                                        <th>পরবর্তী সাক্ষাৎ</th>
+                                        <td>
+                                            <select class="select2W form-control mb-3 custom-select" id="nxtMeetDateSelect" aria-label="Default select example">
+
+                                                <option value="30">১ মাস</option>
+                                                <option value="60">২ মাস</option>
+                                                <option value="90">৩ মাস</option>
+                                                <option value="7">১ সপ্তাহ</option>
+                                                <option value="14">২ সপ্তাহ</option>
+                                                <option value="28">৪ সপ্তাহ</option>
+                                                <option value="35">৫ সপ্তাহ</option>
+                                                <option value="42">৬ সপ্তাহ</option>
+                                                <option value="21">৩ সপ্তাহ</option>
+                                                <option value="3">৩ দিন</option>
+                                                <option value="10">১০ দিন</option>
+                                                <option value="15">১৫ দিন</option>
+                                                <option value="0" selected="">প্রয়োজন নেই</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>তারিখ</td>
+                                        <td><input id="nxtMeetDate" type="date" class="form-control" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>পেমেন্ট</td>
+                                        <td><input id="Payment" type="text" class="form-control" name="name" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>রেফার্ড বাই </td>
+                                        <td><input id="Reffer-Book" type="text" class="form-control" name="name" value="" /></td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!--end card-body-->
+                </div><!--end card-->
+            </div> <!-- end col -->
+
+
         </div> <!-- end row -->
+
 
         <div class="row">
             <div class="col-12">
@@ -616,13 +633,13 @@
                             <div class="col-sm-8">
                                 <select class="select2W form-control mb-3 custom-select" id="presRefferTempSelect" aria-label="Default select example">
                                     <option selected value="0" disabled>Reffer Template</option>
-                                    @*@if (RefferTemps != null && RefferTemps.Any())
+                                    @if (RefferTemps != null && RefferTemps.Any())
+                                    {
+                                        @foreach (var item in RefferTemps)
                                         {
-                                            @foreach (var item in RefferTemps)
-                                            {
-                                                <option value="@item.Id">@item.Name</option>
-                                            }
-                                        }*@
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
                                 </select>
                             </div>
                         </div>
@@ -643,245 +660,7 @@
 
         </div> <!-- end row -->
 
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header bg-info">
-                        <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Report Entry</h3>
-                    </div><!--end card-header-->
-
-                    <div class="card-body">
-                        <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
-                        <div class="table-responsive">
-                            <table class="table  table-borde#f1f5fa table-sm" id="rptEntryTbl">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Date</th>
-                                        <th>Report Namer</th>
-                                        <th>Result/Value</th>
-                                        <th>Unit</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr name="bogichogi">
-                                        <td colspan="6">No Data Available</td>
-
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <span class="float-right">
-
-                            <button id="but_add" class="btn btn-success btn-sm">Add New Row</button>
-                        </span><!--end table-->
-                    </div><!--end card-body-->
-                </div><!--end card-->
-            </div> <!-- end col -->
 
 
-        </div> <!-- end row -->
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-
-                    <div class="card-header bg-info">
-                        <h3 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Some Other Info</h3>
-                    </div><!--end card-header-->
-
-
-                    <div class="card-body">
-
-                        <!-- Nav tabs -->
-                        <div class="nav-tabs-custom text-center">
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link text-center active" data-bs-toggle="tab" href="#cu_bmi" role="tab" aria-selected="false">BMI</a>
-                                </li>
-                                @* <li class="nav-item">
-                                    <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_insulin" role="tab" aria-selected="false">Insulin</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_score" role="tab" aria-selected="true">Z-Score</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_bmr" role="tab" aria-selected="true">BMR</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_edd" role="tab" aria-selected="true">EDD</a>
-                                    </li> *@
-
-                            </ul>
-                        </div>
-
-
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                            <div class="tab-pane p-3 active" id="cu_bmi" role="tabpanel">
-
-                                <div class="mb-3 row">
-
-                                    <div class="form-group col-md-4">
-                                        <label id="Weight" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="bmiWeight">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label id="Height-ft" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Ft)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="bmiHeightft">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label id="Height-in" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Inch)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="bmiHeightin">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label id="Bmi" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">BMI</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="bmiValue" readonly>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label id="Class" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Class</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="bmiClass" readonly>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label id="Idle-Weight" for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Idle Weight</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="bmiIdleWeight" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane p-3" id="cu_insulin" role="tabpanel">
-                                <div class="mb-3 row">
-
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Unit/Kg</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Time(Inch)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Total Unit</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Dose</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="tab-pane p-3" id="cu_score" role="tabpanel">
-                                <div class="mb-3 row">
-
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Date Of Birth</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Gender</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight(Kg)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Result</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Age</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="tab-pane p-3" id="cu_bmr" role="tabpanel">
-
-                                <div class="mb-3 row">
-
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Weight(KG)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Ft)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Height(Inch)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Gender</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Age</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Activity</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">BMR</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Calorie Need</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="tab-pane p-3" id="cu_edd" role="tabpanel">
-
-                                <div class="mb-3 row">
-
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">LMP</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">Gestational Age (LMP)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="example-text-input" class="form-label align-self-center mb-lg-0 text-end">EDD (LMP)</label>
-                                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div> <!--end tab-content-->
-                    </div>
-                </div><!--end card-->
-            </div> <!-- end col -->
-
-        </div> <!-- end row -->
     </div><!--end col-->
-
 </div>
-
-@*@code {
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JS.InvokeVoidAsync("setupEditableTable", "Dxtable", "Dxtable_but_add");
-            await JS.InvokeVoidAsync("setupEditableTable", "makeEditable", "but_add");
-            await JS.InvokeVoidAsync("makeTableDragable", "makeEditable");
-            await JS.InvokeVoidAsync("makeSelect2", true);
-        }
-    }
-}*@

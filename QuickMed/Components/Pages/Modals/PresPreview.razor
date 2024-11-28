@@ -14,13 +14,13 @@
 
             </div><!--end modal-header-->
             <div class="modal-body">
-                <div class="container" style="height: 29.7cm;width: 21cm;display: flex;flex-direction: column;position: relative;box-sizing: border-box;overflow: hidden;margin: 0 auto; font-family: 'AdorshoLipi','Palatino Linotype', sans-serif;">
-                    <div class="content" style="flex: 1;" id="printDiv">
+                <div class="container" style="height: 29.7cm;width: 21cm;display: flex;flex-direction: column;position: relative;box-sizing: border-box;overflow: hidden;margin: 0 auto; font-family: 'AdorshoLipi','Palatino Linotype', sans-serif;" id="printDiv">
+                    <div class="content" style="flex: 1;">
 
 
 
                         <!-- Header section -->
-                        <header class="mt-4" style="line-height: 1.2;">
+                        <header class="" style="line-height: 1.2;">
                             <div class="row">
                                 <!-- Left Column -->
                                 <div class="col-6 text-start">
@@ -393,7 +393,12 @@
                                     @{
                                         if (PrescriptionViewModelss.Reffer != null || PrescriptionViewModelss.Reffer != "")
                                         {
-                                            <div id="advicePresc" style="padding-left: 1.5em; margin-top:40px;font-size: x-small;">
+                                            <div id="advicePresc" class="refferTempLine" style="padding-left: 1.5em; margin-top: 40px; font-size: x-small;">
+                                                <style>
+                                                    .refferTempLine p {
+                                                        line-height: 0.5;
+                                                    }
+                                                    </style>
                                                 @((MarkupString)PrescriptionViewModelss.Reffer)
                                             </div>
                                             // <p><strong style="color: rgb(0, 0, 0);"><u>রেফার/পরবর্তী চিকিৎসার জন্যঃ</u></strong></p>
@@ -468,7 +473,9 @@
 
                         <footer style="line-height: 1.2;position: absolute;bottom: 0;width: 100%;text-align: center;font-size: x-small; height:130px;">
                             <div class="row border-top pt-2">
-
+                                <div class="col-2">
+                                    <img src="ibn.png" height="120" width="120" alt="">
+                                </div>
                                 <div class="col-4">
                                     <div class="chemberPresc">
                                         <span style="font-size: medium;" class="fw-bold"><u>চেম্বারঃ</u></span> <br>
@@ -477,7 +484,7 @@
                                         <span style="font-size: x-small;">ফোনঃ ০২ ৯৯ ৬৬ ৪০০ ১০-১৯</span>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <div class="SLPresc">
                                         <span style="font-size: medium;" class="fw-bold"><u>ডাক্তার সিরিয়াল</u></span> <br>
                                         <span style="font-size: small;">০৯ ৬৩৬ ৩০০ ৩০০</span> <br>
@@ -486,7 +493,7 @@
                                         <span style="font-size: x-small;">(সকাল ৮ টা - বিকাল ৩ টা)</span>
                                     </div>
                                 </div>
-                                <div class="col-4 text-end">
+                                <div class="col-3 text-end">
                                     <span style="font-size: small;" class="fw-bold">রোগী দেখার সময়</span><br>
                                     <span style="font-size: small;" class="fw-bold">প্রতিদিন</span><br>
                                     <span style="font-size: x-small;">বিকাল ৪ টা থেকে রাত ৯ টা</span><br>

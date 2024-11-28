@@ -32,7 +32,7 @@
                             </div>
 
                         </div>
-
+                        <input type="text" hidden value="NewCreated" id="treatmentId" />
                         <div class="mb-3 row">
 
                             <label id="" for="Patient-Mobile" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Mobile</label>
@@ -99,25 +99,25 @@
                                     <button type="button" class="btn btn-outline-info btn-icon-circle btn-icon-circle-sm" title="Preview" @onclick="PreviewOnly">
                                         <i class="fa fa-expand"></i>
                                     </button>
-                                    <div class="mt-1">Preview</div>
+                                    <div class="mt-1 small">Preview</div>
                                 </div>
                                 <div class="d-inline-block text-center me-2">
                                     <button type="button" class="btn btn-outline-success btn-icon-circle btn-icon-circle-sm" title="Save & Print">
                                         <i class="fa fa-print"></i>
                                     </button>
-                                    <div class="mt-1">Save & Print</div>
+                                    <div class="mt-1 small">Save & Print</div>
                                 </div>
                                 <div class="d-inline-block text-center me-2">
                                     <button type="button" @onclick="SaveOnly" class="btn btn-outline-primary btn-icon-circle btn-icon-circle-sm" title="Save Only">
                                         <i class="far fa-save"></i>
                                     </button>
-                                    <div class="mt-1">Save Only</div>
+                                    <div class="mt-1 small">Save Only</div>
                                 </div>
                                 <div class="d-inline-block text-center me-2">
                                     <button type="button" class="btn btn-outline-danger btn-icon-circle btn-icon-circle-sm" title="Save & Print Without Header">
                                         <i class="far fa-file-alt"></i>
                                     </button>
-                                    <div class="mt-1">Save & Print <br /> Without Header</div>
+                                    <div class="mt-1 small">Save & Print <br /> Without Header</div>
                                 </div>
                                
                                @*  <div class="d-inline-block text-center me-2">

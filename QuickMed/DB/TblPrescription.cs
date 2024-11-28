@@ -17,6 +17,7 @@ namespace QuickMed.DB
         public string? RefferedBy { get; set; }
         public string? RefferedTo { get; set; }
         public Guid? AdviceId { get; set; }
+        public Guid? NoteId { get; set; }
         public Guid? IxId { get; set; }
         public int? Height { get; set; }
         public int? weight { get; set; }

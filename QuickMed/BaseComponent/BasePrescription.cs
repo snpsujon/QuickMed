@@ -538,6 +538,7 @@ namespace QuickMed.BaseComponent
                 var AdviceId = Guid.NewGuid();
                 var IxId = Guid.NewGuid();
                 var PresId = Guid.NewGuid();
+                var NoteId = Guid.NewGuid();
                 var regNo = "";
 
 
@@ -859,7 +860,7 @@ namespace QuickMed.BaseComponent
                             {
                                 TblNotesTemplate notesTemplate = new TblNotesTemplate
                                 {
-                                    Id = Guid.NewGuid(),
+                                    Id = NoteId,
                                     Name = regNo + "_Notes"
                                 };
                                 await _notes.SaveAsync(notesTemplate);
@@ -963,6 +964,7 @@ namespace QuickMed.BaseComponent
                             PatientId = PatientId,
                             AdviceId = AdviceId,
                             IxId = IxId,
+                            NoteId = NoteId,
                             PrescriptionDate = DateTime.Now,
                             NextMeetingDate = Convert.ToDateTime(result.GetProperty("nxtMeetData").GetProperty("nextMeetingDate").GetString() != "" ? result.GetProperty("nxtMeetData").GetProperty("nextMeetingDate").GetString() : DateTime.Now),
 

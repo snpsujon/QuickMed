@@ -126,7 +126,7 @@ namespace QuickMed.Services
                         ttm.AdviceId as Id,dm.Id as BrandId,
                         ddd.Name || ' - ' || dm.Name || ' ( ' || dm.Strength || ' ) ' || ' - ' || dg.Name as BrandName,
                         dd.Id as DoseId,dd.Name as DoseName,
-                        d.Id as DurationId,d.Name as DurationName,i.Id as InstructionId,i.Name as InstructionName
+                        d.Id as DurationId,d.Name as DurationName,i.Id as InstructionId,i.Name as InstructionName, ttm.Id as TempId
                         from
                         TblTreatmentTempDetails ttd
                         JOIN TblTreatmentTemplate ttm on ttd.TreatmentTempId = ttm.Id
@@ -281,9 +281,87 @@ namespace QuickMed.Services
                 }
                 else
                 {
-                    sql = $@"SELECT *  FROM TblPrescription WHERE PrescriptionCode = '{input}'";
-                    var data = await _context.ExecuteSqlQueryAsync<TblPrescription>(sql);
-                    return data.FirstOrDefault();
+                    PrescriptionDetailsVM pres = new PrescriptionDetailsVM();
+                    dynamic data;
+                    sql = $@"SELECT * FROM TblPrescription 
+                            WHERE PrescriptionCode = '{input}'";
+                    data = await _context.ExecuteSqlQueryAsync<TblPrescription>(sql);
+                    pres.tblPrescription = data.FirstOrDefault();
+
+
+                    sql = $@"SELECT pat.* FROM TblPatient pat
+                            INNER JOIN TblPrescription p ON p.PatientId = pat.Id 
+                            WHERE PrescriptionCode = '{input}'";
+                    data = await _context.ExecuteSqlQueryAsync<TblPatient>(sql);
+                    pres.tblPatient = data.FirstOrDefault();
+
+                    sql = $@"SELECT h.* FROM TblPres_Ho h
+                            JOIN TblPrescription p ON p.Id = h.Pres_ID
+                            WHERE PrescriptionCode = '{input}'";
+                    data = await _context.ExecuteSqlQueryAsync<TblPres_Ho>(sql);
+                    pres.tblPres_Ho = data.FirstOrDefault();
+
+
+
+
+                    sql = $@"SELECT s.* FROM TblAdviceTemplate a
+                            LEFT JOIN TblAdviceTemplateDetails s ON s.AdviceId = a.Id
+                            INNER JOIN TblPrescription p ON p.AdviceId = a.Id 
+                            WHERE PrescriptionCode = '{input}'";
+                    data = await _context.ExecuteSqlQueryAsync<TblAdviceTemplateDetails>(sql);
+                    pres.tblAdviceTemplateDetails = data;
+
+                    sql = $@"SELECT nd.* FROM TblNotesTemplate n
+                            LEFT JOIN TblNotesTempDetails nd ON nd.NoteId = n.Id
+                            INNER JOIN TblPrescription p ON p.NoteId = n.Id 
+                            WHERE PrescriptionCode = '{input}'";
+                    data = await _context.ExecuteSqlQueryAsync<TblNotesTempDetails>(sql);
+                    pres.noteDetails = data;
+
+                    sql = $@"SELECT ixd.* FROM TblIXTemplate i
+                            LEFT JOIN TblIXDetails ixd ON ixd.TblIXTempMasterId = i.Id
+                            INNER JOIN TblPrescription p ON p.IxId = i.Id 
+                            WHERE PrescriptionCode = '{input}'";
+                    data = await _context.ExecuteSqlQueryAsync<TblIXDetails>(sql);
+                    pres.ixDetails = data;
+
+                    sql = $@"SELECT CC.* FROM TblPres_Cc CC
+                            JOIN TblPrescription p ON p.Id = CC.Pres_ID 
+                            WHERE PrescriptionCode = '{input}'";
+                    data = await _context.ExecuteSqlQueryAsync<TblPres_Cc>(sql);
+                    pres.tblPres_Ccs = data;
+
+                    sql = $@"SELECT m.* FROM TblPres_MH m
+                            JOIN TblPrescription p ON p.Id = m.Pres_ID 
+                            WHERE PrescriptionCode = '{input}'";
+                    data = await _context.ExecuteSqlQueryAsync<TblPres_MH>(sql);
+                    pres.tblPres_MHs = data;
+
+                    sql = $@"SELECT o.* FROM TblPres_OE o 
+                            JOIN TblPrescription p ON p.Id = o.Pres_ID 
+                            WHERE PrescriptionCode = '{input}'";
+                    data = await _context.ExecuteSqlQueryAsync<TblPres_OE>(sql);
+                    pres.tblPres_OEs = data;
+
+                    sql = $@"SELECT d.* FROM TblPres_DX d
+                            JOIN TblPrescription p ON p.Id = d.Pres_ID 
+                            WHERE PrescriptionCode = '{input}'";
+                    data = await _context.ExecuteSqlQueryAsync<TblPres_DX>(sql);
+                    pres.tblPres_DXes = data;
+
+                    sql = $@"SELECT r.* FROM TblPatientReport r
+                            JOIN TblPrescription p ON p.Id = r.PresId 
+                            WHERE PrescriptionCode = '{input}'";
+                    data = await _context.ExecuteSqlQueryAsync<TblPatientReport>(sql);
+                    pres.tblPatientReports = data;
+
+                    sql = $@"SELECT pd.* FROM TblPrescriptionDetails pd
+                            JOIN TblPrescription p ON p.Id = pd.PrescriptionMasterId 
+                            WHERE PrescriptionCode = '{input}'";
+                    data = await _context.ExecuteSqlQueryAsync<TblPrescriptionDetails>(sql);
+                    pres.rxDetails = data;
+
+                    return pres;
                 }
             }
             catch (Exception)

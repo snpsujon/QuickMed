@@ -12,5 +12,6 @@
         public string? InstructionName { get; set; }
         public Guid? DurationId { get; set; }
         public string? DurationName { get; set; }
+        public string? TempId { get; set; }
     }
 }

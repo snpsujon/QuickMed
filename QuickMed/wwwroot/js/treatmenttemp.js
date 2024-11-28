@@ -60,7 +60,10 @@ function populateTreatmentTable(dataArray, tblId) {
 
     tableBody.innerHTML = "";
 
+
     dataArray.forEach((data, index) => {
+        $("#treatmentId").val(data.tempId);
+
         const newRow = document.createElement("tr");
         newRow.setAttribute("data-value", data.index);
 
@@ -442,10 +445,12 @@ function populateAdviceTable(dataArray, tblId) {
 
 function GetTretmentTempData() {
     const tempname = $("#TempName").val();
+    const tempId = $("#treatmentId").val();
     var data = {
         templateName: tempname == '' ? 'TreatmentTemp_' + getRandomInteger(1, 9999) : tempname,
         treatment: treatments,
         advice: GetAdviceTblData(),
+        tempId: tempId
     };
     return data;
 }
@@ -469,3 +474,32 @@ function GetAdviceTblData() {
     return adviceData;
 }
 
+// To toggle visibility
+function toggleButtonVisibility() {
+    const saveBtn = document.getElementById("saveBtn");
+    const updateBtn = document.getElementById("updateBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+
+    if (saveBtn.style.display === "none") {
+        saveBtn.style.display = "block";
+        updateBtn.style.display = "none";
+        cancelBtn.style.display = "none";
+    } else {
+        saveBtn.style.display = "none";
+        updateBtn.style.display = "block";
+        cancelBtn.style.display = "block";
+    }
+}
+
+function ClearTable(tableId) {
+    const table = document.getElementById(tableId);
+    const tbody = table.querySelector("tbody");
+
+    if (tbody) {
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+    } else {
+        console.error("Table body not found in table with ID:", tableId);
+    }
+}

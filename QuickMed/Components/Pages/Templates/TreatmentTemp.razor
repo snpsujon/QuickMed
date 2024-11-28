@@ -22,7 +22,7 @@
                                     </div>
 
                                     <hr style="border-top: 1px dashed #f1f5fa;" />
-
+                                    <input type="text" hidden value="NewCreated" id="treatmentId"/>
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <select class="select2C form-control mb-3 custom-select" id="brandSelect" aria-label="Default select example" style="appearance: none;">
@@ -139,7 +139,9 @@
 
                             <hr />
                             <span class="float-right">
-                                <button @onclick="SaveTemplate" class="btn btn-success btn-sm float-end">Save</button>
+                                <button @onclick="SaveTemplate" class="btn btn-success btn-sm float-end"  id="saveBtn">Save</button>
+                                <button @onclick="UpdateTemplate" class="btn btn-info btn-sm float-end m-2" id="updateBtn" style="display:none">Update</button>
+                                <button @onclick="CancelTemplate" class="btn btn-danger btn-sm float-end m-2" id="cancelBtn" style="display:none">Cancel</button>
                             </span>
                         </div><!--end card-body-->
                     </div><!--end card-->
@@ -167,7 +169,9 @@
                                 {
                                     <tr>
                                         <td>@item.Name</td>
-                                        <td class="text-end">@*  <i class="dripicons-pencil btn btn-soft-primary"></i> *@<i class="dripicons-trash btn btn-soft-danger" @onclick="() => Delete(item.Id.ToString())"></i></td>
+                                        <td class="text-end">
+                                        <i class="dripicons-pencil btn btn-soft-primary" @onclick="() => Edit(item.Id.ToString())"></i>
+                                        <i class="dripicons-trash btn btn-soft-danger" @onclick="() => Delete(item.Id.ToString())"></i></td>
                                     </tr>
                                 }
                             </tbody>
