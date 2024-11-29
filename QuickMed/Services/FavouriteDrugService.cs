@@ -31,6 +31,22 @@ namespace QuickMed.Services
                 throw;
             }
         }
+
+        public async Task<dynamic> GetDataById(string Id)
+        {
+            try
+            {
+                var sql = $@"Select * From TblFavouriteDrugTemplate Where Id = '{Id}'";
+                var data = await _context.ExecuteSqlQueryAsync<TblFavouriteDrugTemplate>(sql);
+                return data.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<dynamic> SaveFavouriteDrugTemp(TblFavouriteDrugTemplate TblFavouriteDrugTemplate)
         {
             try

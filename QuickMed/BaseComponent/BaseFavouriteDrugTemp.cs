@@ -95,6 +95,10 @@ namespace QuickMed.BaseComponent
         {
             try
             {
+                await JS.InvokeVoidAsync("toggleButtonVisibility", true);
+                var masterData = await _drug.GetDataById(Id);
+                await JS.InvokeVoidAsync("setFavMasterData", (object)masterData);
+
 
             }
             catch (Exception)
@@ -103,6 +107,62 @@ namespace QuickMed.BaseComponent
                 throw;
             }
         }
+        public async Task CancelTemplate()
+        {
+            await JS.InvokeVoidAsync("toggleButtonVisibility", false);
+            await JS.InvokeVoidAsync("ClearAllFields");
+        }
+        public async Task UpdateTemplate()
+        {
+            try
+            {
+                var result = await JS.InvokeAsync<JsonElement>("GetDrugTempData");
+                if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
+                {
+                    var tempId = result.GetProperty("tempId").GetString();
+                    if (tempId != "NewCreated")
+                    {
+                        string templateName = "";
+                        if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
+                        {
+                            templateName = templateNameElement.GetString();
+                            var brandId = Guid.Parse(result.GetProperty("brandSelect").GetString());
+                            var doseId = Guid.Parse(result.GetProperty("doseSelect").GetString());
+                            var instructionId = Guid.Parse(result.GetProperty("instructionSelect").GetString());
+                            var durationId = Guid.Parse(result.GetProperty("durationSelectfav").GetString());
+                            drugTemp = new();
+                            drugTemp = new TblFavouriteDrugTemplate
+                            {
+                                Id = Guid.Parse(tempId),
+                                Name = templateName,
+                                BrandId = brandId,
+                                DoseId = doseId,
+                                InstructionId = instructionId,
+                                DurationId = durationId
+                            };
+                            await App.Database.UpdateAsync<TblFavouriteDrugTemplate>(drugTemp);
+                        }
+                        else
+                        {
+                            Console.WriteLine("templateName not found.");
+                        }
+                        await JS.InvokeVoidAsync("ClearAllFields");
+                        await JS.InvokeVoidAsync("toggleButtonVisibility", false);
+                        await JS.InvokeVoidAsync("showAlert", "Update Successful", "Record has been successfully Updated.", "success", "swal-info");
+
+                        await OnInitializedAsync();
+                        StateHasChanged();
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
 
         protected async Task InitializeJS()
         {

@@ -10,7 +10,7 @@
                 <div class="card-header bg-info ">
                     <h4 class="card-title text-light"> <i class="dripicons-information"></i> &nbsp;&nbsp;Drug / Favourite Form</h4>
                 </div><!--end card-header-->
-                
+
                 <div class="card-header">
                     <div class="row mb-2 bg-light py-3">
                         <div class="col-sm-12 d-flex">
@@ -21,11 +21,11 @@
 
                         </div>
                     </div>
-                    <hr style="border-top: 1px dashed red;" />                 
+                    <hr style="border-top: 1px dashed red;" />
                 </div>
 
 
-
+                <input type="text" id="favTempId" value="NewCreated" hidden />
 
 
 
@@ -33,7 +33,7 @@
                 <div class="card-body">
                     <div class="row mb-5">
                         <div class="col-sm-3">
-                            <select class="select2C form-control mb-3 custom-select" id="brandSelect" aria-label="Default select example" style="appearance: none;" >
+                            <select class="select2C form-control mb-3 custom-select" id="brandSelect" aria-label="Default select example" style="appearance: none;">
                                 <option selected value="0" disabled>Select Brand</option>
                                 @foreach (var item in Brands)
                                 {
@@ -42,7 +42,7 @@
                             </select>
                         </div>
                         <div class="col-sm-3">
-                            <select class="select2W form-control mb-3 custom-select" id="doseSelect" aria-label="Default select example" >
+                            <select class="select2W form-control mb-3 custom-select" id="doseSelect" aria-label="Default select example">
                                 <option selected value="0" disabled>Select Dose</option>
                                 @foreach (var item in Dose)
                                 {
@@ -60,7 +60,7 @@
                             </select>
                         </div>
                         <div class="col-sm-3">
-                            <select class="select2W  form-control custom-select" aria-label="Default select example" id="durationSelectfav" >
+                            <select class="select2W  form-control custom-select" aria-label="Default select example" id="durationSelectfav">
                                 <option selected disabled>Select Duration</option>
                                 @if (Duration != null && Duration.Any())
                                 {
@@ -75,7 +75,10 @@
                         </div>
                     </div>
                     <span class="float-right">
-                        <button id="but_add" class="btn btn-success btn-sm float-end" @onclick="OnSaveBtnClick">Save</button>
+                        @*<button id="but_add" class="btn btn-success btn-sm float-end" @onclick="OnSaveBtnClick">Save</button>*@
+                        <button id="saveBtn" @onclick="OnSaveBtnClick" class="btn btn-success btn-sm float-end" style="display:block">Save</button>
+                        <button @onclick="UpdateTemplate" class="btn btn-info btn-sm float-end m-2" id="updateBtn" style="display:none">Update</button>
+                        <button @onclick="CancelTemplate" class="btn btn-danger btn-sm float-end m-2" id="cancelBtn" style="display:none">Cancel</button>
                     </span>
 
                 </div><!--end card-body-->

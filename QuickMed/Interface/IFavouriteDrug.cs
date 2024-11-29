@@ -6,5 +6,6 @@ namespace QuickMed.Interface
     {
         Task<dynamic> GetAsync();
         Task<dynamic> SaveFavouriteDrugTemp(TblFavouriteDrugTemplate TblFavouriteDrugTemplate);
+        Task<dynamic> GetDataById(string Id);
     }
 }

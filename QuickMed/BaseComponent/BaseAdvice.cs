@@ -41,8 +41,8 @@ namespace QuickMed.BaseComponent
                 mt.AdviceTemplateName?.ToString() ?? string.Empty, // Replace Property1 with actual property name
                     $@"
                     <div style='display: flex; justify-content: flex-end;'>
-                       <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{mt.Id}' data-method='OnEditClick'></i>
-                        <i class='dripicons-trash btn btn-soft-danger dTRowActionBtn' data-id='{mt.Id}' data-method='OnDeleteClick'></i>
+                       <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{mt.Id}' data-method='onDataEdit'></i>
+                        <i class='dripicons-trash btn btn-soft-danger dTRowActionBtn' data-id='{mt.Id}' data-method='onDataDelete'></i>
                     </div>
                     "  // Replace Property2 with actual property name
             }).ToArray();
@@ -54,6 +54,8 @@ namespace QuickMed.BaseComponent
             await JS.InvokeVoidAsync("makeDataTableQ", "adviceListtable", tableData);
 
         }
+
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -109,7 +111,8 @@ namespace QuickMed.BaseComponent
             await JS.InvokeVoidAsync("showAlert", $"{saveOrUpdateContent} Successful", $"Record has been successfully {saveOrUpdateContent}.", "success", "swal-success");
             StateHasChanged();
         }
-        protected async Task onDataDelete(Guid id)
+        [JSInvokable("onDataDelete")]
+        public async Task onDataDelete(Guid id)
         {
             bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
 
@@ -133,7 +136,8 @@ namespace QuickMed.BaseComponent
             }
 
         }
-        protected async Task onDataEdit(Guid id)
+        [JSInvokable("onDataEdit")]
+        public async Task onDataEdit(Guid id)
         {
             try
             {
