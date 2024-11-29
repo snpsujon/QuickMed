@@ -277,7 +277,8 @@ function makeSelect2(isTags) {
     $('.select2').select2({
         width: '100%',
         tags: isTags,
-        allowClear: true
+        allowClear: true,
+        placeholder: "Select"
     });
 
     $('.select2W').select2({
@@ -320,7 +321,7 @@ document.addEventListener('click', function (event) {
 
         // Call Blazor method if needed
         if (instanceReference) {
-            instanceReference.invokeMethodAsync(method, id); 
+            instanceReference.invokeMethodAsync(method, id);
         } else {
             console.error("Instance reference is not set");
         }
@@ -492,4 +493,10 @@ function setSelectOptions(selectClass, options, defaultValue = '') {
 function showQModal() {
     var modal = new bootstrap.Modal(document.getElementById('bd-example-modal-xl'));
     modal.show();
+}
+
+function ClearAllFields() {
+    // Clear all fields
+    $('#app').find('input, select, textarea').val('').trigger('change');
+
 }

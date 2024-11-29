@@ -82,3 +82,7 @@
         transform: rotate(360deg);
     }
 }
+/* CSS to display the loading cursor */
+.loading-cursor {
+    cursor: wait !important; /* Apply the loading cursor */
+}
