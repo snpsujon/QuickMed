@@ -41,7 +41,7 @@ function OsudAddbtn() {
 }
 
 
-function populateTreatmentTable(dataArray, tblId) {
+function populateTreatmentTable(dataArray, tblId, isEdit = false) {
     //getOusudData();
     console.log("Data received:", dataArray);
 
@@ -62,7 +62,11 @@ function populateTreatmentTable(dataArray, tblId) {
 
 
     dataArray.forEach((data, index) => {
-        $("#treatmentId").val(data.tempId);
+        if (isEdit) {
+            $("#treatmentId").val(data.tempId);
+            $("#TempName").val(data.tempName);
+        }
+        
 
         const newRow = document.createElement("tr");
         newRow.setAttribute("data-value", data.index);
@@ -475,20 +479,22 @@ function GetAdviceTblData() {
 }
 
 // To toggle visibility
-function toggleButtonVisibility() {
+function toggleButtonVisibility(isUpdate = false) {
     const saveBtn = document.getElementById("saveBtn");
     const updateBtn = document.getElementById("updateBtn");
     const cancelBtn = document.getElementById("cancelBtn");
 
-    if (saveBtn.style.display === "none") {
-        saveBtn.style.display = "block";
-        updateBtn.style.display = "none";
-        cancelBtn.style.display = "none";
-    } else {
+    if (isUpdate) {
         saveBtn.style.display = "none";
         updateBtn.style.display = "block";
         cancelBtn.style.display = "block";
     }
+    else {
+        saveBtn.style.display = "block";
+        updateBtn.style.display = "none";
+        cancelBtn.style.display = "none";
+    }
+
 }
 
 function ClearTable(tableId) {
@@ -502,4 +508,12 @@ function ClearTable(tableId) {
     } else {
         console.error("Table body not found in table with ID:", tableId);
     }
+}
+
+//function setTreatmentId(treatTempId) {
+//    $("#treatmentId").val(treatTempId);
+//}
+
+function clearTreatmentArray() {
+    treatments.length = 0;
 }

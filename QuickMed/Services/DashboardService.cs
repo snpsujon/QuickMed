@@ -1,10 +1,6 @@
 ﻿using QuickMed.DB;
 using QuickMed.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using QuickMed.ViewModels;
 
 namespace QuickMed.Services
 {
@@ -14,14 +10,32 @@ namespace QuickMed.Services
         {
         }
 
-        public async Task<dynamic> GetMostUsedDXAsync()
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task<dynamic> GetMostUsedDXAsync()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public async Task<dynamic> GetMostUsedMedicineAsync()
+        //public async Task<dynamic> GetMostUsedMedicineAsync()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public async Task<dynamic> GetTotalDashboardData()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var sql = $@"SELECT 
+                        (SELECT COUNT(Id) FROM TblPatient) AS TotalPatient,
+                        (SELECT COUNT(Id) FROM TblPrescription) AS TotalPrescription,
+                        (SELECT COUNT(Id) FROM DrugMedicine) AS TotalMedicine";
+                var medicine = await _context.ExecuteSqlQueryAsync<TotalDashboardVM>(sql);
+                return medicine.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
     }
 }

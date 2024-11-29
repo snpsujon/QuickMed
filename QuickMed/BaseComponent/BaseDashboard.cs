@@ -2,11 +2,7 @@
 using Microsoft.JSInterop;
 using QuickMed.DB;
 using QuickMed.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using QuickMed.ViewModels;
 
 namespace QuickMed.BaseComponent
 {
@@ -20,14 +16,17 @@ namespace QuickMed.BaseComponent
 
         public TblPrescription dose = new();
         public IEnumerable<TblDose>? doses { get; set; }
+
+        public TotalDashboardVM dashboards = new();
         public DotNetObjectReference<BaseDashboard> ObjectReference { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
             ObjectReference = DotNetObjectReference.Create(this);
             await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
-            doses = await App.Database.GetTableRowsAsync<TblDose>("TblDose");
-            doses = await _dashboard.GetMostUsedDXAsync(); // Load the initial data
+            dashboards = await _dashboard.GetTotalDashboardData();
+            //doses = await App.Database.GetTableRowsAsync<TblDose>("TblDose");
+            //doses = await _dashboard.GetMostUsedDXAsync(); // Load the initial data
             await RefreshDataTable();
         }
 

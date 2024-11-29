@@ -208,6 +208,19 @@ namespace QuickMed.DB
                 throw;
             }
         }
+        public async Task<bool> DeleteTableRowAsync(string tableName, string DeleteColumn, string DeleteValue)
+        {
+            try
+            {
+                var Sql = "DELETE FROM " + tableName + " Where " + DeleteColumn + " = '" + DeleteValue + "';";
+                var result = await ExecuteSqlQueryAsync<TblDoctor>(Sql);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
 
 

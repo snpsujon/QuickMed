@@ -126,7 +126,7 @@ namespace QuickMed.Services
                         ttm.AdviceId as Id,dm.Id as BrandId,
                         ddd.Name || ' - ' || dm.Name || ' ( ' || dm.Strength || ' ) ' || ' - ' || dg.Name as BrandName,
                         dd.Id as DoseId,dd.Name as DoseName,
-                        d.Id as DurationId,d.Name as DurationName,i.Id as InstructionId,i.Name as InstructionName, ttm.Id as TempId
+                        d.Id as DurationId,d.Name as DurationName,i.Id as InstructionId,i.Name as InstructionName, ttm.Id as TempId , ttm.Name
                         from
                         TblTreatmentTempDetails ttd
                         JOIN TblTreatmentTemplate ttm on ttd.TreatmentTempId = ttm.Id

@@ -19,6 +19,9 @@ namespace QuickMed.BaseComponent
         public IAdvice _adviceTemp { get; set; }
         [Inject]
         public IPrescription _pres { get; set; }
+
+        public string TreatmentTempId { get; set; } = "NewCreated";
+        public string TreatmentTempName { get; set; } = "";
         public DotNetObjectReference<BaseTreatmentTemp> ObjectReference { get; private set; }
 
         public TblTreatmentTemplate treatmentTemplate = new();
@@ -85,6 +88,7 @@ namespace QuickMed.BaseComponent
                 await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpAdviceTbl", "add_Advice");
                 await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpTbl");
                 await JS.InvokeVoidAsync("makeTableDragable", "TretmentTmpAdviceTbl");
+                await JS.InvokeVoidAsync("clearTreatmentArray");
                 await JS.InvokeVoidAsync("OnChangeEvent", "adviceSelect", "AdviceChange", ObjectReference);
 
             }
@@ -108,7 +112,7 @@ namespace QuickMed.BaseComponent
 
                     var treatments = JsonSerializer.Deserialize<List<TreatmentPopVM>>(jsonString);
                     await JS.InvokeVoidAsync("populateTreatmentTable", treatments, "TretmentTmpTbl");
-                    await JS.InvokeVoidAsync("populateTreatmentTable", treatments, "TretmentTmpTbl");
+                    //await JS.InvokeVoidAsync("setTreatmentId", TreatmentTempId);
 
                 }
             }
@@ -240,7 +244,7 @@ namespace QuickMed.BaseComponent
 
                     await OnInitializedAsync();
                     StateHasChanged();
-
+                    await JS.InvokeVoidAsync("clearTreatmentArray");
 
 
                 }
@@ -278,6 +282,7 @@ namespace QuickMed.BaseComponent
 
         public async Task Edit(string selectedData)
         {
+            await JS.InvokeVoidAsync("clearTreatmentArray");
             List<FavouriteDrugTempVM> treatments = await _pres.TblTreatmentTempDetails(Guid.Parse(selectedData));
             List<TreatmentPopVM> treatmentPopVMs = new List<TreatmentPopVM>();
             var result = new object();
@@ -308,16 +313,18 @@ namespace QuickMed.BaseComponent
                             text = treatment.InstructionName,
                             value = treatment.InstructionId.ToString()
                         },
-                        tempId = treatment.TempId.ToString()
+                        tempId = treatment.TempId.ToString(),
+                        tempName = treatment.Name
                     };
                     treatmentPopVMs.Add(treatmentPopVM);
                     result = await JS.InvokeAsync<object>("pushtoPrescription", treatmentPopVM);
                 }
+                TreatmentTempId = treatments.FirstOrDefault()?.TempId;
                 if (result is not null)
                 {
                     var jsonString = result.ToString();
                     var treatments1 = JsonSerializer.Deserialize<List<TreatmentPopVM>>(jsonString);
-                    await JS.InvokeVoidAsync("populateTreatmentTable", treatments1, "TretmentTmpTbl");
+                    await JS.InvokeVoidAsync("populateTreatmentTable", treatments1, "TretmentTmpTbl", true);
                 }
 
                 adviceDetails = new();
@@ -327,25 +334,121 @@ namespace QuickMed.BaseComponent
 
 
             }
-            await JS.InvokeVoidAsync("toggleButtonVisibility");
+            await JS.InvokeVoidAsync("toggleButtonVisibility", true);
         }
 
         public async Task CancelTemplate()
         {
             await JS.InvokeVoidAsync("ClearTable", "TretmentTmpTbl");
             await JS.InvokeVoidAsync("ClearTable", "TretmentTmpAdviceTbl");
-            await JS.InvokeVoidAsync("toggleButtonVisibility");
+            await JS.InvokeVoidAsync("ClearTable", "TretmentTmpAdviceTbl");
+
+            await JS.InvokeVoidAsync("toggleButtonVisibility", false);
         }
         public async Task UpdateTemplate()
         {
-            var result = await JS.InvokeAsync<JsonElement>("GetTretmentTempData");
-            if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
+            try
             {
-                var tempId = result.GetProperty("tempId").GetString();
-                if (tempId != "NewCreated")
+                var result = await JS.InvokeAsync<JsonElement>("GetTretmentTempData");
+                if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
                 {
+                    var tempId = result.GetProperty("tempId").GetString();
+                    if (tempId != "NewCreated")
+                    {
+                        var isTempDetailsDelete = await App.Database.DeleteTableRowAsync("TblTreatmentTempDetails", "TreatmentTempId", tempId);
 
+
+                        var AdviceId = (Guid)(adviceDetails.FirstOrDefault()?.AdviceTemplateId);
+                        if (AdviceId == null)
+                        {
+                            AdviceId = Guid.NewGuid();
+                        }
+                        var isAdvDetailsDelete = await App.Database.DeleteTableRowAsync("TblAdviceTemplateDetails", "AdviceTemplateId", AdviceId.ToString());
+
+                        if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
+                        {
+                            var templateName = templateNameElement.GetString();
+                            treatmentTemplate = new();
+                            treatmentTemplate = new TblTreatmentTemplate
+                            {
+                                Id = Guid.Parse(tempId),
+                                Name = templateName,
+                                AdviceId = AdviceId
+                            };
+                            await App.Database.UpdateAsync<TblTreatmentTemplate>(treatmentTemplate);
+
+                        }
+
+                        if (result.TryGetProperty("treatment", out JsonElement treatmentArrayElement))
+                        {
+                            if (treatmentArrayElement.ValueKind == JsonValueKind.Array)
+                            {
+                                var treatmentList = treatmentArrayElement.EnumerateArray()
+                                    .Select(item => new
+                                    {
+                                        Index = item.GetProperty("index").GetInt32(),
+                                        Brand = item.GetProperty("brand").GetProperty("value").GetString(),
+                                        Dose = item.GetProperty("dose").GetProperty("value").GetString(),
+                                        Duration = item.GetProperty("duration").GetProperty("value").GetString(),
+                                        Instruction = item.GetProperty("instruction").GetProperty("value").GetString()
+                                    }).ToList();
+                                if (treatmentList.Count() > 0)
+                                {
+                                    templateDetails = new List<TblTreatmentTempDetails>();
+                                    foreach (var item in treatmentList)
+                                    {
+                                        templateDetails.Add(new TblTreatmentTempDetails
+                                        {
+                                            Id = Guid.NewGuid(),
+                                            TreatmentTempId = tempId,
+                                            BrandId = item.Brand,
+                                            DoseId = item.Dose,
+                                            DurationId = item.Duration,
+                                            InstructionId = item.Instruction
+                                        });
+                                    }
+                                    await _teatmentTemp.SaveTreatmentTempDetails(templateDetails);
+                                }
+                            }
+                        }
+
+                        if (result.TryGetProperty("advice", out JsonElement adviceArrayElement))
+                        {
+                            if (adviceArrayElement.ValueKind == JsonValueKind.Array)
+                            {
+                                var adviceList = adviceArrayElement.EnumerateArray()
+                                    .Select(item => item.GetString())
+                                    .ToList();
+                                if (adviceList.Count() > 0)
+                                {
+                                    adviceDetails = new List<TblAdviceTemplateDetails>();
+                                    foreach (var advice in adviceList)
+                                    {
+                                        adviceDetails.Add(new TblAdviceTemplateDetails
+                                        {
+                                            Id = Guid.NewGuid(),
+                                            AdviceTemplateId = AdviceId,
+                                            Advice = advice
+                                        });
+                                    }
+                                    await _adviceTemp.SaveAdviceTemplateDetails(adviceDetails);
+                                }
+                            }
+                        }
+                    }
+                    await OnInitializedAsync();
+                    await JS.InvokeVoidAsync("clearTreatmentArray");
+                    await JS.InvokeVoidAsync("ClearTable", "TretmentTmpTbl");
+                    await JS.InvokeVoidAsync("ClearTable", "TretmentTmpAdviceTbl");
+                    await JS.InvokeVoidAsync("toggleButtonVisibility", false);
+                    await JS.InvokeVoidAsync("showAlert", "Update Successful", "Record has been successfully Updated.", "success", "swal-info");
                 }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 

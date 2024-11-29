@@ -219,13 +219,9 @@ namespace QuickMed.BaseComponent
                     }
 
                     await OnInitializedAsync();
-
-
                     await RefreshDataTable();
-
-
-
                     StateHasChanged();
+                    await JS.InvokeVoidAsync("ClearTable", "MixTempTbl");
 
 
                 }

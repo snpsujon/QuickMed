@@ -154,6 +154,7 @@ namespace QuickMed.BaseComponent
                 await OnInitializedAsync();
 
                 StateHasChanged();
+                await JS.InvokeVoidAsync("ClearTable", "notesMainTbl");
 
 
             }

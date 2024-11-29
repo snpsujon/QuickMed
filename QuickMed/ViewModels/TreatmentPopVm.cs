@@ -39,6 +39,7 @@ namespace QuickMed.ViewModels
     {
         public int index { get; set; }
         public string? tempId { get; set; }
+        public string? tempName { get; set; }
         public BrandVM brand { get; set; }
         public DoseVM dose { get; set; }
         public DurationVM duration { get; set; }

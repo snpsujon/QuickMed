@@ -10,6 +10,24 @@ namespace QuickMed.Services
         {
         }
 
+        public async Task<dynamic> DeleteAllDetails(string TempId)
+        {
+            try
+            {
+                var sql = $"DELETE FROM TblTreatmentTempDetails WHERE TreatmentTempId = '{TempId}'";
+                await _context.ExecuteSqlQueryAsync<TblTreatmentTempDetails>(sql);
+
+                return true;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
         public async Task<dynamic> DeleteTreatmentTemp(string TempId)
         {
             var sql = $"SELECT * FROM TblTreatmentTemplate WHERE Id = '{TempId}'";
@@ -106,6 +124,7 @@ namespace QuickMed.Services
         {
             try
             {
+
                 var saveTemplate = await _context.CreateAsync<TblTreatmentTemplate>(data);
                 return true;
             }
@@ -115,6 +134,21 @@ namespace QuickMed.Services
                 throw;
             }
         }
+        public async Task<dynamic> UpdateTreatmentTemp(TblTreatmentTemplate data)
+        {
+            try
+            {
+
+                var updateTemplate = await _context.UpdateAsync<TblTreatmentTemplate>(data);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
 
         public async Task<dynamic> SaveTreatmentTempDetails(List<TblTreatmentTempDetails> data)
         {
