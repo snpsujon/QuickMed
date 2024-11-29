@@ -90,6 +90,19 @@ namespace QuickMed.BaseComponent
 
         }
 
+        [JSInvokable("OnEditClick")]
+        public async Task OnEditClick(string Id)
+        {
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         protected async Task InitializeJS()
         {
@@ -159,7 +172,6 @@ namespace QuickMed.BaseComponent
             {
                 var result = await JS.InvokeAsync<JsonElement>("GetDrugTempData");
                 await SaveData(result);
-
                 await OnInitializedAsync();
                 await RefreshDataTable();
                 StateHasChanged();
