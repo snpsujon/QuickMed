@@ -341,9 +341,9 @@ namespace QuickMed.BaseComponent
         {
             await JS.InvokeVoidAsync("ClearTable", "TretmentTmpTbl");
             await JS.InvokeVoidAsync("ClearTable", "TretmentTmpAdviceTbl");
-            await JS.InvokeVoidAsync("ClearTable", "TretmentTmpAdviceTbl");
-
             await JS.InvokeVoidAsync("toggleButtonVisibility", false);
+            await JS.InvokeVoidAsync("ClearAllFields");
+
         }
         public async Task UpdateTemplate()
         {
