@@ -77,8 +77,8 @@ namespace QuickMed.BaseComponent
                     drug.DurationName?.ToString() ?? string.Empty,
                     $@"
                     <div style='display: flex; justify-content: flex-end;'>
-                        <i class='dripicons-pencil btn btn-soft-primary' onclick='editRow({drug.Id})'></i>
-                        <i class='dripicons-trash btn btn-soft-danger' onclick='deleteRow({drug.Id})'></i>
+                        <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{drug.Id}' data-method='OnEditClick'></i>
+                        <i class='dripicons-trash btn btn-soft-danger dTRowActionBtn' data-id='{drug.Id}' data-method='OnDeleteClick'></i>
                     </div>
                     " // Action buttons
                 }).ToArray();

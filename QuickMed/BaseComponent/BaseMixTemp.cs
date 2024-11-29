@@ -66,8 +66,8 @@ namespace QuickMed.BaseComponent
                 mt.Name?.ToString() ?? string.Empty, // Replace Property1 with actual property name
                     $@"
                     <div style='display: flex; justify-content: flex-end;'>
-                        <i class='dripicons-pencil btn btn-soft-primary' onclick='editRow({mt.Id})'></i>
-                        <i class='dripicons-trash btn btn-soft-danger' onclick='deleteRow({mt.Id})'></i>
+                        <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{mt.Id}' data-method='OnEditClick'></i>
+                        <i class='dripicons-trash btn btn-soft-danger dTRowActionBtn' data-id='{mt.Id}' data-method='OnDeleteClick'></i>
                     </div>
                     "  // Replace Property2 with actual property name
             }).ToArray();
