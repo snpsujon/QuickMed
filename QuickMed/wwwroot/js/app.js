@@ -320,7 +320,7 @@ document.addEventListener('click', function (event) {
 
         // Call Blazor method if needed
         if (instanceReference) {
-            instanceReference.invokeMethodAsync(method, id);
+            instanceReference.invokeMethodAsync(method, id); 
         } else {
             console.error("Instance reference is not set");
         }

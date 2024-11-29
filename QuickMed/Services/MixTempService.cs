@@ -1,5 +1,6 @@
 ﻿using QuickMed.DB;
 using QuickMed.Interface;
+using QuickMed.ViewModels;
 
 namespace QuickMed.Services
 {
@@ -44,6 +45,51 @@ namespace QuickMed.Services
                 throw;
             }
         }
+
+        public async Task<dynamic> GetMasterDataById(string Id)
+        {
+            try
+            {
+                var sql = $@"
+                            Select * From TblMixTemplate Where Id = '{Id}'
+                        ";
+                var data = await _context.ExecuteSqlQueryAsync<TblMixTemplate>(sql);
+                return data.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public async Task<dynamic> GetDetailsDataById(string Id)
+        {
+            try
+            {
+                var sql = $@"
+                           select
+                        dm.Id as BrandId,
+                        ddd.Name || ' - ' || dm.Name || ' ( ' || dm.Strength || ' ) ' || ' - ' || dg.Name as BrandName,
+                        dd.Id as DoseId,dd.Name as DoseName
+                        from
+                        TblMixTempDetails ttd
+                        LEFT JOIN DrugMedicine dm on ttd.BrandId = dm.Id
+                        LEFT JOIN DrugDosage ddd ON dm.DosageId = ddd.Id
+                        LEFT JOIN DrugGeneric dg ON dm.GenericId = dg.Id
+                        LEFT JOIN DrugManufacturer c ON dm.ManufacturerId = c.Id
+                        LEFT JOIN TblDose dd ON ttd.DoseId = dd.Id
+                        Where ttd.TblMixTemplateMasterId = '{Id}'
+                        ";
+                var data = await _context.ExecuteSqlQueryAsync<FavouriteDrugTempVM>(sql);
+                return data;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
 
         public async Task<dynamic> SaveMixTemp(TblMixTemplate tblTreatmentTemplate)
         {

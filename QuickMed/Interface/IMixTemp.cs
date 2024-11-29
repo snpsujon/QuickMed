@@ -8,6 +8,8 @@ namespace QuickMed.Interface
         Task<dynamic> GetAllMedicine();
         Task<dynamic> SaveMixTemp(TblMixTemplate tblTreatmentTemplate);
         Task<dynamic> SaveMixTempDetails(List<TblMixTempDetails> data);
+        Task<dynamic> GetMasterDataById(string Id);
+        Task<dynamic> GetDetailsDataById(string Id);
 
     }
 }

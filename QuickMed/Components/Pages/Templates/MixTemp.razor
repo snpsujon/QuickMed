@@ -106,7 +106,7 @@
                             </tbody>
                         </table>
                     </div>
-
+                    <input type="text" id="mixTempID" value="NewCreated" hidden/>
 
 
                     <div class="row mt-3">
@@ -192,7 +192,9 @@
 
 
                     <span class="float-right">
-                        <button id="but_add" @onclick="MixTempSave" class="btn btn-success btn-sm float-end">Save</button>
+                        <button id="saveBtn" @onclick="MixTempSave" class="btn btn-success btn-sm float-end" style="display:block">Save</button>
+                        <button @onclick="UpdateTemplate" class="btn btn-info btn-sm float-end m-2" id="updateBtn" style="display:none">Update</button>
+                        <button @onclick="CancelTemplate" class="btn btn-danger btn-sm float-end m-2" id="cancelBtn" style="display:none">Cancel</button>
                     </span>
 
                 </div><!--end card-body-->

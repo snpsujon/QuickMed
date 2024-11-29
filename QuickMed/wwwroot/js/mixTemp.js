@@ -1,5 +1,27 @@
 ﻿
 const mainTblData = [];
+
+function pushtoMixTemplate(formData) {
+    formData['index'] = mainTblData.length + 1;
+    mainTblData.push(formData);
+    return mainTblData;
+}
+function ClearmainTableArray() {
+    mainTblData.length = 0;
+}
+
+function SetMasterData(data) {
+    // Assuming 'data' is an object with corresponding keys to input IDs
+    $('#TempName').val(data.name);
+    $('#mixTempID').val(data.id);
+    $('#doseInsSelect').val(data.dose).trigger('change');
+    $('#durationInsSelect').val(data.duration).trigger('change');
+    $('#totalqty').val(data.totalQty);
+    $('#instructionInsSelect').val(data.instruction).trigger('change');
+    $('#notesIns').val(data.notes);
+}
+
+
 function AddNewPlusBtn() {
     // Get the selected elements
     const brandSelect = document.getElementById("brandTempSelect");
@@ -315,7 +337,7 @@ function GetMixTempData() {
     const instructionInsSelect = $("#instructionInsSelect").val();
     const notesIns = $("#notesIns").val();
 
-  
+
 
     var data = {
         templateName: tempname == '' ? 'MixTemp_' + getRandomInteger(1, 9999) : tempname,
@@ -325,6 +347,7 @@ function GetMixTempData() {
         totalqty: totalqty,
         instructionInsSelect: instructionInsSelect,
         notesIns: notesIns,
+        tempId: $('#mixTempID').val()
 
     };
     return data;

@@ -43,7 +43,7 @@ namespace QuickMed.BaseComponent
 
             Instructions = await App.Database.GetTableRowsAsync<TblInstruction>("TblInstruction");
 
-
+            await RefreshDataTable();
 
 
         }
@@ -52,7 +52,7 @@ namespace QuickMed.BaseComponent
         {
             if (firstRender)
             {
-                await RefreshDataTable();
+
                 //await InitializeDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
                 await InitializeJS();
             }
@@ -78,6 +78,66 @@ namespace QuickMed.BaseComponent
 
             await JS.InvokeVoidAsync("makeDataTableQ", "datatable-mixTemp", tableData);
 
+        }
+        [JSInvokable("OnEditClick")]
+        public async Task OnEditClick(string Id)
+        {
+            try
+            {
+                var masterData = await _mix.GetMasterDataById(Id);
+                //await JS.InvokeVoidAsync("SetMasterData", masterData);
+
+
+                await JS.InvokeVoidAsync("ClearTable", "MixTempTbl");
+                await JS.InvokeVoidAsync("SetMasterData", (object)masterData);
+                await JS.InvokeVoidAsync("ClearmainTableArray");
+                List<FavouriteDrugTempVM> detailsData = await _mix.GetDetailsDataById(Id);
+                var resp = new
+                {
+                    masterData = masterData,
+                    DetaislData = detailsData
+                };
+                var result = new object();
+                List<TreatmentPopVM> treatmentPopVMs = new List<TreatmentPopVM>();
+                if (detailsData.Count() > 0)
+                {
+                    //Load the treatment template to the prescription table
+                    foreach (var item in detailsData)
+                    {
+                        TreatmentPopVM treatmentPopVM = new TreatmentPopVM()
+                        {
+                            brand = new BrandVM()
+                            {
+                                text = item.BrandName,
+                                value = item.BrandId.ToString()
+                            },
+                            dose = new DoseVM()
+                            {
+                                text = item.DoseName,
+                                value = item.DoseId.ToString()
+                            }
+
+                        };
+                        treatmentPopVMs.Add(treatmentPopVM);
+                        result = await JS.InvokeAsync<object>("pushtoMixTemplate", treatmentPopVM);
+                    }
+                    if (result is not null)
+                    {
+                        var jsonString = result.ToString();
+                        var treatments = JsonSerializer.Deserialize<List<TreatmentPopVM>>(jsonString);
+                        await JS.InvokeVoidAsync("populateMixTempTable", treatments, "MixTempTbl", true);
+                    }
+                    await JS.InvokeVoidAsync("toggleButtonVisibility", true);
+                    //StateHasChanged();
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         protected async Task InitializeJS()
@@ -144,8 +204,106 @@ namespace QuickMed.BaseComponent
             // Example data
             //return new List<string> { "Medicine 1", "Medicine 2", "Medicine 3" };
         }
+        public async Task CancelTemplate()
+        {
+            await JS.InvokeVoidAsync("ClearTable", "MixTempTbl");
+
+            await JS.InvokeVoidAsync("toggleButtonVisibility", false);
+        }
+        public async Task UpdateTemplate()
+        {
+            try
+            {
+                var result = await JS.InvokeAsync<JsonElement>("GetMixTempData");
+                if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
+                {
+                    var tempId = result.GetProperty("tempId").GetString();
+                    if (tempId != "NewCreated")
+                    {
+                        var isTempDetailsDelete = await App.Database.DeleteTableRowAsync("TblMixTempDetails", "TblMixTemplateMasterId", tempId);
 
 
+
+
+                        string templateName = "";
+
+                        if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
+                        {
+                            templateName = templateNameElement.GetString();
+                            var nn = result.GetProperty("doseInsSelect").GetString();
+                            mixTemplate = new();
+                            mixTemplate = new TblMixTemplate
+                            {
+                                Id = Guid.Parse(tempId),
+                                Name = templateName,
+                                Dose = result.GetProperty("doseInsSelect").GetString(),
+                                Duration = result.GetProperty("durationInsSelect").GetString(),
+                                TotalQty = result.GetProperty("totalqty").GetString(),
+                                Instruction = result.GetProperty("instructionInsSelect").GetString(),
+                                Notes = result.GetProperty("notesIns").GetString()
+
+
+                            };
+                            await App.Database.UpdateAsync<TblMixTemplate>(mixTemplate);
+                        }
+
+
+                        if (result.TryGetProperty("tempData", out JsonElement jsonelement))
+                        {
+                            if (jsonelement.ValueKind == JsonValueKind.Array)
+                            {
+                                var ListData = jsonelement.EnumerateArray()
+                                    .Select(item => new
+                                    {
+                                        Index = item.GetProperty("index").GetInt32(),
+                                        Brand = item.GetProperty("brand").GetProperty("value").GetString(),
+                                        Dose = item.GetProperty("dose").GetProperty("value").GetString()
+                                    }).ToList();
+
+                                if (ListData.Count() > 0)
+                                {
+
+                                    mixtemplateDetails = new List<TblMixTempDetails>();
+                                    foreach (var item in ListData)
+                                    {
+                                        mixtemplateDetails.Add(new TblMixTempDetails
+                                        {
+                                            Id = Guid.NewGuid(),
+                                            TblMixTemplateMasterId = mixTemplate.Id,
+                                            BrandId = item.Brand,
+                                            DoseId = item.Dose,
+
+                                        });
+                                    }
+                                    var saveDetails = await _mix.SaveMixTempDetails(mixtemplateDetails);
+                                    await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("templateName not found.");
+                        }
+
+
+
+                        await JS.InvokeVoidAsync("ClearTable", "MixTempTbl");
+                        await JS.InvokeVoidAsync("ClearmainTableArray");
+                        await JS.InvokeVoidAsync("toggleButtonVisibility", false);
+                        await JS.InvokeVoidAsync("showAlert", "Update Successful", "Record has been successfully Updated.", "success", "swal-info");
+
+                        await OnInitializedAsync();
+                        StateHasChanged();
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
 
         public async Task MixTempSave()
