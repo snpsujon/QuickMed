@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using QuickMed.DB;
 using QuickMed.Interface;
 using QuickMed.ViewModels;
+using System.Text.Json;
 
 namespace QuickMed.BaseComponent
 {
@@ -27,8 +28,9 @@ namespace QuickMed.BaseComponent
             Dxs = await App.Database.GetTableRowsAsync<TblDXTemplate>("TblDXTemplate");
             Brands = new();
             Brands = await _mix.GetAllMedicine();
-            prescriptions = await _pres.GetAll();
+            prescriptions = await GetFilterData();
             await RefreshDataTable();
+
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -39,11 +41,38 @@ namespace QuickMed.BaseComponent
                 await InitializeJS();
             }
         }
+        public async Task<IEnumerable<PrescriptionVM>> GetFilterData(
+     string? mobile = null,
+     string? prescriptionCode = null,
+     string? dxName = null,
+     DateTime? startDate = null,
+     DateTime? endDate = null, string? brand = null)
+        {
+            // Set default values if necessary
+            startDate ??= new DateTime(2024, 1, 1);  // Default to January 1, 2024 if null
+            endDate ??= new DateTime(2024, 12, 31);  // Default to December 31, 2024 if null
+
+            // Create filter parameters object
+            var filterParams = new PrescriptionFilterParameters
+            {
+                Mobile = mobile,
+                PrescriptionCode = prescriptionCode,
+                DxTempId = dxName,
+                StartDate = startDate,
+                EndDate = endDate,
+                BrandId = brand
+            };
+
+            return await _pres.GetAll(filterParams);
+        }
+
+
         protected async Task InitializeJS()
         {
             await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             await JS.InvokeVoidAsync("makeSelect2", false);
             await JS.InvokeVoidAsync("makeSelect2Custom", "select2C", "GetMedicines", 3);
+            await JS.InvokeVoidAsync("setMaxDate");
 
         }
         [JSInvokable("GetMedicines")]
@@ -60,7 +89,10 @@ namespace QuickMed.BaseComponent
         {
             try
             {
-                await JS.InvokeVoidAsync("clearForm", "searchPrescriptionForm");
+                await JS.InvokeVoidAsync("ClearAllFields");
+                prescriptions = await GetFilterData();
+                await RefreshDataTable();
+
             }
             catch (Exception ex)
             {
@@ -72,7 +104,21 @@ namespace QuickMed.BaseComponent
             try
             {
                 //await JS.InvokeVoidAsync("getSearchInput");
-                var searchValue = await JS.InvokeAsync<dynamic>("getSearchInput");
+                var searchValue = await JS.InvokeAsync<JsonElement>("getSearchInput");
+
+
+                string? mobile = searchValue.GetProperty("mobile").GetString();
+                string? prescriptionCode = searchValue.GetProperty("prescriptionCode").GetString();
+                string? dxName = searchValue.GetProperty("dxName").GetString() == "0" ? null : searchValue.GetProperty("dxName").GetString();
+                DateTime? startDate = (Convert.ToDateTime(searchValue.GetProperty("startDate").GetString() == "" ? null : searchValue.GetProperty("startDate").GetString())) == DateTime.MinValue ? null : Convert.ToDateTime(searchValue.GetProperty("startDate").GetString());
+
+                DateTime? endDate = (Convert.ToDateTime(searchValue.GetProperty("endDate").GetString() == "" ? null : searchValue.GetProperty("endDate").GetString())) == DateTime.MinValue ? null : Convert.ToDateTime(searchValue.GetProperty("endDate").GetString());
+                string? brand = searchValue.GetProperty("brand").GetString() == "0" ? null : searchValue.GetProperty("brand").GetString();
+
+                prescriptions = await GetFilterData(mobile, prescriptionCode, dxName, startDate, endDate, brand);
+                await RefreshDataTable();
+
+
 
             }
             catch (Exception ex)
@@ -89,6 +135,7 @@ namespace QuickMed.BaseComponent
             {
                 // If null or empty, pass an empty array to the JavaScript function
                 await JS.InvokeVoidAsync("makeDataTableQ", "datatable-prescriptionList", new string[0][]);
+                await JS.InvokeVoidAsync("ClearTable", "datatable-prescriptionList");
                 return;
             }
 

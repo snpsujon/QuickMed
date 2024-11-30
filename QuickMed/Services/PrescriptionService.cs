@@ -28,24 +28,60 @@ namespace QuickMed.Services
 
         }
 
-        public async Task<dynamic> GetAll()
+        public async Task<dynamic> GetAll(PrescriptionFilterParameters filterParams)
         {
             try
             {
-                var query = @"
-              SELECT 
-            p.Id,
-            p.PrescriptionCode,
-            p.PrescriptionDate,
-            pp.Id AS PatientId,
-            pp.Name as PatientName,
-            pp.Mobile,
-            pp.Address
-        FROM TblPrescription p
-        LEFT JOIN TblPatient pp 
-            ON p.PatientId = pp.Id";
+
+
+
+
+                var query = $@"
+            
+                            SELECT 
+                                p.Id,
+                                p.PrescriptionCode,
+                                p.PrescriptionDate,
+                                pp.Id AS PatientId,
+                                pp.Name AS PatientName,
+                                pp.Mobile,
+                                pp.Address,
+                                GROUP_CONCAT(nt.Name, ', ') AS NoteNames,
+                                GROUP_CONCAT(dx.Name, ', ') AS DxNames
+                            FROM TblPrescription p
+                            LEFT JOIN TblPatient pp ON p.PatientId = pp.Id
+                            LEFT JOIN TblPres_Note ntp ON ntp.Pres_ID = p.Id
+                            LEFT JOIN TblNotesTemplate nt ON nt.Id = ntp.NoteTempId
+                            LEFT JOIN TblPres_DX dxp ON dxp.Pres_ID = p.Id
+                            LEFT JOIN TblDXTemplate dx ON dx.Id = dxp.DxTempId
+                            LEFT JOIN TblPrescriptionDetails tpd on tpd.PrescriptionMasterId = p.Id
+                            WHERE 
+                                (
+                                    ('{filterParams.Mobile}' = '' OR '{filterParams.Mobile}' IS NULL OR pp.Mobile = '{filterParams.Mobile}') AND
+                                    ('{filterParams.PrescriptionCode}' = '' OR '{filterParams.PrescriptionCode}' IS NULL OR p.PrescriptionCode = '{filterParams.PrescriptionCode}') AND
+		                            (dxp.DxTempId = '{filterParams.DxTempId}' OR '{filterParams.DxTempId}' = '' OR '{filterParams.DxTempId}' IS NULL) AND
+		                             (p.PrescriptionDate BETWEEN '{filterParams.StartDate?.Ticks}' AND '{filterParams.EndDate?.Ticks}' OR ('{filterParams.StartDate?.Ticks}' IS NULL AND '{filterParams.EndDate?.Ticks}' IS NULL)) AND
+                                    (tpd.Brand = '{filterParams.BrandId}' OR '{filterParams.BrandId}' = '' OR '{filterParams.BrandId}' IS NULL)
+		
+                                ) 
+	
+	
+                            GROUP BY 
+                                p.Id, 
+                                p.PrescriptionCode, 
+                                p.PrescriptionDate, 
+                                pp.Id, 
+                                pp.Name, 
+                                pp.Mobile, 
+                                pp.Address;
+        ";
+
+
+                // Pass the DynamicParameters to the ExecuteSqlWithParamQueryAsync method
+
 
                 var result = await _context.ExecuteSqlQueryAsync<PrescriptionVM>(query);
+
                 return result.ToList();
             }
             catch (Exception ex)
@@ -54,6 +90,8 @@ namespace QuickMed.Services
                 throw;
             }
         }
+
+
 
         public async Task<dynamic> GetCCList()
         {
@@ -282,84 +320,92 @@ namespace QuickMed.Services
                 else
                 {
                     PrescriptionDetailsVM pres = new PrescriptionDetailsVM();
-                    dynamic data;
-                    sql = $@"SELECT * FROM TblPrescription 
-                            WHERE PrescriptionCode = '{input}'";
-                    data = await _context.ExecuteSqlQueryAsync<TblPrescription>(sql);
-                    pres.tblPrescription = data.FirstOrDefault();
 
+                    sql = $@"SELECT * FROM TblPrescription 
+                          WHERE PrescriptionCode = '{input}'";
+                    pres.tblPrescription = (await _context.ExecuteSqlQueryAsync<TblPrescription>(sql)).FirstOrDefault();
 
                     sql = $@"SELECT pat.* FROM TblPatient pat
-                            INNER JOIN TblPrescription p ON p.PatientId = pat.Id 
-                            WHERE PrescriptionCode = '{input}'";
-                    data = await _context.ExecuteSqlQueryAsync<TblPatient>(sql);
-                    pres.tblPatient = data.FirstOrDefault();
+                           INNER JOIN TblPrescription p ON p.PatientId = pat.Id 
+                           WHERE PrescriptionCode = '{input}'";
+                    pres.tblPatient = (await _context.ExecuteSqlQueryAsync<TblPatient>(sql)).FirstOrDefault();
 
                     sql = $@"SELECT h.* FROM TblPres_Ho h
                             JOIN TblPrescription p ON p.Id = h.Pres_ID
                             WHERE PrescriptionCode = '{input}'";
-                    data = await _context.ExecuteSqlQueryAsync<TblPres_Ho>(sql);
-                    pres.tblPres_Ho = data.FirstOrDefault();
+                    pres.tblPres_Ho = (await _context.ExecuteSqlQueryAsync<TblPres_Ho>(sql)).FirstOrDefault();
 
 
 
 
                     sql = $@"SELECT s.* FROM TblAdviceTemplate a
-                            LEFT JOIN TblAdviceTemplateDetails s ON s.AdviceId = a.Id
+                            LEFT JOIN TblAdviceTemplateDetails s ON s.AdviceTemplateId = a.Id
                             INNER JOIN TblPrescription p ON p.AdviceId = a.Id 
                             WHERE PrescriptionCode = '{input}'";
-                    data = await _context.ExecuteSqlQueryAsync<TblAdviceTemplateDetails>(sql);
-                    pres.tblAdviceTemplateDetails = data;
+                    pres.tblAdviceTemplateDetails = (await _context.ExecuteSqlQueryAsync<TblAdviceTemplateDetails>(sql)).ToList();
+
 
                     sql = $@"SELECT nd.* FROM TblNotesTemplate n
-                            LEFT JOIN TblNotesTempDetails nd ON nd.NoteId = n.Id
+                            LEFT JOIN TblNotesTempDetails nd ON nd.TblNotesTempMasterId = n.Id
                             INNER JOIN TblPrescription p ON p.NoteId = n.Id 
                             WHERE PrescriptionCode = '{input}'";
-                    data = await _context.ExecuteSqlQueryAsync<TblNotesTempDetails>(sql);
-                    pres.noteDetails = data;
+                    pres.noteDetails = (await _context.ExecuteSqlQueryAsync<TblNotesTempDetails>(sql)).ToList();
+
 
                     sql = $@"SELECT ixd.* FROM TblIXTemplate i
                             LEFT JOIN TblIXDetails ixd ON ixd.TblIXTempMasterId = i.Id
                             INNER JOIN TblPrescription p ON p.IxId = i.Id 
                             WHERE PrescriptionCode = '{input}'";
-                    data = await _context.ExecuteSqlQueryAsync<TblIXDetails>(sql);
-                    pres.ixDetails = data;
+                    pres.ixDetails = (await _context.ExecuteSqlQueryAsync<TblIXDetails>(sql)).ToList();
+
 
                     sql = $@"SELECT CC.* FROM TblPres_Cc CC
                             JOIN TblPrescription p ON p.Id = CC.Pres_ID 
                             WHERE PrescriptionCode = '{input}'";
-                    data = await _context.ExecuteSqlQueryAsync<TblPres_Cc>(sql);
-                    pres.tblPres_Ccs = data;
+                    pres.tblPres_Ccs = (await _context.ExecuteSqlQueryAsync<TblPres_Cc>(sql)).ToList();
+
 
                     sql = $@"SELECT m.* FROM TblPres_MH m
                             JOIN TblPrescription p ON p.Id = m.Pres_ID 
                             WHERE PrescriptionCode = '{input}'";
-                    data = await _context.ExecuteSqlQueryAsync<TblPres_MH>(sql);
-                    pres.tblPres_MHs = data;
+                    pres.tblPres_MHs = (await _context.ExecuteSqlQueryAsync<TblPres_MH>(sql)).ToList();
+
 
                     sql = $@"SELECT o.* FROM TblPres_OE o 
                             JOIN TblPrescription p ON p.Id = o.Pres_ID 
                             WHERE PrescriptionCode = '{input}'";
-                    data = await _context.ExecuteSqlQueryAsync<TblPres_OE>(sql);
-                    pres.tblPres_OEs = data;
+                    pres.tblPres_OEs = (await _context.ExecuteSqlQueryAsync<TblPres_OE>(sql)).ToList();
 
                     sql = $@"SELECT d.* FROM TblPres_DX d
                             JOIN TblPrescription p ON p.Id = d.Pres_ID 
                             WHERE PrescriptionCode = '{input}'";
-                    data = await _context.ExecuteSqlQueryAsync<TblPres_DX>(sql);
-                    pres.tblPres_DXes = data;
+                    pres.tblPres_DXes = (await _context.ExecuteSqlQueryAsync<TblPres_DX>(sql)).ToList();
+
 
                     sql = $@"SELECT r.* FROM TblPatientReport r
                             JOIN TblPrescription p ON p.Id = r.PresId 
                             WHERE PrescriptionCode = '{input}'";
-                    data = await _context.ExecuteSqlQueryAsync<TblPatientReport>(sql);
-                    pres.tblPatientReports = data;
+                    pres.tblPatientReports = (await _context.ExecuteSqlQueryAsync<TblPatientReport>(sql)).ToList();
 
-                    sql = $@"SELECT pd.* FROM TblPrescriptionDetails pd
-                            JOIN TblPrescription p ON p.Id = pd.PrescriptionMasterId 
-                            WHERE PrescriptionCode = '{input}'";
-                    data = await _context.ExecuteSqlQueryAsync<TblPrescriptionDetails>(sql);
-                    pres.rxDetails = data;
+
+                    sql = $@"select
+                        p.AdviceId as Id,dm.Id as BrandId,
+                        ddd.Name || ' - ' || dm.Name || ' ( ' || dm.Strength || ' ) ' || ' - ' || dg.Name as BrandName,
+                        dd.Id as DoseId,dd.Name as DoseName,
+                        d.Id as DurationId,d.Name as DurationName,i.Id as InstructionId,i.Name as InstructionName, p.Id as TempId 
+                        from
+                        TblPrescriptionDetails ttd
+                        JOIN TblPrescription p on ttd.PrescriptionMasterId = p.Id
+                        LEFT JOIN DrugMedicine dm on ttd.Brand = dm.Id
+                        LEFT JOIN DrugDosage ddd ON dm.DosageId = ddd.Id
+                        LEFT JOIN DrugGeneric dg ON dm.GenericId = dg.Id
+                        LEFT JOIN DrugManufacturer c ON dm.ManufacturerId = c.Id
+                        LEFT JOIN TblDose dd ON ttd.Dose = dd.Id
+                        LEFT JOIN TblDuration d ON ttd.Duration = d.Id
+                        LEFT JOIN TblInstruction i ON ttd.Instruction = i.Id
+						WHERE p.PrescriptionCode = '{input}'";
+                    pres.rxDetails = (await _context.ExecuteSqlQueryAsync<FavouriteDrugTempVM>(sql)).ToList();
+
 
                     return pres;
                 }

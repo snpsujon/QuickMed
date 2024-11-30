@@ -261,7 +261,7 @@ function GetPetaintData() {
         regNo: $("#Patient-Reg").val(),
         weight: $("#Patient-Wt").val(),
         date: $("#Practicum-Date").val(),
-        height: heightInc,
+        height: heightInc.toString(),
         bmiweight: $("#bmiWeight").val()
     };
 
@@ -444,6 +444,7 @@ function SearchPorP(id) {
                         if (data != null) {
                             //setPatientData(data);
                             console.log(data);
+
                         }
                         else {
                             showAlert("Oh No!!", "No Data Found.", "info", "swal-info");
@@ -472,4 +473,167 @@ function setPatientData(data) {
     document.getElementById("Patient-Wt").value = data.weight || '';
     document.getElementById("Patient-Age").value = data.age || '';
     document.getElementById("Patient-Sex").value = data.gender || '';
+}
+
+
+function setPrescriptionData(data) {
+
+    document.getElementById("Payment").value = data.payment || '';
+    document.getElementById("Reffer-Book").value = data.refferedBy || '';
+
+    var height = convertToFeetAndInches(data.height);
+    document.getElementById("bmiWeight").value = data.weight || '';
+    document.getElementById("bmiHeightft").value = height.feet || '';
+    document.getElementById("bmiHeightin").value = height.remainingInches || '';
+    updateBMI();
+
+    changeNxtDatebyVal(data.nextMeetingValue);
+    setQuillContent('#editors_pres', data.refferedTo || '');
+
+}
+
+function populateTable(dataArray, tblId) {
+
+    if (!Array.isArray(dataArray) && typeof dataArray === 'object') {
+        dataArray = Object.values(dataArray);
+    }
+
+    if (!Array.isArray(dataArray)) {
+        console.error("Expected an array but received:", dataArray);
+        return;
+    }
+
+    const tableBody = $("#" + tblId + " tbody")[0];
+
+    tableBody.innerHTML = "";
+    dataArray.forEach((data, index) => {
+        const newRow = document.createElement("tr");
+        newRow.setAttribute("data-value", index + 1);
+
+        const cells = [
+            { text: index + 1, value: index + 1 },
+            { text: data?.name || "N/A", value: data?.id || "" }
+        ];
+
+        cells.forEach((cellData, index) => {
+            const cell = document.createElement("td");
+
+            if (index != 0) {
+                const input = document.createElement("input");
+                input.type = "text"; // Specify input type
+                input.value = cellData.text; // Set the value of the input
+                input.classList.add("form-control"); // Add the 'form-control' class
+
+                cell.appendChild(input); // Append the input to the cell
+
+            } else {
+                cell.textContent = cellData.text;
+            }
+
+
+            cell.setAttribute("data-value", cellData.value);
+            newRow.appendChild(cell);
+        });
+
+        var buttonCell = document.createElement("td");
+        buttonCell.setAttribute("name", "buttons");
+
+        buttonCell.innerHTML = deletebun;
+        newRow.appendChild(buttonCell);
+        tableBody.appendChild(newRow);
+    });
+}
+
+
+function convertToFeetAndInches(inches) {
+    var feet = Math.floor(inches / 12);
+    var remainingInches = inches % 12;
+    var data = {
+        feet: feet,
+        remainingInches: remainingInches
+    };
+    return data;
+}
+
+function populateReportTable(dataArray, tblId) {
+    if (!Array.isArray(dataArray) && typeof dataArray === 'object') {
+        dataArray = Object.values(dataArray);
+    }
+
+    if (!Array.isArray(dataArray)) {
+        console.error("Expected an array but received:", dataArray);
+        return;
+    }
+
+    const tableBody = $("#" + tblId + " tbody")[0];
+
+    tableBody.innerHTML = "";
+    dataArray.forEach((data, index) => {
+        const newRow = document.createElement("tr");
+        newRow.setAttribute("data-value", index + 1);
+
+        const cells = [
+            { text: index + 1, value: index + 1 },
+            { text: data?.reportDate || new Date(), value: data?.id || "" },
+            { text: data?.reportName || "N/A", value: data?.id || "" },
+            { text: data?.result || "N/A", value: data?.id || "" },
+            { text: data?.unit || "N/A", value: data?.id || "" },
+        ];
+
+        cells.forEach((cellData, index) => {
+            const cell = document.createElement("td");
+            if (index == 1) {
+                const input = document.createElement("input");
+                input.type = "date"; // Specify input type
+                const rawDate = cellData.text; // Original date value
+
+                let formattedDate = ""; // Initialize an empty formattedDate
+                if (rawDate) {
+                    const date = new Date(rawDate); // Parse the date
+                    if (!isNaN(date.getTime())) { // Check if the date is valid
+                        formattedDate = date.toISOString().split("T")[0]; // Format the date as YYYY-MM-DD
+                    }
+                }
+
+                input.value = formattedDate; // Set the formatted value
+                input.classList.add("form-control"); // Add the 'form-control' class
+
+                cell.appendChild(input); // Append the input to the cell
+            }
+            if (index > 1) {
+                const input = document.createElement("input");
+                input.type = "text"; // Specify input type
+                input.value = cellData.text; // Set the value of the input
+                input.classList.add("form-control"); // Add the 'form-control' class
+
+                cell.appendChild(input); // Append the input to the cell
+
+            }
+            if (index == 0) {
+                cell.textContent = cellData.text;
+            }
+
+
+            cell.setAttribute("data-value", cellData.value);
+            newRow.appendChild(cell);
+        });
+
+        var buttonCell = document.createElement("td");
+        buttonCell.setAttribute("name", "buttons");
+
+        buttonCell.innerHTML = deletebun;
+        newRow.appendChild(buttonCell);
+        tableBody.appendChild(newRow);
+    });
+}
+
+function setHoTableData(data) {
+    $('.health-checkbox').each(function () {
+        let key = $(this).attr('id'); // Use the id as the key
+        if (data.hasOwnProperty(key)) {
+            $(this).prop("checked", data[key]); 
+        }
+    });
+    $('#FreeTextHO').val(data.freeTextHO);
+
 }

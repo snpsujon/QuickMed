@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using Dapper;
+using SQLite;
 
 namespace QuickMed.DB
 {
@@ -183,6 +184,24 @@ namespace QuickMed.DB
                 throw;
             }
         }
+
+        public async Task<IEnumerable<T>> ExecuteSqlWithParamQueryAsync<T>(string sql, DynamicParameters parameters) where T : class, new()
+        {
+            try
+            {
+                return await _dbConnection.QueryAsync<T>(sql, parameters);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error executing SQL query: {ex.Message}");
+                throw;
+            }
+        }
+
+
+
+
+
         public async Task<T> ExecuteSqlQueryFirstorDefultAsync<T>(string sql) where T : class, new()
         {
             try

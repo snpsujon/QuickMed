@@ -1024,18 +1024,95 @@ namespace QuickMed.BaseComponent
         public async Task SearchPorP(string elementId)
         {
             var result = await JS.InvokeAsync<object>("SearchPorP", elementId);
-            if (result != null)
-            {
-
-            }
 
         }
 
         [JSInvokable("GetPorPResult")]
         public async Task<dynamic> GetPorPResult(string input, bool isMobile)
         {
-            var result = await _pres.GetPorPResult(input, isMobile);
-            return result;
+            PrescriptionDetailsVM data = await _pres.GetPorPResult(input, isMobile);
+
+
+
+
+            PrescriptionDetailsVM prescriptionDetailsVM = new PrescriptionDetailsVM();
+            if (!isMobile)
+            {
+                await JS.InvokeVoidAsync("clearTreatmentArray");
+                List<TreatmentPopVM> treatmentPopVMs = new List<TreatmentPopVM>();
+                var result = new object();
+                if (data.rxDetails.Count > 0)
+                {
+                    //Load the treatment template to the prescription table
+                    foreach (var treatment in data.rxDetails)
+                    {
+                        TreatmentPopVM treatmentPopVM = new TreatmentPopVM()
+                        {
+                            brand = new BrandVM()
+                            {
+                                text = treatment.BrandName,
+                                value = treatment.BrandId.ToString()
+                            },
+                            dose = new DoseVM()
+                            {
+                                text = treatment.DoseName,
+                                value = treatment.DoseId.ToString()
+                            },
+                            duration = new DurationVM()
+                            {
+                                text = treatment.DurationName,
+                                value = treatment.DurationId.ToString()
+                            },
+                            instruction = new InstructionVM()
+                            {
+                                text = treatment.InstructionName,
+                                value = treatment.InstructionId.ToString()
+                            }
+                        };
+                        treatmentPopVMs.Add(treatmentPopVM);
+                        result = await JS.InvokeAsync<object>("pushtoPrescription", treatmentPopVM);
+                    }
+                }
+                if (result is not null)
+                {
+                    var jsonString = result.ToString();
+                    var treatments1 = JsonSerializer.Deserialize<List<TreatmentPopVM>>(jsonString);
+                    await JS.InvokeVoidAsync("populateTreatmentTable", treatments1, "TretmentTmpTbl");
+                }
+
+                if (data.tblAdviceTemplateDetails.Count > 0)
+                {
+                    adviceDetails = new();
+                    adviceDetails = data.tblAdviceTemplateDetails;
+                    await JS.InvokeVoidAsync("populateAdviceTable", adviceDetails, "TretmentTmpAdviceTbl");
+                }
+                if (data.tblPrescription != null)
+                {
+                    await JS.InvokeVoidAsync("setPrescriptionData", data.tblPrescription);
+                }
+                if (data.tblPatient != null)
+                {
+                    await JS.InvokeVoidAsync("setPatientData", data.tblPatient);
+                }
+                if (data.noteDetails.Count > 0)
+                {
+                    await JS.InvokeVoidAsync("populateNoteTablePres", data.noteDetails, "TretmentTmpNotesTbl");
+                }
+                if (data.ixDetails.Count > 0)
+                {
+                    await JS.InvokeVoidAsync("populateIXTablePres", data.ixDetails, "TretmentTmpIXTbl");
+
+                }
+                if (data.tblPatientReports.Count > 0)
+                {
+                    await JS.InvokeVoidAsync("populateReportTable", data.tblPatientReports, "rptEntryTbl");
+                }
+                if (data.tblPres_Ho != null)
+                {
+                    await JS.InvokeVoidAsync("setHoTableData", data.tblPres_Ho);
+                }
+            }
+            return data;
         }
 
         public async Task PreviewOnly()

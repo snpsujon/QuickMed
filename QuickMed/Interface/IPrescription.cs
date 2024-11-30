@@ -5,7 +5,7 @@ namespace QuickMed.Interface
 {
     public interface IPrescription
     {
-        Task<dynamic> GetAll();
+        Task<dynamic> GetAll(PrescriptionFilterParameters data);
         Task<dynamic> DeleteAsync(Guid id);
         Task<FavouriteDrugTempVM> GetFavDrugbyId(Guid id);
 

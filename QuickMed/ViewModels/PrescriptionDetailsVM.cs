@@ -15,7 +15,7 @@ namespace QuickMed.ViewModels
         public List<TblIXDetails> ixDetails { get; set; }
         public List<TblNotesTempDetails> noteDetails { get; set; }
         public List<TblPatientReport> tblPatientReports { get; set; }
-        public List<TblPrescriptionDetails> rxDetails { get; set; }
+        public List<FavouriteDrugTempVM> rxDetails { get; set; }
 
 
     }
