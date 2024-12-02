@@ -80,15 +80,23 @@ function updateIdealWeight(totalHeightInches) {
     }
 }
 
-function populateCCSelect() {
+function populateCCSelect(selectedValue) {
 
     if (instanceReference) {
         instanceReference.invokeMethodAsync("GetCCSelectData")
             .then(data => {
+                if (selectedValue == '' || selectedValue == null) {
+                    setSelectOptions('ccLoads1', data.ccList);
+                    setSelectOptions('ccLoads2', data.duration);
+                    setSelectOptions('ccLoads3', data.dM);
 
-                setSelectOptions('ccLoads1', data.ccList);
-                setSelectOptions('ccLoads2', data.duration);
-                setSelectOptions('ccLoads3', data.dM);
+                }
+                else {
+                    setSelectOptions('ccLoads1', data.ccList, selectedValue.cc);
+                    setSelectOptions('ccLoads2', data.duration, selectedValue.duration);
+                    setSelectOptions('ccLoads3', data.dM, selectedValue.dm);
+
+                }
 
 
             })
@@ -100,12 +108,17 @@ function populateCCSelect() {
     }
 
 }
-function populateDXSelect() {
+function populateDXSelect(selectedValue) {
     if (instanceReference) {
         instanceReference.invokeMethodAsync("GetDXSelectData")
             .then(data => {
 
-                setSelectOptions('dxLoads1', data.dx);
+                if (selectedValue == '' || selectedValue == null) {
+                    setSelectOptions('dxLoads1', data.dx);
+                } else {
+                    setSelectOptions('dxLoads1', data.dx, selectedValue.dx);
+                }
+
 
             })
             .catch(error => {
@@ -117,13 +130,19 @@ function populateDXSelect() {
 
 }
 
-function populateDHSelect() {
+function populateDHSelect(selectedValue) {
     if (instanceReference) {
         instanceReference.invokeMethodAsync("GetDHSelectData")
             .then(data => {
+                if (selectedValue == '' || selectedValue == null) {
+                    setSelectOptions('dhLoads1', data.brands);
+                    makeSelect2Custom("dhLoads1", "GetMedicines", 3);
+                }
+                else {
+                    setSelectOptions('dhLoads1', data.brands, selectedValue.dh);
+                    makeSelect2Custom("dhLoads1", "GetMedicines", 3);
+                }
 
-                setSelectOptions('dhLoads1', data.brands);
-                makeSelect2Custom("dhLoads1", "GetMedicines", 3);
 
             })
             .catch(error => {
@@ -631,9 +650,88 @@ function setHoTableData(data) {
     $('.health-checkbox').each(function () {
         let key = $(this).attr('id'); // Use the id as the key
         if (data.hasOwnProperty(key)) {
-            $(this).prop("checked", data[key]); 
+            $(this).prop("checked", data[key]);
         }
     });
     $('#FreeTextHO').val(data.freeTextHO);
+
+}
+
+
+function setOeTableData(data) {
+    console.log(data);
+
+    // Get the table element
+    const $oeTable = $('#oeTable tbody'); // Select the tbody of the table
+
+    // Loop through all data items
+    data.forEach(item => {
+        // Check if there's a matching row
+        let matched = false;
+
+        $oeTable.find('tr').each(function () {
+            const $inputBox = $(this).find('td:nth-child(2) input'); // Find the input box in column 2
+
+            if ($inputBox.length && $inputBox.val().trim() === item.name) {
+                // Match found, update columns 3 and 4
+                $(this).find('td:nth-child(3) input').val(item.value); // Column 3: Value
+                $(this).find('td:nth-child(4) input').val(item.unit);  // Column 4: Unit
+                matched = true;
+                return false; // Exit the loop
+            }
+        });
+
+        // If no match is found, add a new row
+        if (!matched) {
+            const newRow = `
+                <tr>
+                    <td>${$oeTable.find('tr').length + 1}</td>
+                    <td><input class="form-control" type="text" value="${item.name}" /></td>
+                    <td><input class="form-control" type="text" value="${item.value}" /></td>
+                    <td><input class="form-control" type="text" value="${item.unit}" /></td>
+                    <td>${deletebun}</td>
+                </tr>`;
+            $oeTable.append(newRow); // Append the new row
+        }
+    });
+}
+
+function setMhTableData(data) {
+    console.log(data);
+
+    // Get the table element
+    const $mhTable = $('#mhTable tbody'); // Select the tbody of the table
+
+    // Loop through all data items
+    data.forEach(item => {
+        // Check if there's a matching row
+        let matched = false;
+
+        $mhTable.find('tr').each(function () {
+            const $inputBox = $(this).find('td:nth-child(2) input'); // Find the input box in column 2
+
+            if ($inputBox.length && $inputBox.val().trim() === item.mh) {
+                // Match found, update columns 3 and 4
+                $(this).find('td:nth-child(3) input').val(item.value); // Column 3: Value
+                matched = true;
+                return false; // Exit the loop
+            }
+        });
+
+        // If no match is found, add a new row
+        if (!matched) {
+            const newRow = `
+                <tr>
+                    <td>${$mhTable.find('tr').length + 1}</td>
+                    <td><input class="form-control" type="text" value="${item.mh}" /></td>
+                    <td><input class="form-control" type="text" value="${item.value}" /></td>
+                    <td>${deletebun}</td>
+                </tr>`;
+            $mhTable.append(newRow); // Append the new row
+        }
+    });
+}
+
+function setCCTable(data) {
 
 }

@@ -310,9 +310,9 @@ namespace QuickMed.BaseComponent
             StateHasChanged();
         }
 
-        public async Task AddaRow(string tblid, bool isSelect = false, string functionName = "", string className = "")
+        public async Task AddaRow(string tblid, bool isSelect = false, string functionName = "", string className = "", object? selectedValue = null)
         {
-            await JS.InvokeVoidAsync("myrowAddNew", tblid, isSelect, functionName, className);
+            await JS.InvokeVoidAsync("myrowAddNew", tblid, isSelect, functionName, className, selectedValue);
         }
 
 
@@ -539,14 +539,13 @@ namespace QuickMed.BaseComponent
                 var IxId = Guid.NewGuid();
                 var PresId = Guid.NewGuid();
                 var NoteId = Guid.NewGuid();
-                var regNo = "";
-
+                var regNo = await AutoGenCode();
 
                 if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
                 {
                     if (result.TryGetProperty("pdata", out JsonElement pt))
                     {
-                        regNo = pt.GetProperty("regNo").GetString();
+                        //regNo = pt.GetProperty("regNo").GetString();
                         var ssss = pt.GetProperty("sex").GetString();
                         var patientInfo = new PatientVM()
                         {
@@ -1111,6 +1110,57 @@ namespace QuickMed.BaseComponent
                 {
                     await JS.InvokeVoidAsync("setHoTableData", data.tblPres_Ho);
                 }
+                if (data.tblPres_OEs.Count > 0)
+                {
+                    await JS.InvokeVoidAsync("setOeTableData", data.tblPres_OEs);
+
+                }
+                if (data.tblPres_MHs.Count > 0)
+                {
+                    await JS.InvokeVoidAsync("setMhTableData", data.tblPres_MHs);
+
+                }
+                if (data.tblPres_Ccs.Count > 0)
+                {
+                    foreach (var item in data.tblPres_Ccs)
+                    {
+                        var selectedValue = new
+                        {
+                            cc = item.CcName,
+                            duration = item.DurationId,
+                            dm = item.Dm_Id
+                        };
+                        await AddaRow("ccTable", true, "populateCCSelect", "ccLoads", selectedValue);
+                    }
+
+                }
+                if (data.tblPres_DXes.Count > 0)
+                {
+                    foreach (var item in data.tblPres_DXes)
+                    {
+                        var selectedValue = new
+                        {
+                            dx = item.DxTempId
+                        };
+                        await AddaRow("Dxtable", true, "populateDXSelect", "dxLoads", selectedValue);
+                    }
+
+                }
+                if (data.tblPres_DHs.Count > 0)
+                {
+                    foreach (var item in data.tblPres_DHs)
+                    {
+                        var selectedValue = new
+                        {
+                            dh = item.BrandID
+                        };
+                        await AddaRow("dhTable", true, "populateDHSelect", "dhLoads", selectedValue);
+                    }
+
+                }
+
+
+
             }
             return data;
         }

@@ -128,7 +128,7 @@ function ClearTable(tableid) {
 }
 
 
-function myrowAddNew(tabId, isSelect2 = true, nameCalledFunction = '', className = 'customClass') {  // Adds a new row to the specified table.
+function myrowAddNew(tabId, isSelect2 = true, nameCalledFunction = '', className = 'customClass', selectedValue = '') {  // Adds a new row to the specified table.
     var $tab_en_edic = $("#" + tabId);  // Table to edit
     var $filas = $tab_en_edic.find('tbody tr');
 
@@ -193,7 +193,7 @@ function myrowAddNew(tabId, isSelect2 = true, nameCalledFunction = '', className
     $tab_en_edic.find('tr:last').find('td:last').html(deletebun);
     if (nameCalledFunction !== '' && nameCalledFunction !== "" && nameCalledFunction !== null) {
         if (typeof window[nameCalledFunction] === 'function') {
-            window[nameCalledFunction](); // Pass parameters using spread syntax
+            window[nameCalledFunction](selectedValue); // Pass parameters using spread syntax
         } else {
             console.log(`Function ${nameCalledFunction} does not exist.`);
         }

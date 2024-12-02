@@ -62,17 +62,17 @@
                                 <!-- Name -->
                                 <div class="col" style="padding-left: 10px;">
                                     @{
-                                        var sex = PrescriptionViewModelss?.PData?.Sex == "Select" ? "" : "(" + (@PrescriptionViewModelss?.PData?.Sex) + ")";
+                                        var sex = PrescriptionViewModelss?.pdata?.Sex == "Select" ? "" : "(" + (@PrescriptionViewModelss?.pdata?.Sex) + ")";
                                     }
-                                    <span>@PrescriptionViewModelss?.PData?.Name @sex - @PrescriptionViewModelss?.PData?.RegNo</span>
+                                    <span>@PrescriptionViewModelss?.pdata?.Name @sex - @PrescriptionViewModelss?.pdata?.RegNo</span>
                                 </div>
                                 <!-- Age -->
                                 <div class="col text-center">
-                                    <span>বয়সঃ @PrescriptionViewModelss?.PData?.Age</span>
+                                    <span>বয়সঃ @PrescriptionViewModelss?.pdata?.Age</span>
                                 </div>
                                 <!-- Date -->
                                 <div class="col text-end">
-                                    <span>তারিখঃ @PrescriptionViewModelss?.PData?.date</span>
+                                    <span>তারিখঃ @PrescriptionViewModelss?.pdata?.date</span>
                                 </div>
                             </div>
                         </section>
@@ -82,7 +82,7 @@
                             <div class="row">
                                 <!-- Name -->
                                 <div class="col text-center">
-                                    <span id="barCodeNo" style="font-family: 'BarCode', sans-serif;font-size: 30px;">*@PrescriptionViewModelss?.PData?.RegNo*</span>
+                                    <span id="barCodeNo" style="font-family: 'BarCode', sans-serif;font-size: 30px;">*@PrescriptionViewModelss?.pdata?.RegNo*</span>
                                 </div>
                             </div>
                         </section>
@@ -99,9 +99,9 @@
                                         <span style="font-size: x-small;">
                                             <ul class="list-inline" style="padding-left: 1.5em;">
                                                 @{
-                                                    if (PrescriptionViewModelss.CCTableData.Count() > 0)
+                                                    if (PrescriptionViewModelss.ccTableData.Count() > 0)
                                                     {
-                                                        foreach (var cc in PrescriptionViewModelss.CCTableData)
+                                                        foreach (var cc in PrescriptionViewModelss.ccTableData)
                                                         {
                                                             var dd = "";
                                                             foreach (var kvp in cc) // kvp is the KeyValuePair<string, string>
@@ -130,19 +130,19 @@
                                         </span>
                                     </div>
                                     @{
-                                        if (PrescriptionViewModelss.HOTableData?.HealthCheckData?.Any(x => x.Value) == true)
+                                        if (PrescriptionViewModelss.hoTableData?.HealthCheckData?.Any(x => x.Value) == true)
                                         {
                                             <div class="hoPresc">
                                                 <span style="font-size: small;" class="fw-bold"><u>Known Case Of</u></span>
                                                 <span style="font-size: x-small;">
                                                     <ul class="list-inline" style="padding-left: 1.5em;">
-                                                        @foreach (var item in PrescriptionViewModelss.HOTableData.HealthCheckData.Where(x => x.Value))
+                                                        @foreach (var item in PrescriptionViewModelss.hoTableData.HealthCheckData.Where(x => x.Value))
                                                         {
                                                             <li class="list-inline-item">@item.Key</li>
                                                         }
-                                                        @if (PrescriptionViewModelss.HOTableData.FreeTextHO != "")
+                                                        @if (PrescriptionViewModelss.hoTableData.FreeTextHO != "")
                                                         {
-                                                            <li class="list-inline-item">@PrescriptionViewModelss.HOTableData.FreeTextHO</li>
+                                                            <li class="list-inline-item">@PrescriptionViewModelss.hoTableData.FreeTextHO</li>
                                                         }
                                                     </ul>
                                                 </span>
@@ -151,13 +151,13 @@
                                     }
 
                                     @{
-                                        if (PrescriptionViewModelss.OETableData != null && PrescriptionViewModelss.OETableData.Count() > 0)
+                                        if (PrescriptionViewModelss.oeTableData != null && PrescriptionViewModelss.oeTableData.Count() > 0)
                                         {
                                             <div class="oePresc">
                                                 <span style="font-size: small;" class="fw-bold"><u>O/E</u></span>
                                                 <span style="font-size: x-small;">
                                                     <table style="margin-left: 1.5em;">
-                                                        @foreach (var row in PrescriptionViewModelss.OETableData)
+                                                        @foreach (var row in PrescriptionViewModelss.oeTableData)
                                                         {
                                                             foreach (var kvp in row)
                                                             {
@@ -183,14 +183,14 @@
 
 
                                     @{
-                                        bool hasColumnrd = PrescriptionViewModelss.ReportTableData.Any(row => row.ContainsKey("column_2"));
-                                        if (PrescriptionViewModelss.ReportTableData != null && PrescriptionViewModelss.ReportTableData.Count() > 0 && hasColumnrd)
+                                        bool hasColumnrd = PrescriptionViewModelss.reportTableData.Any(row => row.ContainsKey("column_2"));
+                                        if (PrescriptionViewModelss.reportTableData != null && PrescriptionViewModelss.reportTableData.Count() > 0 && hasColumnrd)
                                         {
                                             <div class="rptPresc">
                                                 <span style="font-size: small;" class="fw-bold"><u>Reports</u></span>
                                                 <span style="font-size: x-small;">
                                                     <table>
-                                                        @foreach (var row in PrescriptionViewModelss.ReportTableData)
+                                                        @foreach (var row in PrescriptionViewModelss.reportTableData)
                                                         {
                                                             var tr = "";
                                                             var col2 = "";
@@ -232,15 +232,15 @@
 
 
                                     @{
-                                        bool hasColumn2 = PrescriptionViewModelss.DHTableData.Any(row => row.ContainsKey("column_2"));
-                                        if (PrescriptionViewModelss.DHTableData != null && PrescriptionViewModelss.DHTableData.Count() > 0 && hasColumn2)
+                                        bool hasColumn2 = PrescriptionViewModelss.dhTableData.Any(row => row.ContainsKey("column_2"));
+                                        if (PrescriptionViewModelss.dhTableData != null && PrescriptionViewModelss.dhTableData.Count() > 0 && hasColumn2)
                                         {
 
                                             <div class="dhPresc">
                                                 <span style="font-size: small;" class="fw-bold"><u>D/H</u></span>
                                                 <span style="font-size: x-small;">
                                                     <ul class="list-inline">
-                                                        @foreach (var row in PrescriptionViewModelss.DHTableData)
+                                                        @foreach (var row in PrescriptionViewModelss.dhTableData)
                                                         {
                                                             foreach (var kvp in row)
                                                             {
@@ -259,9 +259,9 @@
                                     }
 
                                     @{
-                                        bool hasValidData = PrescriptionViewModelss.NoteTableData != null
-                                        && PrescriptionViewModelss.NoteTableData.Count() > 0
-                                        && PrescriptionViewModelss.NoteTableData.Any(row => row.ContainsKey("column_2") && row["column_2"] != "No Data");
+                                        bool hasValidData = PrescriptionViewModelss.noteTableData != null
+                                        && PrescriptionViewModelss.noteTableData.Count() > 0
+                                        && PrescriptionViewModelss.noteTableData.Any(row => row.ContainsKey("column_2") && row["column_2"] != "No Data");
 
                                         if (hasValidData)
                                         {
@@ -270,7 +270,7 @@
                                                 <span style="font-size: small;" class="fw-bold"><u>Notes</u></span>
                                                 <span style="font-size: x-small;">
                                                     <ul class="list-inline">
-                                                        @foreach (var row in PrescriptionViewModelss.NoteTableData)
+                                                        @foreach (var row in PrescriptionViewModelss.noteTableData)
                                                         {
                                                             foreach (var kvp in row)
                                                             {
@@ -294,13 +294,13 @@
 
 
                                     @{
-                                        if (PrescriptionViewModelss.MHTableData != null && PrescriptionViewModelss.MHTableData.Count() > 0)
+                                        if (PrescriptionViewModelss.mhTableData != null && PrescriptionViewModelss.mhTableData.Count() > 0)
                                         {
                                             <div class="rptPresc">
                                                 <span style="font-size: small;" class="fw-bold"><u>M/H</u></span>
                                                 <span style="font-size: x-small;">
                                                     <table>
-                                                        @foreach (var row in PrescriptionViewModelss.MHTableData)
+                                                        @foreach (var row in PrescriptionViewModelss.mhTableData)
                                                         {
                                                             var tr = "";
 
@@ -324,13 +324,13 @@
 
                                     @{
                                         int firstdx = 1;
-                                        if (PrescriptionViewModelss.DXTableData != null && PrescriptionViewModelss.DXTableData.Count() > 0)
+                                        if (PrescriptionViewModelss.dxTableData != null && PrescriptionViewModelss.dxTableData.Count() > 0)
                                         {
 
                                             <div id="dxPress" style="margin-top: 30px; font-size: small;">
                                                 <span>
                                                     <ul class="list-inline">
-                                                        @foreach (var row in PrescriptionViewModelss.DXTableData)
+                                                        @foreach (var row in PrescriptionViewModelss.dxTableData)
                                                         {
                                                             foreach (var kvp in row)
                                                             {
@@ -368,7 +368,7 @@
                                     </span>
                                     <div id="rxListPresc" style="padding-left: 1.5em;">
                                         <ol>
-                                            @foreach (var row in PrescriptionViewModelss.Treatments)
+                                            @foreach (var row in PrescriptionViewModelss.treatments)
                                             {
                                                 var brandText = row.brand?.text?.ToString(); // Get the brand text (check for null)
                                                 var parts = brandText?.Split('-').TakeWhile((part, index) => index < brandText.Split('-').Length - 1);
@@ -391,7 +391,7 @@
                                     </div>
 
                                     @{
-                                        if (PrescriptionViewModelss.Reffer != null || PrescriptionViewModelss.Reffer != "")
+                                        if (PrescriptionViewModelss.reffer != null || PrescriptionViewModelss.reffer != "")
                                         {
                                             <div id="advicePresc" class="refferTempLine" style="padding-left: 1.5em; margin-top: 40px; font-size: x-small;">
                                                 <style>
@@ -399,7 +399,7 @@
                                                         line-height: 0.5;
                                                     }
                                                     </style>
-                                                @((MarkupString)PrescriptionViewModelss.Reffer)
+                                                @((MarkupString)PrescriptionViewModelss.reffer)
                                             </div>
                                             // <p><strong style="color: rgb(0, 0, 0);"><u>রেফার/পরবর্তী চিকিৎসার জন্যঃ</u></strong></p>
 
@@ -414,9 +414,9 @@
                                     }
 
                                     @{
-                                        bool hasValidDataAdv = PrescriptionViewModelss.Advice != null
-                                        && PrescriptionViewModelss.Advice.Count() > 0
-                                        && PrescriptionViewModelss.Advice.Any(row => row != "No data Available");
+                                        bool hasValidDataAdv = PrescriptionViewModelss.advice != null
+                                        && PrescriptionViewModelss.advice.Count() > 0
+                                        && PrescriptionViewModelss.advice.Any(row => row != "No data Available");
 
 
                                         if (hasValidDataAdv)
@@ -424,7 +424,7 @@
                                             <div id="advicePresc" style="padding-left: 1.5em; margin-top:40px">
                                                 <span style="font-size: small;" class="fw-bold"><u>উপদেশ</u></span>
                                                 <ul style="font-size: x-small;">
-                                                    @foreach (var item in PrescriptionViewModelss.Advice)
+                                                    @foreach (var item in PrescriptionViewModelss.advice)
                                                     {
                                                         <li>@item</li>
                                                     }
@@ -437,9 +437,9 @@
                                 </div>
 
                                 @{
-                                    bool hasValidDataIX = PrescriptionViewModelss.IXTableData != null
-                                    && PrescriptionViewModelss.IXTableData.Count() > 0
-                                    && PrescriptionViewModelss.IXTableData.Any(row => row.ContainsKey("column_2") && row["column_2"] != "No Data");
+                                    bool hasValidDataIX = PrescriptionViewModelss.ixTableData != null
+                                    && PrescriptionViewModelss.ixTableData.Count() > 0
+                                    && PrescriptionViewModelss.ixTableData.Any(row => row.ContainsKey("column_2") && row["column_2"] != "No Data");
 
                                     if (hasValidDataIX)
                                     {
@@ -449,7 +449,7 @@
                                                 <span style="font-size: x-small;">
                                                     <ul class="list-inline" style="padding-left: 1.5em;">
 
-                                                        @foreach (var row in PrescriptionViewModelss.IXTableData)
+                                                        @foreach (var row in PrescriptionViewModelss.ixTableData)
                                                         {
                                                             foreach (var kvp in row)
                                                             {

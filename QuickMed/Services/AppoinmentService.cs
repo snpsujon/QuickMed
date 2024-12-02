@@ -47,7 +47,7 @@ namespace QuickMed.Services
             {
                 TblPatient tblData = new()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = data.Id != Guid.Empty ? data.Id : Guid.NewGuid(),
                     Name = data.Name,
                     Age = data.Age,
                     Gender = data.Gender,

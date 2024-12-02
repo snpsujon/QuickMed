@@ -2,20 +2,20 @@
 
 public class PrescriptionViewModel
 {
-    public PatientData? PData { get; set; }
-    public NextMeetingData? NxtMeetData { get; set; }
-    public List<Dictionary<string, string>> CCTableData { get; set; } = new();
-    public HealthObservationsData? HOTableData { get; set; }
-    public List<Dictionary<string, string>> MHTableData { get; set; } = new();
-    public List<Dictionary<string, MeasurementData>> OETableData { get; set; } = new();
-    public List<Dictionary<string, string>> DHTableData { get; set; } = new();
-    public List<Dictionary<string, string>> DXTableData { get; set; } = new();
-    public List<Dictionary<string, string>> IXTableData { get; set; } = new();
-    public List<Dictionary<string, string>> NoteTableData { get; set; } = new();
-    public List<Dictionary<string, string>> ReportTableData { get; set; } = new();
-    public List<TreatmentPopVM> Treatments { get; set; } = new();
-    public List<string> Advice { get; set; } = new();
-    public string? Reffer { get; set; }
+    public PatientData? pdata { get; set; }
+    public NextMeetingData? nxtMeetData { get; set; }
+    public List<Dictionary<string, string>> ccTableData { get; set; } = new();
+    public HealthObservationsData? hoTableData { get; set; }
+    public List<Dictionary<string, string>> mhTableData { get; set; } = new();
+    public List<Dictionary<string, MeasurementData>> oeTableData { get; set; } = new();
+    public List<Dictionary<string, string>> dhTableData { get; set; } = new();
+    public List<Dictionary<string, string>> dxTableData { get; set; } = new();
+    public List<Dictionary<string, string>> ixTableData { get; set; } = new();
+    public List<Dictionary<string, string>> noteTableData { get; set; } = new();
+    public List<Dictionary<string, string>> reportTableData { get; set; } = new();
+    public List<TreatmentPopVM> treatments { get; set; } = new();
+    public List<string> advice { get; set; } = new();
+    public string? reffer { get; set; }
 }
 
 public class PatientData
@@ -28,7 +28,7 @@ public class PatientData
     public string? RegNo { get; set; }
     public string? Weight { get; set; }
     public string? date { get; set; }
-    public float? Height { get; set; }
+    public string? Height { get; set; }
     public string? BmiWeight { get; set; }
 }
 

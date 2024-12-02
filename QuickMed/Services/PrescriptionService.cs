@@ -387,6 +387,13 @@ namespace QuickMed.Services
                             WHERE PrescriptionCode = '{input}'";
                     pres.tblPatientReports = (await _context.ExecuteSqlQueryAsync<TblPatientReport>(sql)).ToList();
 
+                    sql = $@"SELECT r.* FROM TblPres_DH r
+                            JOIN TblPrescription p ON p.Id = r.Pres_ID 
+                            WHERE PrescriptionCode = '{input}'";
+                    pres.tblPres_DHs = (await _context.ExecuteSqlQueryAsync<TblPres_DH>(sql)).ToList();
+
+
+
 
                     sql = $@"select
                         p.AdviceId as Id,dm.Id as BrandId,
