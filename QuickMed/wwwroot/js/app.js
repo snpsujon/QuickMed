@@ -122,6 +122,46 @@ $.fn.MySetEditable = function (options, isSelect2) {
     }
 };
 
+window.saveAsFile = function (fileName, byteBase64) {
+    const link = document.createElement('a');
+    link.download = fileName;
+    link.href = 'data:application/octet-stream;base64,' + byteBase64;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
+
+function toggleLoadingIcon(id) {
+    const icon = document.getElementById(id);
+
+    // Immediately show loading icon with rotation effect
+    icon.className = 'dripicons-loading display-3 refreshing'; // Replace with loading icon class
+
+    // Set a 3-second timeout to revert back to the original icon
+    setTimeout(() => {
+        icon.className = 'dripicons-time-reverse display-3'; // Revert to original icon
+        icon.style.color = 'red';
+    }, 3000); // 3-second loading time
+}
+
+window.uploadFile = async (element) => {
+    const file = element.files[0];
+    if (file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64String = btoa(String.fromCharCode(...new Uint8Array(reader.result)));
+                resolve(base64String);  // Resolving with base64 encoded string
+            };
+            reader.onerror = reject;
+            reader.readAsArrayBuffer(file);
+        });
+    } else {
+        throw new Error("No file selected");
+    }
+};
+
 
 function ClearTable(tableid) {
     $('#' + tableid + ' tbody').empty();

@@ -1,24 +1,26 @@
 ﻿@page "/databaseTool";
 @inject IJSRuntime JS
+@using QuickMed.DB
+@inject ApplicationDbContext DbContext
 <div class="row mt-4">
     <div class="col-xl-6 d-flex">
-    <div class="card w-100">
-        <div class="card-header bg-info text-center">
-            <h4 class="card-title text-light mb-0 fs-4">Database Backup</h4>
-        </div><!--end card-header-->
-        <div class="card-body d-flex justify-content-center align-items-center">
-            <i class="dripicons-cloud-download display-3" style="color: red;"></i>
-        </div><!--end card-body-->
-    </div><!--end card-->
-</div><!--end col-->
+        <div class="card w-100">
+            <div class="card-header bg-info text-center">
+                <h4 class="card-title text-light mb-0 fs-4">Database Backup</h4>
+            </div><!--end card-header-->
+            <div class="card-body d-flex justify-content-center align-items-center">
+                <i id="downloadDB" class="dripicons-cloud-download display-3 cursor-pointer"  @onclick="DownloadDatabaseBackup" style="color: red;"></i>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div><!--end col-->
 
-     <div class="col-xl-6">
+    <div class="col-xl-6">
         <div class="card">
             <div class="card-header bg-info">
-                <h4 class="card-title text-light text-center fs-4">Upload Your .db3 File</h4>  
+                <h4 class="card-title text-light text-center fs-4">Upload Your .db3 File</h4>
             </div><!--end card-header-->
             <div class="card-body">
-                <input type="file" id="input-file-now" class="dropify" />
+                <input  type="file" id="input-file-now" onchange="triggerUpload()" class="dropify" />
             </div><!--end card-body-->
         </div><!--end card-->
     </div><!--end col-->
@@ -34,4 +36,138 @@
             await JS.InvokeVoidAsync("makeFileUpload");
         }
     }
+
+
+    private bool isLoading = false;
+    private bool showNotification = false;
+    private bool isDownloadCompleted = false; // New property for download status
+    private string notificationMessage = "Download started...";
+    private ElementReference fileInput;
+
+    private async Task DownloadDatabaseBackup()
+    {
+        try
+        {
+            showNotification = true;
+            isDownloadCompleted = false; // Reset to false at the start
+
+            await JS.InvokeVoidAsync("toggleLoadingIcon", "downloadDB");
+
+            // Simulate an update check with a delay
+            await Task.Delay(3000);
+
+            StateHasChanged();
+
+            // Close SQLite connection before backup
+            await DbContext.CloseConnectionAsync();
+
+            var databasePath = DbContext.GetDatabasePath(); // Assuming this method is implemented to dynamically get the DB path
+
+            if (!File.Exists(databasePath))
+            {
+                notificationMessage = "Database file not found.";
+                isDownloadCompleted = false;
+                return;
+            }
+
+            using var stream = File.OpenRead(databasePath);
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+
+            var fileContent = memoryStream.ToArray();
+            var fileName = "DatabaseBackup.db3";
+
+            await JS.InvokeVoidAsync("saveAsFile", fileName, Convert.ToBase64String(fileContent));
+
+            notificationMessage = "Download completed!";
+            isDownloadCompleted = true;
+            StateHasChanged();
+
+        }
+        catch (Exception ex)
+        {
+            notificationMessage = "Error: " + ex.Message;
+            isDownloadCompleted = false;
+            StateHasChanged();
+        }
+        finally
+        {
+            DbContext.ReinitializeConnection();
+            await Task.Delay(2000);
+            showNotification = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task RestoreDatabase()
+    {
+        isLoading = true; // Start loading
+        StateHasChanged(); // Trigger UI update
+
+        try
+        {
+            string base64EncodedData = await JS.InvokeAsync<string>("uploadFile", fileInput);
+            byte[] data = Convert.FromBase64String(base64EncodedData); // Decoding from Base64
+
+            await DbContext.CloseConnectionAsync();
+
+            var databasePath = DbContext.GetDatabasePath(); // Make sure this method is implemented correctly
+            File.WriteAllBytes(databasePath, data);
+
+            DbContext.ReinitializeConnection();
+
+            notificationMessage = "Database restore completed!";
+            isDownloadCompleted = true;
+            showNotification = true;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            notificationMessage = "Error restoring database: " + ex.Message;
+            isDownloadCompleted = false;
+            showNotification = true;
+            StateHasChanged();
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged(); // Update UI after completion
+        }
+    }
+
+
+
+    //[JSInvokable]
+    //public static async Task RestoreDatabase(string base64EncodedData)
+    //{
+    //    try
+    //    {
+    //        byte[] data = Convert.FromBase64String(base64EncodedData);
+
+    //        await DbContext.CloseConnectionAsync();
+
+    //        var databasePath = DbContext.GetDatabasePath(); // Make sure this method is implemented correctly
+    //        File.WriteAllBytes(databasePath, data);
+
+    //        await DbContext.ReinitializeConnection();
+
+    //        // Notify success
+    //        notificationMessage = "Database restore completed!";
+    //        showNotification = true;
+    //        isDownloadCompleted = true;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        notificationMessage = "Error restoring database: " + ex.Message;
+    //        showNotification = true;
+    //        isDownloadCompleted = false;
+    //    }
+    //    finally
+    //    {
+    //        isLoading = false;
+    //        StateHasChanged();
+    //    }
+    //}
+
+
 }

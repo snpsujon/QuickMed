@@ -28,10 +28,10 @@
 
         StateHasChanged(); // Trigger UI update
         UpdateDB();
-        await JS.InvokeVoidAsync("toggleLoadingIcon");
-        
-    // Simulate an update check with a delay
-    await Task.Delay(3000); // Replace this with your actual update checking logic
+        await JS.InvokeVoidAsync("toggleLoadingIcon", "downloadIcon");
+
+        // Simulate an update check with a delay
+        await Task.Delay(3000); // Replace this with your actual update checking logic
 
         StateHasChanged(); // Trigger UI update
     }
@@ -48,17 +48,3 @@
 
 }
 
-<script>
-    function toggleLoadingIcon() {
-        const icon = document.getElementById('downloadIcon');
-
-        // Immediately show loading icon with rotation effect
-        icon.className = 'dripicons-loading display-3 refreshing'; // Replace with loading icon class
-
-        // Set a 3-second timeout to revert back to the original icon
-        setTimeout(() => {
-            icon.className = 'dripicons-time-reverse display-3'; // Revert to original icon
-            icon.style.color = 'red';
-        }, 3000); // 3-second loading time
-    }
-</script>

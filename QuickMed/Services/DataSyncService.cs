@@ -11,7 +11,7 @@ namespace QuickMed.Services
         private readonly ApplicationDbContext _localDbContext;
         private readonly ILogger<DataSyncService> _logger;
         private readonly string _sqlServerConnectionString =
-            "Server=203.26.151.51;User Id=sa;Password=Asdf019lkjh;Database=QuickDB;Persist Security Info=true;TrustServerCertificate=true;Trusted_Connection=false;";
+            "Server=203.26.151.51;User Id=sa;Password=A$df019lkjh#;Database=QuickDB;Persist Security Info=true;TrustServerCertificate=true;Trusted_Connection=false;";
         private readonly System.Timers.Timer _timer;
 
         public DataSyncService(ApplicationDbContext localDbContext, ILogger<DataSyncService> logger)

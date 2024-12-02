@@ -518,7 +518,7 @@ namespace QuickMed.BaseComponent
         [JSInvokable("GetDXSelectData")]
         public async Task<dynamic> GetDXSelectData()
         {
-            var dx = await _pres.GetCCList();
+            var dx = await _pres.GetDXList();
             var dh = new
             {
                 dx = dx

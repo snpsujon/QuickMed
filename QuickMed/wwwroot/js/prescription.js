@@ -270,7 +270,7 @@ function getPresData(isPreview = false) {
 
 
 function GetPetaintData() {
-    var heightInc = (parseFloat($("#bmiHeightft").val()) * 12) + parseFloat($("#bmiHeightin").val());
+    var heightInc = (parseFloat($("#bmiHeightft").val() == '' ? 0 : $("#bmiHeightft").val()) * 12) + parseFloat($("#bmiHeightin").val() == '' ? 0 : $("#bmiHeightin").val());
     var data = {
         name: $("#Patient-Name").val(),
         age: $("#Patient-Age").val(),

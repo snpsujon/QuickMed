@@ -16,7 +16,8 @@ namespace QuickMed.BaseComponent
 
         public TblPrescription dose = new();
         public IEnumerable<TblDose>? doses { get; set; }
-
+        public List<DxTempVM> dxs = new List<DxTempVM>();
+        public List<BrandDashboardVM> brands = new List<BrandDashboardVM>();
         public TotalDashboardVM dashboards = new();
         public DotNetObjectReference<BaseDashboard> ObjectReference { get; private set; }
 
@@ -25,6 +26,10 @@ namespace QuickMed.BaseComponent
             ObjectReference = DotNetObjectReference.Create(this);
             await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             dashboards = await _dashboard.GetTotalDashboardData();
+            dxs = new();
+            dxs = await _dashboard.GetTotalDxDashboardData();
+            brands = new();
+            brands = await _dashboard.GetBrandDashboardData();
             //doses = await App.Database.GetTableRowsAsync<TblDose>("TblDose");
             //doses = await _dashboard.GetMostUsedDXAsync(); // Load the initial data
             await RefreshDataTable();
