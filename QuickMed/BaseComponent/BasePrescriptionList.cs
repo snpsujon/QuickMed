@@ -154,8 +154,11 @@ namespace QuickMed.BaseComponent
         pres != null
             ? $@"
                 <div style='display: flex; justify-content: flex-end;'>
-                    <i class='dripicons-pencil btn btn-soft-primary' onclick='editRow({pres.Id})'></i>
-                    <i class='dripicons-trash btn btn-soft-danger' onclick='deleteRow({pres.Id})'></i>
+                     
+                     <i class='dripicons-print btn btn-soft-warning dTRowActionBtn' data-id='{pres.Id}' data-method='OnPrintClick'></i>
+                     <i class='dripicons-download btn btn-soft-info dTRowActionBtn' data-id='{pres.Id}' data-method='OnDownloadClick'></i>
+                     <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{pres.Id}' data-method='OnEditClick'></i>
+                     <i class='dripicons-trash btn btn-soft-danger dTRowActionBtn' data-id='{pres.Id}' data-method='OnDeleteClick'></i>
                 </div>
               "
             : string.Empty // Handle null prescription object for actions
@@ -174,24 +177,33 @@ namespace QuickMed.BaseComponent
         }
 
 
-        protected async Task OnDeleteClick(Guid id)
+
+        [JSInvokable("OnDeleteClick")]
+        public async Task OnDeleteClick(string Id)
         {
             bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
 
             if (isConfirmed)
             {
-                var isDeleted = await _pres.DeleteAsync(id);
+                var isDeleted = await _pres.DeleteAsync(Id);
                 if (isDeleted)
                 {
+                    // Show success alert with red color
                     await JS.InvokeVoidAsync("showAlert", "Delete Successful", "Record has been successfully deleted.", "success", "swal-danger");
+
+                    // Refresh the list after deletion
                     await OnInitializedAsync();
+                    StateHasChanged();  // Update the UI after deletion
                 }
                 else
                 {
+                    // Handle failure case and show an error alert if necessary
                     Console.WriteLine("Failed to delete record from the database.");
                 }
             }
         }
+
+
 
     }
 }

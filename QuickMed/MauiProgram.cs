@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Logging;
 using QuickMed.DB;
 using QuickMed.RegisterServices;
 using QuickMed.Services;
@@ -44,6 +45,11 @@ namespace QuickMed
             //builder.Services.AddHostedService<DataSyncService>();
             builder.Services.AddSingleton<DataSyncService>();
             builder.Services.AddSingleton(new HttpClient());
+            builder.Services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 10 * 1024 * 1024; // 10 MB
+            });
+
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();

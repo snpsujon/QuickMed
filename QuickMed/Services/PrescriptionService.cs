@@ -10,7 +10,7 @@ namespace QuickMed.Services
         {
         }
 
-        public async Task<dynamic> DeleteAsync(Guid id)
+        public async Task<dynamic> DeleteAsync(string id)
         {
             try
             {
@@ -40,14 +40,15 @@ namespace QuickMed.Services
             
                             SELECT 
                                 p.Id,
+                                p.Id as PrescriptioId,
                                 p.PrescriptionCode,
                                 p.PrescriptionDate,
                                 pp.Id AS PatientId,
                                 pp.Name AS PatientName,
-                                pp.Mobile,
+                                pp.Mobile AS MobileNumber,
                                 pp.Address,
-                                GROUP_CONCAT(nt.Name, ', ') AS NoteNames,
-                                GROUP_CONCAT(dx.Name, ', ') AS DxNames
+                                GROUP_CONCAT(nt.Name, ', ') AS Plan,
+                                GROUP_CONCAT(dx.Name, ', ') AS Dx
                             FROM TblPrescription p
                             LEFT JOIN TblPatient pp ON p.PatientId = pp.Id
                             LEFT JOIN TblPres_Note ntp ON ntp.Pres_ID = p.Id

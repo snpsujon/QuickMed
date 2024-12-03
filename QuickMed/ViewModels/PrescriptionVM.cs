@@ -2,7 +2,7 @@
 {
     public class PrescriptionVM
     {
-        public int Id { get; set; } // Adjust to Guid if required
+        public Guid Id { get; set; } // Adjust to Guid if required
         public string PrescriptionCode { get; set; }
         public DateTime? PrescriptionDate { get; set; }
         public int PatientId { get; set; } // Adjust to Guid if required

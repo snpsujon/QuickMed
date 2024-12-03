@@ -18,17 +18,22 @@
         <div class="card">
             <div class="card-header bg-info">
                 <h4 class="card-title text-light text-center fs-4">Upload Your .db3 File</h4>
-            </div><!--end card-header-->
+            </div>
             <div class="card-body">
-                <input  type="file" id="input-file-now" onchange="triggerUpload()" class="dropify" />
-            </div><!--end card-body-->
-        </div><!--end card-->
-    </div><!--end col-->
+                <InputFile OnChange="OnFileSelected" accept=".db3" class="dropify" id="db3-file-input" />
+            </div>
+        </div>
+    </div>
+
+
+
 </div><!--end row-->
 
 
 
-@code {
+@code { 
+
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -43,6 +48,66 @@
     private bool isDownloadCompleted = false; // New property for download status
     private string notificationMessage = "Download started...";
     private ElementReference fileInput;
+
+
+    private async Task OnFileSelected(InputFileChangeEventArgs e)
+    {
+        isLoading = true;
+        StateHasChanged();
+
+        try
+        {
+            // File handling
+            var file = e.File;
+
+            // Check file size (example: limit to 10 MB)
+            const long maxFileSize = 10 * 1024 * 1024; // 10 MB
+            if (file.Size > maxFileSize)
+            {
+                throw new InvalidOperationException("File is too large. Maximum size allowed is 10 MB.");
+            }
+
+            using var stream = file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024); // 10 MB
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            byte[] data = memoryStream.ToArray();
+
+            // Close existing DB connection
+            await DbContext.CloseConnectionAsync();
+
+            // Write new data to the DB file
+            var databasePath = DbContext.GetDatabasePath();
+            File.WriteAllBytes(databasePath, data);
+
+            // Reinitialize DB connection
+            DbContext.ReinitializeConnection();
+
+            // Notify success
+            notificationMessage = "Database restore completed!";
+
+            isDownloadCompleted = true;
+            showNotification = true;
+
+            // Optional: Show an alert in the browser
+            //await JS.InvokeVoidAsync("alert", "File upload completed successfully!");
+            await JS.InvokeVoidAsync("showAlert", "Successful!", "File upload completed successfully!", "success", "swal-success");
+            await JS.InvokeVoidAsync("clearFileInput", "db3-file-input");
+        }
+        catch (Exception ex)
+        {
+            // Handle error
+            notificationMessage = $"Error restoring database: {ex.Message}";
+            isDownloadCompleted = false;
+            showNotification = true;
+        }
+        finally
+        {
+            // End loading state
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
 
     private async Task DownloadDatabaseBackup()
     {
@@ -99,41 +164,55 @@
         }
     }
 
-    private async Task RestoreDatabase()
-    {
-        isLoading = true; // Start loading
-        StateHasChanged(); // Trigger UI update
+    // private async Task RestoreDatabase()
+    // {
+    //     isLoading = true; // Start loading
+    //     StateHasChanged(); // Trigger UI update
 
-        try
-        {
-            string base64EncodedData = await JS.InvokeAsync<string>("uploadFile", fileInput);
-            byte[] data = Convert.FromBase64String(base64EncodedData); // Decoding from Base64
+    //     try
+    //     {
+    //         var file = e.File;
 
-            await DbContext.CloseConnectionAsync();
+    //         using var stream = file.OpenReadStream(); // Stream the file directly
+    //         using var memoryStream = new MemoryStream();
+    //         await stream.CopyToAsync(memoryStream);
+    //         byte[] data = memoryStream.ToArray();
 
-            var databasePath = DbContext.GetDatabasePath(); // Make sure this method is implemented correctly
-            File.WriteAllBytes(databasePath, data);
+    //         await DbContext.CloseConnectionAsync();
 
-            DbContext.ReinitializeConnection();
+    //         var databasePath = DbContext.GetDatabasePath();
+    //         File.WriteAllBytes(databasePath, data);
 
-            notificationMessage = "Database restore completed!";
-            isDownloadCompleted = true;
-            showNotification = true;
-            StateHasChanged();
-        }
-        catch (Exception ex)
-        {
-            notificationMessage = "Error restoring database: " + ex.Message;
-            isDownloadCompleted = false;
-            showNotification = true;
-            StateHasChanged();
-        }
-        finally
-        {
-            isLoading = false;
-            StateHasChanged(); // Update UI after completion
-        }
-    }
+    //         DbContext.ReinitializeConnection();
+
+    //         // string base64EncodedData = await JS.InvokeAsync<string>("uploadFile", fileInput);
+    //         // byte[] data = Convert.FromBase64String(base64EncodedData); 
+
+    //         // await DbContext.CloseConnectionAsync();
+
+    //         // var databasePath = DbContext.GetDatabasePath();
+    //         // File.WriteAllBytes(databasePath, data);
+
+    //         // DbContext.ReinitializeConnection();
+
+    //         notificationMessage = "Database restore completed!";
+    //         isDownloadCompleted = true;
+    //         showNotification = true;
+    //         StateHasChanged();
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         notificationMessage = "Error restoring database: " + ex.Message;
+    //         isDownloadCompleted = false;
+    //         showNotification = true;
+    //         StateHasChanged();
+    //     }
+    //     finally
+    //     {
+    //         isLoading = false;
+    //         StateHasChanged(); // Update UI after completion
+    //     }
+    // }
 
 
 

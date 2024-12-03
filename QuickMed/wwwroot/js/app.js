@@ -162,6 +162,13 @@ window.uploadFile = async (element) => {
     }
 };
 
+function clearFileInput(inputId) {
+    const inputElement = document.getElementById(inputId);
+    if (inputElement) {
+        inputElement.value = ""; // Clear the file input
+    }
+}
+
 
 function ClearTable(tableid) {
     $('#' + tableid + ' tbody').empty();
