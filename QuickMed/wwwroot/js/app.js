@@ -89,7 +89,7 @@ function unlock() {
                 loader.style.display = 'none';
                 buttonText.style.display = 'inline';
                 button.disabled = false;
-                errorMessage.textContent = error;
+                errorMessage.textContent = "Something Went Wrong";
                 errorMessage.style.display = 'block';
             });
     }, 3000); 
