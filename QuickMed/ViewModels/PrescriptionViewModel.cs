@@ -16,6 +16,8 @@ public class PrescriptionViewModel
     public List<TreatmentPopVM> treatments { get; set; } = new();
     public List<string> advice { get; set; } = new();
     public string? reffer { get; set; }
+    public bool? IsHeader { get; set; } = true;
+    public bool? IsPrint { get; set; } = false;
 }
 
 public class PatientData

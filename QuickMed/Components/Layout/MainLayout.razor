@@ -33,11 +33,11 @@
         else
 
         {
-            Navigation.NavigateTo("/dashboard");
+            // Navigation.NavigateTo("/dashboard");
 
-            // ObjectReference = DotNetObjectReference.Create(this);
-            // await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
-            // await JS.InvokeVoidAsync("LoadPage");
+            ObjectReference = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
+            await JS.InvokeVoidAsync("LoadPage");
         }
         // Track the current page
         // currentPage = Navigation.Uri;
@@ -81,7 +81,7 @@
             handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true; // This ignores all certificate validation errors
             var client = new HttpClient(handler);
             var modl = new { LicenseKey = license };
-            var response = await client.PostAsJsonAsync("https://localhost:7202/api/Licence/CheckValidity", modl);
+            var response = await client.PostAsJsonAsync("https://quickmed.snpsujon.me/api/Licence/CheckValidity", modl);
             if (response.IsSuccessStatusCode && response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var licenseResponse = await response.Content.ReadFromJsonAsync<LicenseApiResponse>();
