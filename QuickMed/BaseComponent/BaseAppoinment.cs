@@ -48,14 +48,15 @@ namespace QuickMed.BaseComponent
             var tableData = models?.Select((appoin, index) => new[]
                 {
                     (index + 1).ToString(), // Serial number starts from 1
-                    appoin.Code?.ToString() ?? string.Empty, // Note name
-                    appoin.Weight?.ToString() ?? string.Empty, // Note name
                     appoin.Name?.ToString() ?? string.Empty, // Note name
                     appoin.Age?.ToString() ?? string.Empty, // Note name
+                    appoin.Gender?.ToString() ?? string.Empty, // Note name
                     appoin.Address?.ToString() ?? string.Empty, // Note name
                     appoin.Mobile?.ToString() ?? string.Empty, // Note name
+                    appoin.Code?.ToString() ?? string.Empty, // Note name
+                    appoin.Weight?.ToString() ?? string.Empty, // Note name
                     appoin.AdmissionDate.ToString("yyyy-MM-dd"),
-                    appoin.Gender?.ToString() ?? string.Empty, // Note name
+                  
                     $@"
                     <div style='display: flex; justify-content: flex-end;'>
                         <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{appoin.Id}' data-method='OnEditClick'></i>

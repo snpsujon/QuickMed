@@ -232,7 +232,7 @@ namespace QuickMed.BaseComponent
 		{
 			await JS.InvokeVoidAsync("ClearTable", "MixTempTbl");
 			await JS.InvokeVoidAsync("toggleButtonVisibility", false);
-			await JS.InvokeVoidAsync("ClearAllFields");
+			//await JS.InvokeVoidAsync("ClearAllFields");
 		}
 		public async Task UpdateTemplate()
 		{
@@ -312,7 +312,7 @@ namespace QuickMed.BaseComponent
 
 
 						await JS.InvokeVoidAsync("ClearTable", "MixTempTbl");
-						await JS.InvokeVoidAsync("ClearAllFields");
+						//await JS.InvokeVoidAsync("ClearAllFields");
 						await JS.InvokeVoidAsync("ClearmainTableArray");
 						await JS.InvokeVoidAsync("toggleButtonVisibility", false);
 						await JS.InvokeVoidAsync("showAlert", "Update Successful", "Record has been successfully Updated.", "success", "swal-info");

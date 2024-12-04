@@ -90,7 +90,7 @@ namespace QuickMed.BaseComponent
 		{
 			try
 			{
-				await JS.InvokeVoidAsync("ClearAllFields");
+				//await JS.InvokeVoidAsync("ClearAllFields");
 				prescriptions = await GetFilterData();
 				await RefreshDataTable();
 
