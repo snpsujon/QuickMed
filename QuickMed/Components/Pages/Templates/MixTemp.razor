@@ -60,30 +60,6 @@
                 </div>
                 <!--end card-header-->
                 <div class="card-body">
-                    <!-- <button class="btn  btn-primary btn-sm mb-3" id="submit_data">Submit</button> -->
-                    <!--<div class="table-responsive">
-                        <table class="table  table-bordered table-sm" id="makeEditable">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Brand</th>
-                                    <th>Dose</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Tab. Napa Extend</td>
-                                    <td>1 + 0 + 1</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <span class="float-right">
-                        <button id="but_add" class="btn btn-primary btn-sm">Add New Row</button>
-                    </span>-->
-                    <!--end table-->
                     <div class="table-responsive">
                         <table class="table  table-bordered table-sm" id="MixTempTbl">
                             <thead>
@@ -138,7 +114,7 @@
                                                 <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Duration</label>
                                                 <div class="col-sm-2">
                                                     <select class="select2  form-control custom-select" aria-label="Default select example" id="durationInsSelect">
-                                                        <option selected disabled>Select Dose</option>
+                                                        <option selected disabled>Select</option>
                                                         @if (Duration != null && Duration.Any())
                                                         {
                                                             @foreach (var item in Duration)
@@ -159,7 +135,7 @@
                                                 <label for="example-text-input" class="col-sm-1 form-label align-self-center mb-lg-0 text-end">Instruction</label>
                                                 <div class="col-sm-2">
                                                     <select class="select2  form-control custom-select" aria-label="Default select example" id="instructionInsSelect">
-                                                        <option selected disabled>Select Dose</option>
+                                                        <option selected disabled>Select</option>
                                                         @if (Instructions != null && Instructions.Any())
                                                         {
                                                             @foreach (var item in Instructions)

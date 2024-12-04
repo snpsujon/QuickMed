@@ -62,6 +62,25 @@ namespace QuickMed.Services
                 throw;
             }
         }
+        public async Task<dynamic> DeleteAsync(Guid id)
+        {
+            try
+            {
+                var master = $"DELETE FROM TblMixTemplate WHERE Id = '{id}'";
+                var details = $"DELETE FROM TblMixTempDetails WHERE TblMixTemplateMasterId = '{id}'";
+
+                await _context.ExecuteSqlQueryFirstorDefultAsync<TblMixTemplate>(master);
+                await _context.ExecuteSqlQueryFirstorDefultAsync<TblMixTempDetails>(details);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
         public async Task<dynamic> GetDetailsDataById(string Id)
         {
             try

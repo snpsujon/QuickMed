@@ -76,6 +76,8 @@ namespace QuickMed.BaseComponent
             if (adviceTemplate.Id == Guid.Empty)
             {
                 adviceTemplate.Id = Guid.NewGuid();
+                adviceTemplate.CreatedAt = DateTime.Now;
+
                 if (adviceTemplate.AdviceTemplateName == null)
                 {
                     adviceTemplate.AdviceTemplateName = await JS.InvokeAsync<string>("GenerateAdviceTemplateName");
@@ -110,6 +112,7 @@ namespace QuickMed.BaseComponent
             templateListData = await _advice.GetAdviceTemplateData();
             await JS.InvokeVoidAsync("showAlert", $"{saveOrUpdateContent} Successful", $"Record has been successfully {saveOrUpdateContent}.", "success", "swal-success");
             StateHasChanged();
+            await OnInitializedAsync();
         }
         [JSInvokable("onDataDelete")]
         public async Task onDataDelete(Guid id)

@@ -1,10 +1,5 @@
 ﻿using QuickMed.DB;
 using QuickMed.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace QuickMed.Services
@@ -18,7 +13,7 @@ namespace QuickMed.Services
         public async Task<dynamic> GetAdviceMasterData()
         {
             try
-            {            
+            {
                 return await _context.GetTableRowsAsync<TblAdviceMaster>("TblAdviceMaster");
             }
             catch (Exception ex)
@@ -28,25 +23,44 @@ namespace QuickMed.Services
             }
         }
 
-       
+
 
         public async Task<dynamic> GetAdviceTemplateData()
         {
             try
             {
-                return await _context.GetTableRowsAsync<TblAdviceTemplate>("TblAdviceTemplate");
+                //return await _context.GetTableRowsAsync<TblAdviceTemplate>("TblAdviceTemplate");
+                var q = @$"
+                    SELECT * 
+                    FROM TblAdviceTemplate at
+                    WHERE NOT EXISTS (
+                        SELECT 1 
+                        FROM TblTreatmentTemplate tt 
+                        WHERE tt.AdviceId = at.Id
+                    )
+                    AND NOT EXISTS (
+                        SELECT 1 
+                        FROM TblPrescription pr 
+                        WHERE pr.AdviceId = at.Id
+                    )
+                    ORDER BY at.CreatedAt desc
+                    ;";
+
+                var Result = await _context.ExecuteSqlQueryAsync<TblAdviceTemplate>(q);
+
+                return Result;
             }
             catch (Exception ex)
             {
 
                 throw;
-            }   
+            }
         }
         public async Task<dynamic> DeleteAdviceTemplete(string sql)
         {
             try
             {
-                 await _context.ExecuteSqlQueryAsync<TblAdviceTemplate>(sql);
+                await _context.ExecuteSqlQueryAsync<TblAdviceTemplate>(sql);
                 return true;
             }
             catch (Exception ex)
@@ -59,7 +73,7 @@ namespace QuickMed.Services
         {
             try
             {
-                 await _context.ExecuteSqlQueryAsync<TblAdviceTemplateDetails>(sql);
+                await _context.ExecuteSqlQueryAsync<TblAdviceTemplateDetails>(sql);
                 return true;
             }
             catch (Exception ex)
@@ -115,7 +129,7 @@ namespace QuickMed.Services
         {
             try
             {
-               var saveDetails= await _context.CreateMultipleAsync<TblAdviceTemplateDetails>(data);
+                var saveDetails = await _context.CreateMultipleAsync<TblAdviceTemplateDetails>(data);
                 return true;
             }
             catch (Exception ex)
@@ -137,6 +151,36 @@ namespace QuickMed.Services
 
                 throw;
             }
+        }
+
+        public async Task<dynamic> GetOnlyAdviceData()
+        {
+            try
+            {
+                var q = @$"
+                    SELECT * 
+                    FROM TblAdviceTemplate at
+                    WHERE NOT EXISTS (
+                        SELECT 1 
+                        FROM TblTreatmentTemplate tt 
+                        WHERE tt.AdviceId = at.Id
+                    )
+                    AND NOT EXISTS (
+                        SELECT 1 
+                        FROM TblPrescription pr 
+                        WHERE pr.AdviceId = at.Id
+                    );";
+
+                var Result = await _context.ExecuteSqlQueryAsync<TblAdviceTemplate>(q);
+
+                return Result;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
     }
 }

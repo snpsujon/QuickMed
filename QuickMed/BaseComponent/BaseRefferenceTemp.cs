@@ -85,6 +85,7 @@ namespace QuickMed.BaseComponent
                 else
                 {
                     tblReffer.Id = Guid.NewGuid();
+                    tblReffer.CreatedAt = DateTime.Now;
                     await App.Database.CreateAsync(tblReffer);
                 }
                 tblReffer = new();

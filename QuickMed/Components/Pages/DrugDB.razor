@@ -66,7 +66,7 @@
 
             <div class="card-body">
                 <span class="float-right">
-                    <button class="btn btn-success btn-sm float-end">Search</button>
+                    <button class="btn btn-success btn-sm float-end" @onclick="OnShowDataClick">Search</button>
                 </span>
             </div>
         </div>
@@ -84,28 +84,31 @@
             </div>
 
             <div class="card-body">
-                <table class="table table-striped table-bordered dt-responsive nowrap"
-                       style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                <table class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <tr>
                         <th class="border-top-0">Name:</th>
-                        <th class="border-top-0"></th>
+                        <th class="border-top-0">@drugDbVM.Name</th>
                     </tr>
                     <tr>
                         <th class="border-top-0">Generic:</th>
-                        <th class="border-top-0"></th>
+                        <th class="border-top-0">@drugDbVM.GenericName</th>
                     </tr>
                     <tr>
                         <th class="border-top-0">Company:</th>
-                        <th class="border-top-0"></th>
+                        <th class="border-top-0">@drugDbVM.CompanyName</th>
                     </tr>
                     <tr>
                         <th class="border-top-0">PackageContainer Price:</th>
-                        <th class="border-top-0"></th>
+                        <th class="border-top-0">@drugDbVM.PackageContainer</th>
                     </tr>
                     <tr>
                         <th class="border-top-0">PackageSize Price:</th>
-                        <th class="border-top-0"></th>
+                        <th class="border-top-0">@drugDbVM.PackageSize</th>
                     </tr>
+
+
+                    <tbody>
+                    </tbody>
                 </table>
             </div>
         </div>

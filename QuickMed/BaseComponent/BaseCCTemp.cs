@@ -22,8 +22,6 @@ namespace QuickMed.BaseComponent
         {
             ObjectReference = DotNetObjectReference.Create(this);
             await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
-            tblCCTemplates = await _cCTemp.GetCCTempData(); // Load the initial data
-            tblCCTemplates = await App.Database.GetTableRowsAsync<TblCCTemplate>("TblCCTemplate");
             tblCCTemplates = await _cCTemp.GetCCTempData();
             await RefreshDataTable();
 
@@ -55,7 +53,7 @@ namespace QuickMed.BaseComponent
                     " // Action buttons
                 }).ToArray();
 
-            await JS.InvokeVoidAsync("makeDataTableQ", "datatable-ccTemp", tableData);
+            await JS.InvokeVoidAsync("makeDataTableQ", "datatable-ccTemp1", tableData);
 
         }
 
@@ -96,6 +94,8 @@ namespace QuickMed.BaseComponent
         [JSInvokable("OnDeleteClick")]
         public async Task OnDeleteClick(Guid id)
         {
+
+
             bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
 
             if (isConfirmed)
@@ -107,8 +107,7 @@ namespace QuickMed.BaseComponent
                     await JS.InvokeVoidAsync("showAlert", "Delete Successful", "Record has been successfully deleted.", "success", "swal-danger");
 
                     // Refresh the list after deletion
-                    tblCCTemplates = await _cCTemp.GetCCTempData();
-                    await RefreshDataTable();   // Re-initialize DataTable after deletion
+                    await OnInitializedAsync();
                     StateHasChanged();  // Update the UI after deletion
                 }
                 else

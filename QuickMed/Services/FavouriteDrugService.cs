@@ -19,7 +19,9 @@ namespace QuickMed.Services
                         LEFT JOIN DrugMedicine dm on fd.BrandId = dm.Id
                         LEFT JOIN TblDose dd ON fd.DoseId = dd.Id
                         LEFT JOIN TblDuration d ON fd.DurationId = d.Id
-                        LEFT JOIN TblInstruction i ON fd.InstructionId = i.Id";
+                        LEFT JOIN TblInstruction i ON fd.InstructionId = i.Id
+                        order by fd.CreatedAt desc
+                        ";
 
                 var result = await _context.ExecuteSqlQueryAsync<FavouriteDrugTempVM>(query);
                 return result;
@@ -39,6 +41,20 @@ namespace QuickMed.Services
                 var sql = $@"Select * From TblFavouriteDrugTemplate Where Id = '{Id}'";
                 var data = await _context.ExecuteSqlQueryAsync<TblFavouriteDrugTemplate>(sql);
                 return data.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public async Task<dynamic> DeleteAsync(Guid id)
+        {
+            try
+            {
+                var sql = $"DELETE FROM TblFavouriteDrugTemplate WHERE Id ='{id}'";
+                await _context.ExecuteSqlQueryAsync<TblRefferTemplate>(sql);
+                return true;
             }
             catch (Exception ex)
             {

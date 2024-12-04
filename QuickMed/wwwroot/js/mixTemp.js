@@ -22,6 +22,9 @@ function SetMasterData(data) {
 }
 
 
+
+
+
 function AddNewPlusBtn() {
     // Get the selected elements
     const brandSelect = document.getElementById("brandTempSelect");

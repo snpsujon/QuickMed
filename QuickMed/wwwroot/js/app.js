@@ -547,3 +547,36 @@ function ClearAllFields() {
     $('#app').find('input, select, textarea').val('').trigger('change');
 
 }
+
+
+function ClearFormData() {
+    debugger;
+    // Clear text inputs
+    document.querySelectorAll("input[type='text'], input[type='number']").forEach(input => {
+        input.value = "";
+    });
+
+
+
+    // Clear textareas
+    document.querySelectorAll("textarea").forEach(textarea => {
+        textarea.value = "";
+    });
+
+    document.querySelectorAll("select").forEach(select => {
+        select.selectedIndex = 0; // Set to the first option (default)
+        // If using select2, trigger reset
+        if ($(select).hasClass("select2")) {
+            $(select).val("Select").trigger("change");
+        }
+        if ($(select).hasClass("select2W")) {
+            $(select).val("Select").trigger("change");
+        }
+        //if ($(select).hasClass("select2C")) {
+        //    $(select).val("Select").trigger("change");
+        //}
+
+
+    });
+
+}

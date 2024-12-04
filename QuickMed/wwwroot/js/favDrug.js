@@ -8,6 +8,10 @@ function GetDrugTempData() {
     const durationSelectfav = $("#durationSelectfav").val();
     const tempId = $("#favTempId").val();
 
+
+   
+
+
     var data = {
         templateName: tempname == '' ? 'FavTemp_' + getRandomInteger(1, 9999) : tempname,
         brandSelect: brandSelect,

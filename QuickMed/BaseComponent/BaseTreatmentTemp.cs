@@ -36,6 +36,7 @@ namespace QuickMed.BaseComponent
         public List<TblDuration> Duration = new List<TblDuration>();
         public List<TblInstruction> Instructions = new List<TblInstruction>();
         public List<TblAdviceTemplate> adviceMasters = new List<TblAdviceTemplate>();
+        public List<TblAdviceTemplate> onlyAdvices = new List<TblAdviceTemplate>();
 
 
         private BaseFavouriteDrugTemp _favdrag { get; set; } = new BaseFavouriteDrugTemp();
@@ -66,6 +67,8 @@ namespace QuickMed.BaseComponent
             adviceMasters = await App.Database.GetTableRowsAsync<TblAdviceTemplate>("TblAdviceTemplate");
             templates = new();
             templates = await App.Database.GetTableRowsAsync<TblTreatmentTemplate>("TblTreatmentTemplate");
+            onlyAdvices = new();
+            onlyAdvices = await _adviceTemp.GetOnlyAdviceData();
 
 
         }

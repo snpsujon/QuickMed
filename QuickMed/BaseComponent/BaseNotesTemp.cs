@@ -140,6 +140,7 @@ namespace QuickMed.BaseComponent
                                 });
                             }
                             var saveDetails = await _notes.SaveTemplateDetails(templateDetails);
+                            await JS.InvokeVoidAsync("ClearFormData");
                             await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
                         }
                     }

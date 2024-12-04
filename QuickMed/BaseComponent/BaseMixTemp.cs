@@ -139,7 +139,30 @@ namespace QuickMed.BaseComponent
                 throw;
             }
         }
+        [JSInvokable("OnDeleteClick")]
+        public async Task OnDeleteClick(Guid id)
+        {
+            bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
 
+            if (isConfirmed)
+            {
+                var isDeleted = await _mix.DeleteAsync(id);
+                if (isDeleted)
+                {
+                    // Show success alert with red color
+                    await JS.InvokeVoidAsync("showAlert", "Delete Successful", "Record has been successfully deleted.", "success", "swal-danger");
+
+                    // Refresh the list after deletion
+                    await OnInitializedAsync();
+                    StateHasChanged();  // Update the UI after deletion
+                }
+                else
+                {
+                    // Handle failure case and show an error alert if necessary
+                    Console.WriteLine("Failed to delete record from the database.");
+                }
+            }
+        }
         protected async Task InitializeJS()
         {
 
@@ -368,6 +391,7 @@ namespace QuickMed.BaseComponent
                                     });
                                 }
                                 var saveDetails = await _mix.SaveMixTempDetails(mixtemplateDetails);
+                                await JS.InvokeVoidAsync("ClearFormData");
                                 await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
                             }
                         }
@@ -383,6 +407,7 @@ namespace QuickMed.BaseComponent
                     await JS.InvokeVoidAsync("ClearTable", "MixTempTbl");
 
 
+
                 }
 
             }
@@ -391,5 +416,6 @@ namespace QuickMed.BaseComponent
                 throw;
             }
         }
+
     }
 }

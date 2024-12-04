@@ -11,5 +11,6 @@ namespace QuickMed.DB
         public Guid? DoseId { get; set; }
         public Guid? InstructionId { get; set; }
         public Guid? DurationId { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }

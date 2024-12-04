@@ -13,7 +13,7 @@ namespace QuickMed.Services
         {
             try
             {
-                var sql = $"DELETE FROM TblRefferTemplate WHERE Id ={id}";
+                var sql = $"DELETE FROM TblRefferTemplate WHERE Id ='{id}'";
                 await _context.ExecuteSqlQueryAsync<TblRefferTemplate>(sql);
                 return true;
             }
@@ -28,7 +28,8 @@ namespace QuickMed.Services
         {
             try
             {
-                return await _context.GetTableRowsAsync<TblRefferTemplate>("TblRefferTemplate");
+                var data = await _context.GetTableRowsAsync<TblRefferTemplate>("TblRefferTemplate");
+                return data.OrderByDescending(x => x.CreatedAt);
             }
             catch (Exception ex)
             {

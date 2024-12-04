@@ -104,7 +104,7 @@
                                             id="adviceSelect"
                                             aria-label="Default select example">
                                         <option selected disabled>Select Advice Template</option>
-                                        @foreach (var item in adviceMasters)
+                                        @foreach (var item in onlyAdvices)
                                         {
                                             <option value="@item.Id">@item.AdviceTemplateName</option>
                                         }

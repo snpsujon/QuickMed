@@ -10,6 +10,7 @@ namespace QuickMed.Interface
         Task<dynamic> SaveMixTempDetails(List<TblMixTempDetails> data);
         Task<dynamic> GetMasterDataById(string Id);
         Task<dynamic> GetDetailsDataById(string Id);
+        Task<dynamic> DeleteAsync(Guid id);
 
     }
 }

@@ -85,14 +85,14 @@
                         </tr>
                     </thead>
 
-                    <tbody>
+                    @*<tbody>
 
                         @if (models != null && models.Any())
                         {
                         @foreach (var item in models.Select((value, index) => new { value, index }))
                         {
                         <tr>
-                            <td>@(item.index + 1)</td> <!-- Display serial number (index + 1) -->
+                            <td>@(item.index + 1)</td> 
                             <td>@item.value.Name</td>
                             <td>@item.value.AdmissionDate.ToShortDateString()</td>
                             <td>@item.value.Code</td>
@@ -114,7 +114,7 @@
                         }
 
 
-                    </tbody>
+                    </tbody>*@
                 </table>
 
             </div>

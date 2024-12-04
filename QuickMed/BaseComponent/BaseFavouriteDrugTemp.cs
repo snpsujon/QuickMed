@@ -216,21 +216,11 @@ namespace QuickMed.BaseComponent
 
         protected async Task OnSaveBtnClick()
         {
-            //var result = await JS.InvokeAsync<JsonElement>("GetFavDrugTempData");
-
-            //if (drugTemp.Id == Guid.Empty) // Check if the GUID is uninitialized
-            //{
-            //    drugTemp.Id = Guid.NewGuid(); // This line will be redundant as the default is already set
-            //    await _drug.SaveFavouriteDrugTemp(drugTemp); // Create the new template
-            //    await JS.InvokeVoidAsync("showAlert", "Save Successful", "Record has been successfully Saved.", "success", "swal-success");
-            //}
-            //drugTemp = new TblFavouriteDrugTemplate(); // Creates a new instance with a new GUID
-            //await OnInitializedAsync();
-            //StateHasChanged();  // Update the UI
 
             try
             {
                 var result = await JS.InvokeAsync<JsonElement>("GetDrugTempData");
+
                 await SaveData(result);
                 await OnInitializedAsync();
                 await RefreshDataTable();
@@ -247,37 +237,71 @@ namespace QuickMed.BaseComponent
         {
             try
             {
+                var isValid = true;
                 var TemplateId = Guid.NewGuid();
                 string templateName = "";
                 if (result.ValueKind != JsonValueKind.Undefined && result.ValueKind != JsonValueKind.Null)
                 {
                     if (result.TryGetProperty("templateName", out JsonElement templateNameElement))
                     {
+                        // Extract properties and parse values
                         templateName = templateNameElement.GetString();
-                        var brandId = Guid.Parse(result.GetProperty("brandSelect").GetString());
-                        var doseId = Guid.Parse(result.GetProperty("doseSelect").GetString());
-                        var instructionId = Guid.Parse(result.GetProperty("instructionSelect").GetString());
-                        var durationId = Guid.Parse(result.GetProperty("durationSelectfav").GetString());
-                        drugTemp = new();
-                        drugTemp = new TblFavouriteDrugTemplate
+                        var brandSelect = result.TryGetProperty("brandSelect", out JsonElement brandSelectElement)
+                                          ? brandSelectElement.GetString()
+                                          : null;
+                        var doseSelect = result.TryGetProperty("doseSelect", out JsonElement doseSelectElement)
+                                         ? doseSelectElement.GetString()
+                                         : null;
+                        var instructionSelect = result.TryGetProperty("instructionSelect", out JsonElement instructionSelectElement)
+                                                ? instructionSelectElement.GetString()
+                                                : null;
+                        var durationSelectfav = result.TryGetProperty("durationSelectfav", out JsonElement durationSelectfavElement)
+                                                ? durationSelectfavElement.GetString()
+                                                : null;
+
+                        // Validate all required fields
+                        if (string.IsNullOrWhiteSpace(templateName) ||
+                            string.IsNullOrWhiteSpace(brandSelect) ||
+                            string.IsNullOrWhiteSpace(doseSelect) ||
+                            string.IsNullOrWhiteSpace(instructionSelect) ||
+                            string.IsNullOrWhiteSpace(durationSelectfav) ||
+                            !Guid.TryParse(brandSelect, out var brandId) ||
+                            !Guid.TryParse(doseSelect, out var doseId) ||
+                            !Guid.TryParse(instructionSelect, out var instructionId) ||
+                            !Guid.TryParse(durationSelectfav, out var durationId))
+                        {
+                            // Show alert for missing or invalid input
+
+                            await JS.InvokeVoidAsync("showAlert", "Save Failed", "Some Input fields are missing or invalid", "error", "swal-error");
+                            return;
+                        }
+
+                        // Create a new drug template object
+                        var drugTemp = new TblFavouriteDrugTemplate
                         {
                             Id = TemplateId,
                             Name = templateName,
                             BrandId = brandId,
                             DoseId = doseId,
                             InstructionId = instructionId,
-                            DurationId = durationId
+                            DurationId = durationId,
+                            CreatedAt = DateTime.Now
                         };
-                        //[Inject]
-                        //public IFavouriteDrug _drug { get; set; }
-                        ApplicationDbContext applicationDbContext = new ApplicationDbContext();
-                        IFavouriteDrug drugService = new FavouriteDrugService(applicationDbContext);
+
+                        // Save the drug template
+                        var applicationDbContext = new ApplicationDbContext();
+                        var drugService = new FavouriteDrugService(applicationDbContext);
                         await drugService.SaveFavouriteDrugTemp(drugTemp);
+
+                        // Show success message
+                        //await JS.InvokeVoidAsync("ClearFormData");
+                        await JS.InvokeVoidAsync("showAlert", "Success", "Drug template saved successfully", "success", "swal-success");
                     }
                     else
                     {
                         Console.WriteLine("templateName not found.");
                     }
+
                 }
 
             }
@@ -304,6 +328,30 @@ namespace QuickMed.BaseComponent
         }
 
 
+        [JSInvokable("OnDeleteClick")]
+        public async Task OnDeleteClick(Guid id)
+        {
+            bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
+
+            if (isConfirmed)
+            {
+                var isDeleted = await _drug.DeleteAsync(id);
+                if (isDeleted)
+                {
+                    // Show success alert with red color
+                    await JS.InvokeVoidAsync("showAlert", "Delete Successful", "Record has been successfully deleted.", "success", "swal-danger");
+
+                    // Refresh the list after deletion
+                    await OnInitializedAsync();
+                    StateHasChanged();  // Update the UI after deletion
+                }
+                else
+                {
+                    // Handle failure case and show an error alert if necessary
+                    Console.WriteLine("Failed to delete record from the database.");
+                }
+            }
+        }
 
     }
 }

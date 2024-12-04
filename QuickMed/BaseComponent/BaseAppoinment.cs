@@ -17,25 +17,55 @@ namespace QuickMed.BaseComponent
 
         public PatientVM model = new();
         public IEnumerable<PatientVM>? models { get; set; }
+        public DotNetObjectReference<BaseAppoinment> ObjectReference { get; private set; }
 
 
 
         protected override async Task OnInitializedAsync()
         {
+            ObjectReference = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             models = await _appoinment.GetAsync(); // Load the initial data
+            await RefreshDataTable();
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                await InitializeDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
-            }
-        }
+        //protected override async Task OnAfterRenderAsync(bool firstRender)
+        //{
+        //    if (firstRender)
+        //    {
+        //        await RefreshDataTable(); 
+        //    }
+        //}
 
-        protected async Task InitializeDataTable()
+        //protected async Task InitializeDataTable()
+        //{
+        //    await JS.InvokeVoidAsync("makeDataTable", "datatable-patientList");
+        //}
+
+        protected async Task RefreshDataTable()
         {
-            await JS.InvokeVoidAsync("makeDataTable", "datatable-patientList");
+
+            var tableData = models?.Select((appoin, index) => new[]
+                {
+                    (index + 1).ToString(), // Serial number starts from 1
+                    appoin.Code?.ToString() ?? string.Empty, // Note name
+                    appoin.Weight?.ToString() ?? string.Empty, // Note name
+                    appoin.Name?.ToString() ?? string.Empty, // Note name
+                    appoin.Age?.ToString() ?? string.Empty, // Note name
+                    appoin.Address?.ToString() ?? string.Empty, // Note name
+                    appoin.Mobile?.ToString() ?? string.Empty, // Note name
+                    appoin.AdmissionDate.ToString("yyyy-MM-dd"),
+                    appoin.Gender?.ToString() ?? string.Empty, // Note name
+                    $@"
+                    <div style='display: flex; justify-content: flex-end;'>
+                        <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{appoin.Id}' data-method='OnEditClick'></i>
+                        <i class='dripicons-trash btn btn-soft-danger dTRowActionBtn' data-id='{appoin.Id}' data-method='OnDeleteClick'></i>
+                    </div>
+                    " // Action buttons
+                }).ToArray();
+
+            await JS.InvokeVoidAsync("makeDataTableQ", "datatable-patientList", tableData);
+
         }
 
 
@@ -87,7 +117,6 @@ namespace QuickMed.BaseComponent
 
                     // Refresh the list after deletion
                     await OnInitializedAsync();
-                    await InitializeDataTable();
                     model = new PatientVM();
                     StateHasChanged();  // Update the UI after deletion
                 }
