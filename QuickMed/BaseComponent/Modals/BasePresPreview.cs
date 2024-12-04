@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using QuickMed.Interface;
 
 namespace QuickMed.BaseComponent.Modals
 {
@@ -10,6 +11,9 @@ namespace QuickMed.BaseComponent.Modals
         public PrescriptionViewModel PrescriptionViewModelss { get; set; }
         [Inject]
         public IJSRuntime JS { get; set; }
+
+        [Inject]
+        public IPrinterMac Printer { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -40,7 +44,18 @@ namespace QuickMed.BaseComponent.Modals
             else if (platform == Microsoft.Maui.Devices.DevicePlatform.MacCatalyst)
             {
                 // Call a different JavaScript function for macOS
-                JS.InvokeVoidAsync("printModalContentForMac");
+                var content = await JS.InvokeAsync<string>("getPrintContent");
+
+                // Ensure the content is valid before proceeding
+                if (string.IsNullOrEmpty(content))
+                {
+                    Console.WriteLine("No content found to print.");
+                    return;
+                }
+
+                // Pass the content to the printer for printing
+                Printer.PrintPage(content);
+                // JS.InvokeVoidAsync("printModalContentForMac");
             }
         }
 

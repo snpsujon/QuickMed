@@ -1,5 +1,8 @@
 ﻿using QuickMed.Interface;
 using QuickMed.Services;
+#if MACCATALYST
+using QuickMed.MacOS;
+#endif
 
 namespace QuickMed.RegisterServices
 {
@@ -7,6 +10,7 @@ namespace QuickMed.RegisterServices
     {
         public static void ExtractEMServices(IServiceCollection services)
         {
+            // Common services registration
             services.AddScoped<IBase, BaseServices>();
             services.AddScoped<IAdvice, AdviceService>();
             services.AddScoped<ILicense, LicenseServices>();
@@ -25,7 +29,10 @@ namespace QuickMed.RegisterServices
             services.AddScoped<IDrug, DrugService>();
             services.AddScoped<IDashboard, DashboardService>();
 
+            // macOS Catalyst-specific service registration
+#if MACCATALYST
+                        services.AddScoped<IPrinterMac, MacPrinter>();
+#endif
         }
-
     }
 }
