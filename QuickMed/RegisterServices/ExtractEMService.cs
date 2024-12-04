@@ -32,6 +32,7 @@ namespace QuickMed.RegisterServices
             // macOS Catalyst-specific service registration
 #if MACCATALYST
                         services.AddScoped<IPrinterMac, MacPrinter>();
+
 #endif
         }
     }
