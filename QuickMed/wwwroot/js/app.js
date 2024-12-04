@@ -71,35 +71,31 @@ function unlock() {
         errorMessage.style.display = 'block';
     }
 
-    const url = `/dashboard`;
-    window.location.href = url;
-
-
-
-
+    //const url = `/dashboard`;
+    //window.location.href = url;
     // Simulate a process (e.g., API call)
-    //setTimeout(() => {
+    setTimeout(() => {
 
-    //    instanceReference.invokeMethodAsync("ValidateLicense", license).then(result => {
-    //        loader.style.display = 'none';
-    //        buttonText.style.display = 'inline';
-    //        button.disabled = false;
-    //        errorMessage.textContent = result;
-    //        errorMessage.style.display = 'block';
-    //        if (result == "Congrats! Your License is Approved.") {
-    //            const url = `/dashboard`;
-    //            window.location.href = url;
-    //        }
+        instanceReference.invokeMethodAsync("ValidateLicense", license).then(result => {
+            loader.style.display = 'none';
+            buttonText.style.display = 'inline';
+            button.disabled = false;
+            errorMessage.textContent = result;
+            errorMessage.style.display = 'block';
+            if (result == "Congrats! Your License is Approved.") {
+                const url = `/dashboard`;
+                window.location.href = url;
+            }
 
-    //    })
-    //        .catch(error => {
-    //            loader.style.display = 'none';
-    //            buttonText.style.display = 'inline';
-    //            button.disabled = false;
-    //            errorMessage.textContent = "Something Went Wrong";
-    //            errorMessage.style.display = 'block';
-    //        });
-    //}, 3000);
+        })
+            .catch(error => {
+                loader.style.display = 'none';
+                buttonText.style.display = 'inline';
+                button.disabled = false;
+                errorMessage.textContent = "Something Went Wrong";
+                errorMessage.style.display = 'block';
+            });
+    }, 3000);
 
 
 
