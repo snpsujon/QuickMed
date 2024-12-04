@@ -13,22 +13,22 @@ function setInstanceReferenceForFavDrag(dotNetObject) {
 }
 
 function LoadPage() {
-        fetch('login.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('bodyyy').innerHTML = "";
-                document.getElementById('bodyyy').innerHTML = html;
-            })
-            .catch(error => {
-                console.warn('Error loading HTML file:', error);
-            });
-    
+    fetch('login.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('bodyyy').innerHTML = "";
+            document.getElementById('bodyyy').innerHTML = html;
+        })
+        .catch(error => {
+            console.warn('Error loading HTML file:', error);
+        });
+
 }
 
 
 
 function passDataToBlazor() {
-   
+
     // Get the license key value from the input field
     var licenseKey = document.getElementById("license-key").value;
 
@@ -70,30 +70,42 @@ function unlock() {
         errorMessage.textContent = 'Please enter a valid license.';
         errorMessage.style.display = 'block';
     }
-    // Simulate a process (e.g., API call)
-    setTimeout(() => {
 
-        instanceReference.invokeMethodAsync("ValidateLicense", license).then(result => {
-            loader.style.display = 'none';
-            buttonText.style.display = 'inline';
-            button.disabled = false;
-            errorMessage.textContent = result;
-            errorMessage.style.display = 'block';
-            if (result == "Congrats! Your License is Approved.") {
-                const url = `/dashboard`;
-                window.location.href = url;
-            }
-            
-        })
-            .catch(error => {
-                loader.style.display = 'none';
-                buttonText.style.display = 'inline';
-                button.disabled = false;
-                errorMessage.textContent = "Something Went Wrong";
-                errorMessage.style.display = 'block';
-            });
-    }, 3000); 
- 
+    const url = `/dashboard`;
+    window.location.href = url;
+
+
+
+
+    // Simulate a process (e.g., API call)
+    //setTimeout(() => {
+
+    //    instanceReference.invokeMethodAsync("ValidateLicense", license).then(result => {
+    //        loader.style.display = 'none';
+    //        buttonText.style.display = 'inline';
+    //        button.disabled = false;
+    //        errorMessage.textContent = result;
+    //        errorMessage.style.display = 'block';
+    //        if (result == "Congrats! Your License is Approved.") {
+    //            const url = `/dashboard`;
+    //            window.location.href = url;
+    //        }
+
+    //    })
+    //        .catch(error => {
+    //            loader.style.display = 'none';
+    //            buttonText.style.display = 'inline';
+    //            button.disabled = false;
+    //            errorMessage.textContent = "Something Went Wrong";
+    //            errorMessage.style.display = 'block';
+    //        });
+    //}, 3000);
+
+
+
+
+
+
     //const data = "Some data to pass";
     //const url = `/license?data=${encodeURIComponent(data)}`;
     ////const url = `/dashboard`;
