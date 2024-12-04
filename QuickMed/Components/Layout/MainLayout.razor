@@ -25,7 +25,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-       
         tblLicenses = await App.Database.GetTableRowsAsync<TblLicenseInfo>("TblLicenseInfo");
         if (tblLicenses.Count() != 0 && tblLicenses.First().ExpirationDate >= DateTime.Now)
         {
@@ -34,9 +33,11 @@
         else
 
         {
-            ObjectReference = DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
-            await JS.InvokeVoidAsync("LoadPage");
+            Navigation.NavigateTo("/dashboard");
+
+            // ObjectReference = DotNetObjectReference.Create(this);
+            // await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
+            // await JS.InvokeVoidAsync("LoadPage");
         }
         // Track the current page
         // currentPage = Navigation.Uri;
