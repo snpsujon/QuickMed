@@ -429,6 +429,7 @@ function getDataColumnAsKey(tableId, isUnit = false) {
 }
 
 function SearchPorP(id) {
+    
     var value = document.getElementById(id).value;
     if (id == "Patient-Mobile") {
         if (value.length > 9 && value.length < 12) {

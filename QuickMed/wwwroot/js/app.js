@@ -472,6 +472,10 @@ function makeDataTableQ(tableid, data = []) {
             table.rows.add(data);
             table.draw();
         }
+        else {
+            table.clear();
+            table.draw();
+        }
     }
 
 
