@@ -64,7 +64,7 @@ namespace QuickMed.BaseComponent
                     " // Action buttons
                 }).ToArray();
 
-            await JS.InvokeVoidAsync("makeDataTableQ", "datatable-patientList", tableData);
+            await JS.InvokeVoidAsync("makeDataTableQ", "table-patientList", tableData);
 
         }
 
@@ -98,12 +98,16 @@ namespace QuickMed.BaseComponent
 
             StateHasChanged();  // Update the UI
         }
-        protected async Task OnEditClick(PatientVM data)
+
+        [JSInvokable("OnEditClick")]
+        public async Task OnEditClick(PatientVM data)
         {
             model = data;
             StateHasChanged(); // Re-render the component with the updated model
         }
-        protected async Task OnDeleteClick(Guid id)
+
+        [JSInvokable("OnDeleteClick")]
+        public async Task OnDeleteClick(Guid id)
         {
             bool isConfirmed = await JS.InvokeAsync<bool>("showDeleteConfirmation", "Delete", "Are you sure you want to delete this record?");
 
@@ -117,7 +121,7 @@ namespace QuickMed.BaseComponent
 
                     // Refresh the list after deletion
                     await OnInitializedAsync();
-                    model = new PatientVM();
+                    //model = new PatientVM();
                     StateHasChanged();  // Update the UI after deletion
                 }
                 else
