@@ -483,6 +483,24 @@ namespace QuickMed.DB
                 throw;
             }
         }
+        public async Task<bool> IsConnectedToInternet()
+        {
+            //return NetworkInterface.GetIsNetworkAvailable();
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromSeconds(5); // Set a timeout for the request
+                    HttpResponseMessage response = await client.GetAsync("https://www.google.com");
+                    return response.IsSuccessStatusCode;
+                }
+            }
+            catch
+            {
+                return false; // If there’s any exception, return false
+            }
+
+        }
         private async Task insertSeedAdviceMasterData()
         {
             // Implement seeding logic for TblDuration

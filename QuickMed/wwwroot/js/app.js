@@ -12,8 +12,7 @@ function setInstanceReferenceForFavDrag(dotNetObject) {
     instanceReferenceforFavDrag = dotNetObject;
 }
 
-function LoadPage(ff) {
-    if (ff == '1') {
+function LoadPage() {
         fetch('login.html')
             .then(response => response.text())
             .then(html => {
@@ -23,12 +22,13 @@ function LoadPage(ff) {
             .catch(error => {
                 console.warn('Error loading HTML file:', error);
             });
-    }
+    
 }
 
 
 
 function passDataToBlazor() {
+   
     // Get the license key value from the input field
     var licenseKey = document.getElementById("license-key").value;
 
@@ -36,6 +36,7 @@ function passDataToBlazor() {
     DotNet.invokeMethodAsync('YourBlazorApp', 'ReceiveLicenseKey', licenseKey)
         .then(data => {
             console.log("Data passed to Blazor: " + data);
+            alert(data);
         })
         .catch(error => {
             console.error("Error passing data to Blazor: ", error);
@@ -52,10 +53,48 @@ function setLocalStorage() {
 }
 
 function unlock() {
-    const data = "Some data to pass";
-    //const url = `/dashboard?data=${encodeURIComponent(data)}`;
-    const url = `/dashboard`;
-    window.location.href = url;
+    const button = document.getElementById('buttonsubmit');
+    const errorMessage = document.getElementById('error-message');
+    const loader = document.getElementById('loader');
+    const buttonText = document.getElementById('button-text');
+
+    // Show the loader and disable the button
+    loader.style.display = 'inline-block';
+    buttonText.style.display = 'none';
+    button.disabled = true;
+    errorMessage.style.display = 'none';
+    errorMessage.textContent = '';
+    var license = $("#license").val();
+    if (license.trim() === '') {
+        // Show error message
+        errorMessage.textContent = 'Please enter a valid license.';
+        errorMessage.style.display = 'block';
+    }
+    // Simulate a process (e.g., API call)
+    setTimeout(() => {
+
+        instanceReference.invokeMethodAsync("ValidateLicense", license).then(result => {
+            loader.style.display = 'none';
+            buttonText.style.display = 'inline';
+            button.disabled = false;
+            errorMessage.textContent = result;
+            errorMessage.style.display = 'block';
+            const url = `/dashboard`;
+            window.location.href = url;
+        })
+            .catch(error => {
+                loader.style.display = 'none';
+                buttonText.style.display = 'inline';
+                button.disabled = false;
+                errorMessage.textContent = error;
+                errorMessage.style.display = 'block';
+            });
+    }, 3000); 
+ 
+    //const data = "Some data to pass";
+    //const url = `/license?data=${encodeURIComponent(data)}`;
+    ////const url = `/dashboard`;
+    //window.location.href = url;
 }
 
 function setActiveMenu(menuId) {

@@ -1,51 +1,123 @@
 ﻿@inherits LayoutComponentBase
+@using QuickMed.DB
 @using QuickMed.ViewModels
 @using System.Text.Json
+@inject ApplicationDbContext _db;
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
 
 <div class="page">
     <main>
         <article class="content px-4">
-            @Body
+                @Body
+            
+
         </article>
     </main>
 </div>
 
 @code {
+    public DotNetObjectReference<MainLayout> ObjectReference { get; private set; }
     private string currentPage;
+    private TblDoctor doctorModel = new();
+    private List<TblLicenseInfo> tblLicenses = new();
+    private TblLicenseInfo model = new();
 
     protected override async Task OnInitializedAsync()
     {
-        // Track the current page
-        currentPage = Navigation.Uri;
-
-        // Conditionally invoke the JavaScript function only if the current page is not the "counter" page
-        if (
-
-            !currentPage.Contains("/dashboard")
-            && !currentPage.Contains("/prescription")
-            && !currentPage.Contains("/prescriptionTemp")
-            && !currentPage.Contains("/prescription-list")
-            && !currentPage.Contains("/treatmentTemp")
-            && !currentPage.Contains("/favouriteTemp")
-            && !currentPage.Contains("/referTemp")
-            && !currentPage.Contains("/advice")
-            && !currentPage.Contains("/ixTemp")
-            && !currentPage.Contains("/doseTemp")
-            && !currentPage.Contains("/durationTemp")
-            && !currentPage.Contains("/dxTemp")
-            && !currentPage.Contains("/ccTemp")
-            && !currentPage.Contains("/mixTemp")
-            && !currentPage.Contains("/noteTemp")
-            && !currentPage.Contains("/appoinment")
-            && !currentPage.Contains("/databaseTool")
-            && !currentPage.Contains("/checkUpgrade")
-            && !currentPage.Contains("/drug")
-        )
+       
+        tblLicenses = await App.Database.GetTableRowsAsync<TblLicenseInfo>("TblLicenseInfo");
+        if (tblLicenses.Count() != 0 && tblLicenses.First().ExpirationDate >= DateTime.Now)
         {
-            await JS.InvokeVoidAsync("clearLocalStorage");
-            await JS.InvokeVoidAsync("LoadPage", "11");
-        }   
+            Navigation.NavigateTo("/dashboard");
+        }
+        else
+
+        {
+            ObjectReference = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
+            await JS.InvokeVoidAsync("LoadPage");
+        }
+        // Track the current page
+        // currentPage = Navigation.Uri;
+
+        // // Conditionally invoke the JavaScript function only if the current page is not the "counter" page
+        // if (
+
+        //     !currentPage.Contains("/dashboard")
+        //     && !currentPage.Contains("/prescription")
+        //     && !currentPage.Contains("/prescriptionTemp")
+        //     && !currentPage.Contains("/prescription-list")
+        //     && !currentPage.Contains("/treatmentTemp")
+        //     && !currentPage.Contains("/favouriteTemp")
+        //     && !currentPage.Contains("/referTemp")
+        //     && !currentPage.Contains("/advice")
+        //     && !currentPage.Contains("/ixTemp")
+        //     && !currentPage.Contains("/doseTemp")
+        //     && !currentPage.Contains("/durationTemp")
+        //     && !currentPage.Contains("/dxTemp")
+        //     && !currentPage.Contains("/ccTemp")
+        //     && !currentPage.Contains("/mixTemp")
+        //     && !currentPage.Contains("/noteTemp")
+        //     && !currentPage.Contains("/appoinment")
+        //     && !currentPage.Contains("/databaseTool")
+        //     && !currentPage.Contains("/checkUpgrade")
+        //     && !currentPage.Contains("/drug")
+        // )
+        // {
+        //     await JS.InvokeVoidAsync("clearLocalStorage");
+        //     await JS.InvokeVoidAsync("LoadPage", "1");
+        // }   
     }
-}
+
+    [JSInvokable("ValidateLicense")]
+    public async Task<string> ValidateLicense(string license)
+    {
+        var tt = await _db.IsConnectedToInternet();
+        if (tt)
+        {
+            var handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true; // This ignores all certificate validation errors
+            var client = new HttpClient(handler);
+            var modl = new { LicenseKey = license };
+            var response = await client.PostAsJsonAsync("https://localhost:7202/api/Licence/CheckValidity", modl);
+            if (response.IsSuccessStatusCode && response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var licenseResponse = await response.Content.ReadFromJsonAsync<LicenseApiResponse>();
+                if (licenseResponse.Data != null)
+                {
+                    if (licenseResponse.Data.IsValid == 1)
+                    {
+                        await App.Database.DeleteTableAsync("TblLicenseInfo");
+                        await App.Database.DeleteTableAsync("TblDoctor");
+
+                        model.ExpirationDate = licenseResponse.Data.ExpirationDate;
+                        model.Id = Guid.NewGuid();  // Consider changing this based on your business logic
+                        await App.Database.CreateAsync(model);  // Assuming CreateAsync handles DB operations
+                        doctorModel = licenseResponse.Data.Doctor;
+                        await App.Database.CreateAsync(doctorModel);
+                        return "Congrats! Your License is Approved.";
+                        
+                    }
+                    else
+                    {
+                        return "License Key Expired.";
+                    }
+                }
+                else
+                {
+                    return "Invalid License Key.";
+                }
+            }
+            else
+            {
+                return "Failed to validate license. Please try again.";
+            }
+        }
+        else
+        {
+            return "Please Connect to Internet";
+        }    
+    } 
+
+  }
