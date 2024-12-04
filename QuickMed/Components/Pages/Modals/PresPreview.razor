@@ -24,32 +24,71 @@
                             <div class="row">
                                 <!-- Left Column -->
                                 <div class="col-6 text-start">
-                                    <span style="font-size:large;" class="fw-bold">ডা. সালেহ্‌ আহমেদ শাহীন</span><br>
-                                    <span style="font-size: small;">এমবিবিএস, এমডি (বঙ্গবন্ধু শেখ মুজিব মেডিকেল বিশ্ববিদ্যালয়)</span><br>
-                                    <span style="font-size: small;">উচ্চতর প্রশিক্ষণ (এবারহার্ড কার্লস বিশ্ববিদ্যালয়, জার্মানী)</span><br>
-                                    <span style="font-size: medium;" class="fw-bold">সহযোগী অধ্যাপক ও বিভাগীয় প্রধাণ</span><br>
-                                    <span style="font-size: small;" class="fw-bold">চর্ম ও যৌনরোগ বিভাগ</span><br>
-                                    <span style="font-size: small;">সিলেট এম........এ.জি. ওসমানী মেডিকেল কলেজ ও হাসপাতাল</span><br>
-                                    <span style="font-size: small;">০১৭১২-৮৪৬১৩১ (জরুরী প্রয়োজনে)</span><br>
+                                    <span style="font-size:large;" class="fw-bold">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "ডা. সালেহ্‌ আহমেদ শাহীন" : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: small;">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "এমবিবিএস, এমডি (বঙ্গবন্ধু শেখ মুজিব মেডিকেল বিশ্ববিদ্যালয়)" : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: small;">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "উচ্চতর প্রশিক্ষণ (এবারহার্ড কার্লস বিশ্ববিদ্যালয়, জার্মানী)" : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: medium;" class="fw-bold">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "সহযোগী অধ্যাপক ও বিভাগীয় প্রধাণ" : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: small;" class="fw-bold">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "চর্ম ও যৌনরোগ বিভাগ" : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: small;">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "সিলেট এম........এ.জি. ওসমানী মেডিকেল কলেজ ও হাসপাতাল" : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: small;">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "০১৭১২-৮৪৬১৩১ (জরুরী প্রয়োজনে)" : string.Empty)
+                                    </span><br>
+
                                 </div>
 
                                 <!-- Right Column -->
                                 <div class="col-6 text-end">
-                                    <span style="font-size:large;" class="fw-bold">Dr. Saleh Ahmed Shaheen</span><br>
-                                    <span style="font-size: x-small;">MBBS, MD (B.S.M Medical University)</span><br>
-                                    <span style="font-size: x-small;">Heigher Training (Eberhard Karls University, Germany)</span><br>
-                                    <span style="font-size: x-small;" class="fw-bold">Associate Professor & Head Of Dept.</span><br>
-                                    <span style="font-size: x-small;" class="fw-bold">Dermatology & Venereology Dept.</span><br>
-                                    <span style="font-size: x-small;">Sylhet M.A.G. Osmani Medical College & Hospital</span><br>
-                                    <span style="font-size: x-small;">01712-846131 (In Emergency)</span>
+                                    <span style="font-size:large;" class="fw-bold">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "Dr. Saleh Ahmed Shaheen" : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: x-small;">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "MBBS, MD (B.S.M Medical University)" : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: x-small;">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "Higher Training (Eberhard Karls University, Germany)" : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: x-small;" class="fw-bold">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "Associate Professor & Head Of Dept." : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: x-small;" class="fw-bold">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "Dermatology & Venereology Dept." : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: x-small;">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "Sylhet M.A.G. Osmani Medical College & Hospital" : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: x-small;">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "01712-846131 (In Emergency)" : string.Empty)
+                                    </span><br>
+
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12 text-center">
-                                    <span style="font-size: x-small; background-color:black;color:#fff;" class="fw-bold fst-italic px-2">
-                                        যখন আমি রোগাক্রান্ত হই, তখন তিনিই (আল্লাহতায়ালা) আমাকে আরোগ্য দান করেন। সূরা
-                                        আশ-শুআরা-৮০
+                                    @{
+                                        var tstyle = "";
+                                        if (PrescriptionViewModelss?.IsHeader == true)
+                                        {
+                                            tstyle = "font-size: small; background-color:black;color:#fff;";
+                                        }
+                                    }
+                                    <span style="@tstyle" class="fw-bold fst-italic px-2">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "যখন আমি রোগাক্রান্ত হই, তখন তিনিই (আল্লাহতায়ালা) আমাকে আরোগ্য দান করেন। সূরা আশ-শুআরা-৮০" : string.Empty)
                                     </span>
+                                    
+                                    
+
                                 </div>
 
                             </div>
@@ -476,26 +515,55 @@
                                 
                                 <div class="col-4">
                                     <div class="chemberPresc">
-                                        <span style="font-size: medium;" class="fw-bold"><u>চেম্বারঃ</u></span> <br>
-                                        <span style="font-size: small;" class="fw-bold">ইবনে সিনা হাসপাতাল সিলেট লিঃ</span> <br>
-                                        <span style="font-size: x-small;">সোবহানীঘাট পয়েন্ট, সিলেট। রুম নং- ৪২৮</span> <br>
-                                        <span style="font-size: x-small;">ফোনঃ ০২ ৯৯ ৬৬ ৪০০ ১০-১৯</span>
+                                        <span style="font-size: medium;" class="fw-bold">
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? "<u>চেম্বারঃ</u>" : string.Empty)
+                                        </span> <br>
+                                        <span style="font-size: small;" class="fw-bold">
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? "ইবনে সিনা হাসপাতাল সিলেট লিঃ" : string.Empty)
+                                        </span> <br>
+                                        <span style="font-size: x-small;">
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? "সোবহানীঘাট পয়েন্ট, সিলেট। রুম নং- ৪২৮" : string.Empty)
+                                        </span> <br>
+                                        <span style="font-size: x-small;">
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? "ফোনঃ ০২ ৯৯ ৬৬ ৪০০ ১০-১৯" : string.Empty)
+                                        </span> <br>
+
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="SLPresc">
-                                        <span style="font-size: medium;" class="fw-bold"><u>ডাক্তার সিরিয়াল</u></span> <br>
-                                        <span style="font-size: small;">০৯ ৬৩৬ ৩০০ ৩০০</span> <br>
-                                        <span style="font-size: x-small;">(সকাল ৮ টা)</span> <br>
-                                        <span style="font-size: small;">০১৭২৬-৩৪৮৭৬১</span> <br>
-                                        <span style="font-size: x-small;">(সকাল ৮ টা - বিকাল ৩ টা)</span>
+                                        <span style="font-size: medium;" class="fw-bold">
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? "<u>ডাক্তার সিরিয়াল</u>" : string.Empty)
+                                        </span> <br>
+                                        <span style="font-size: small;">
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? "০৯ ৬৩৬ ৩০০ ৩০০" : string.Empty)
+                                        </span> <br>
+                                        <span style="font-size: x-small;">
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? "(সকাল ৮ টা)" : string.Empty)
+                                        </span> <br>
+                                        <span style="font-size: small;">
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? "০১৭২৬-৩৪৮৭৬১" : string.Empty)
+                                        </span> <br>
+                                        <span style="font-size: x-small;">
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? "(সকাল ৮ টা - বিকাল ৩ টা)" : string.Empty)
+                                        </span> <br>
+
                                     </div>
                                 </div>
                                 <div class="col-3 text-end">
-                                    <span style="font-size: small;" class="fw-bold">রোগী দেখার সময়</span><br>
-                                    <span style="font-size: small;" class="fw-bold">প্রতিদিন</span><br>
-                                    <span style="font-size: x-small;">বিকাল ৪ টা থেকে রাত ৯ টা</span><br>
-                                    <span style="font-size: x-small;" class="fw-bold">(শুক্রবার যোগাযোগ সাপেক্ষে)</span><br>
+                                    <span style="font-size: small;" class="fw-bold">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "রোগী দেখার সময়" : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: small;" class="fw-bold">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "প্রতিদিন" : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: x-small;">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "বিকাল ৪ টা থেকে রাত ৯ টা" : string.Empty)
+                                    </span><br>
+                                    <span style="font-size: x-small;" class="fw-bold">
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "(শুক্রবার যোগাযোগ সাপেক্ষে)" : string.Empty)
+                                    </span><br>
+
                                 </div>
                                 <div class="col-1"></div>
                             </div>
