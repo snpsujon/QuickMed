@@ -157,8 +157,7 @@ namespace QuickMed.BaseComponent
 			? $@"
                 <div style='display: flex; justify-content: flex-end;'>
                      
-                     <i class='dripicons-print btn btn-soft-warning dTRowActionBtn' data-id='{pres.Id}' data-method='OnPrintClick'></i>
-                     <i class='dripicons-download btn btn-soft-info dTRowActionBtn' data-id='{pres.Id}' data-method='OnDownloadClick'></i>
+                     
                      <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{pres.Id}' data-method='OnEditClick'></i>
                      <i class='dripicons-trash btn btn-soft-danger dTRowActionBtn' data-id='{pres.Id}' data-method='OnDeleteClick'></i>
                 </div>
