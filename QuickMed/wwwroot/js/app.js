@@ -79,8 +79,11 @@ function unlock() {
             button.disabled = false;
             errorMessage.textContent = result;
             errorMessage.style.display = 'block';
-            const url = `/dashboard`;
-            window.location.href = url;
+            if (result == "Congrats! Your License is Approved.") {
+                const url = `/dashboard`;
+                window.location.href = url;
+            }
+            
         })
             .catch(error => {
                 loader.style.display = 'none';
