@@ -110,7 +110,7 @@ namespace QuickMed.BaseComponent
 		public async Task CancelTemplate()
 		{
 			await JS.InvokeVoidAsync("toggleButtonVisibility", false);
-			await JS.InvokeVoidAsync("ClearAllFields");
+			//await JS.InvokeVoidAsync("ClearAllFields");
 		}
 		public async Task UpdateTemplate()
 		{
@@ -146,7 +146,7 @@ namespace QuickMed.BaseComponent
 						{
 							Console.WriteLine("templateName not found.");
 						}
-						await JS.InvokeVoidAsync("ClearAllFields");
+						//await JS.InvokeVoidAsync("ClearAllFields");
 						await JS.InvokeVoidAsync("toggleButtonVisibility", false);
 						await JS.InvokeVoidAsync("showAlert", "Update Successful", "Record has been successfully Updated.", "success", "swal-info");
 

@@ -596,11 +596,11 @@ function showQModal() {
     modal.show();
 }
 
-function ClearAllFields() {
-    // Clear all fields
-    $('#app').find('input, select, textarea').val('').trigger('change');
+//function ClearAllFields() {
+//    // Clear all fields
+//    $('#app').find('input, select, textarea').val('').trigger('change');
 
-}
+//}
 
 
 function ClearFormData() {
