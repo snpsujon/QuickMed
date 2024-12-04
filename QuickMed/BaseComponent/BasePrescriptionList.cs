@@ -37,6 +37,7 @@ namespace QuickMed.BaseComponent
 		{
 			if (firstRender)
 			{
+				prescriptions = await GetFilterData();
 				await RefreshDataTable(); // Initialize JavaScript-based DataTable once the component has rendered
 				await InitializeJS();
 			}
@@ -172,10 +173,7 @@ namespace QuickMed.BaseComponent
 			}
 		}
 
-		protected async Task OnPreviewClick(PrescriptionVM data)
-		{
-			StateHasChanged(); // Re-render the component with the updated model
-		}
+		
 
 
 
