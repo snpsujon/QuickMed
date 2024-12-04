@@ -93,6 +93,7 @@
                         await App.Database.DeleteTableAsync("TblDoctor");
 
                         model.ExpirationDate = licenseResponse.Data.ExpirationDate;
+                        model.LicenseKey = license;
                         model.Id = Guid.NewGuid();  // Consider changing this based on your business logic
                         await App.Database.CreateAsync(model);  // Assuming CreateAsync handles DB operations
                         doctorModel = licenseResponse.Data.Doctor;

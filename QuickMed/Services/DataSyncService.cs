@@ -43,13 +43,14 @@ namespace QuickMed.Services
             {
                 _logger.LogInformation("Internet is available, starting sync...");
 
-                _ = Task.Run(() => SyncTableDataAsync<TblPatient>());
-                _ = Task.Run(() => SyncTableDataAsync<DrugDosage>());
-                _ = Task.Run(() => SyncTableDataAsync<DrugGeneric>());
-                _ = Task.Run(() => SyncTableDataAsync<DrugManufacturer>());
-                _ = Task.Run(() => SyncTableDataAsync<DrugType>());
-                _ = Task.Run(() => SyncTableDataAsync<DrugMedicine>());
+                //_ = Task.Run(() => SyncTableDataAsync<TblPatient>());
+                //_ = Task.Run(() => SyncTableDataAsync<DrugDosage>());
+                //_ = Task.Run(() => SyncTableDataAsync<DrugGeneric>());
+                //_ = Task.Run(() => SyncTableDataAsync<DrugManufacturer>());
+                //_ = Task.Run(() => SyncTableDataAsync<DrugType>());
+                //_ = Task.Run(() => SyncTableDataAsync<DrugMedicine>());
                 _ = Task.Run(() => SyncTableDataAsync<TblPrescription>());
+                _ = Task.Run(() => SyncTableDataAsync<TblPrescriptionDetails>());
             }
             else
             {
