@@ -520,7 +520,11 @@
                                 <div class="col-4">
                                     <div class="chemberPresc">
                                         <span style="font-size: medium;" class="fw-bold">
-                                            @((PrescriptionViewModelss?.IsHeader == true) ? "<u>চেম্বারঃ</u>" : string.Empty)
+                                            @if (PrescriptionViewModelss?.IsHeader == true)
+                                            {
+                                                @: <u>চেম্বারঃ</u>
+                                            }
+                                            
                                         </span> <br>
                                         <span style="font-size: small;" class="fw-bold">
                                             @((PrescriptionViewModelss?.IsHeader == true) ? "ইবনে সিনা হাসপাতাল সিলেট লিঃ" : string.Empty)
@@ -537,7 +541,10 @@
                                 <div class="col-4">
                                     <div class="SLPresc">
                                         <span style="font-size: medium;" class="fw-bold">
-                                            @((PrescriptionViewModelss?.IsHeader == true) ? "<u>ডাক্তার সিরিয়াল</u>" : string.Empty)
+                                            @if (PrescriptionViewModelss?.IsHeader == true)
+                                            {
+                                                @: <u>ডাক্তার সিরিয়াল</u>
+                                            }
                                         </span> <br>
                                         <span style="font-size: small;">
                                             @((PrescriptionViewModelss?.IsHeader == true) ? "০৯ ৬৩৬ ৩০০ ৩০০" : string.Empty)

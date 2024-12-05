@@ -1,11 +1,5 @@
 ﻿using QuickMed.DB;
 using QuickMed.Interface;
-using QuickMed.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuickMed.Services
 {
@@ -19,7 +13,17 @@ namespace QuickMed.Services
         {
             try
             {
-                return await _context.GetTableRowsAsync<TblNotesTemplate>("TblNotesTemplate");
+                var q = @$"
+                    SELECT * 
+                    FROM TblNotesTemplate at
+                    WHERE NOT EXISTS (
+                        SELECT 1 
+                        FROM TblPrescription pr 
+                        WHERE pr.NoteId = at.Id
+                    );";
+
+                var Result = await _context.ExecuteSqlQueryAsync<TblNotesTemplate>(q);
+                return Result;
             }
             catch (Exception ex)
             {
@@ -60,8 +64,8 @@ namespace QuickMed.Services
                 var master = $"DELETE FROM TblNotesTemplate WHERE Id = '{id}'";
                 var details = $"DELETE FROM TblNotesTempDetails WHERE TblNotesTempMasterId = '{id}'";
 
-                 await _context.ExecuteSqlQueryFirstorDefultAsync<TblNotesTemplate>(master);
-                 await _context.ExecuteSqlQueryFirstorDefultAsync<TblNotesTempDetails>(details);
+                await _context.ExecuteSqlQueryFirstorDefultAsync<TblNotesTemplate>(master);
+                await _context.ExecuteSqlQueryFirstorDefultAsync<TblNotesTempDetails>(details);
 
                 return true;
             }

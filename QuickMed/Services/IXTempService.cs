@@ -30,7 +30,17 @@ namespace QuickMed.Services
         {
             try
             {
-                return await _context.GetTableRowsAsync<TblIXTemplate>("TblIXTemplate");
+                var q = @$"
+                        SELECT * 
+                        FROM TblIXTemplate at
+                        WHERE NOT EXISTS (
+                            SELECT 1 
+                            FROM TblPrescription pr 
+                            WHERE pr.IxId = at.Id
+                        );";
+
+                var Result = await _context.ExecuteSqlQueryAsync<TblIXTemplate>(q);
+                return Result;
             }
             catch (Exception ex)
             {

@@ -108,6 +108,7 @@ namespace QuickMed.Services
                 throw;
             }
         }
+
         public async Task<dynamic> GetDXList()
         {
             try
@@ -128,9 +129,23 @@ namespace QuickMed.Services
         {
             try
             {
-                var sql = $@"SELECT Id as value,Name as text FROM TblDuration";
+                var sql = $@"SELECT Id as value,Name as text FROM TblDurationNumber";
                 var cc = await _context.ExecuteSqlQueryAsync<SelectVM>(sql);
                 return cc;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<dynamic> SaveTblDurationNumberAsync(TblDurationNumber data)
+        {
+            try
+            {
+                var saveTemplate = await _context.CreateAsync<TblDurationNumber>(data);
+                return true;
             }
             catch (Exception ex)
             {

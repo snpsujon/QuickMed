@@ -120,12 +120,14 @@ namespace QuickMed.DB
             await _dbConnection.CreateTableAsync<TblPres_MHTemp>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblPres_NoteTemp>().ConfigureAwait(false);
             await _dbConnection.CreateTableAsync<TblPres_OETemp>().ConfigureAwait(false);
+            await _dbConnection.CreateTableAsync<TblDurationNumber>().ConfigureAwait(false);
 
             // Await the seed data methods to ensure they complete before continuing
             await insertSeedDoseData().ConfigureAwait(false);
             await insertSeedDurationData().ConfigureAwait(false);
             await insertSeedAdviceMasterData().ConfigureAwait(false);
             await insertSeedInstructiomData().ConfigureAwait(false);
+            await insertSeedTableDurationNumber().ConfigureAwait(false);
         }
 
 
@@ -411,6 +413,36 @@ namespace QuickMed.DB
 
 
                     };
+
+                    // Insert the initial data into the table
+                    await _dbConnection.InsertAllAsync(initialDoses);
+                }
+            }
+
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+        }
+        private async Task insertSeedTableDurationNumber()
+        {
+            // Implement seeding logic for TblDose
+            try
+            {
+                var count = await _dbConnection.Table<TblDurationNumber>().CountAsync();
+
+                // Insert data only if the table is empty
+                if (count == 0)
+                {
+                    var initialDoses = new List<TblDurationNumber>();
+                    for (int i = 1; i < 32; i++)
+                    {
+                        var tblDurationNumber = new TblDurationNumber { Id = Guid.NewGuid(), Name = i.ToString() };
+                        initialDoses.Add(tblDurationNumber);
+
+                    }
 
                     // Insert the initial data into the table
                     await _dbConnection.InsertAllAsync(initialDoses);

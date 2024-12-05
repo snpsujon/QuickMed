@@ -11,10 +11,12 @@ namespace QuickMed.Services
 
 
 
-        public async Task<dynamic> GetCCTempData()
+        public async Task<dynamic> GetDxTempData()
         {
             try
             {
+
+
                 return await _context.GetTableRowsAsync<TblDXTemplate>("TblDXTemplate");
             }
             catch (Exception ex)

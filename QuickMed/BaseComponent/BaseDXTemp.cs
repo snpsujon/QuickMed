@@ -24,8 +24,8 @@ namespace QuickMed.BaseComponent
         {
             ObjectReference = DotNetObjectReference.Create(this);
             await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
-            dxtemps = await App.Database.GetTableRowsAsync<TblDXTemplate>("TblDXTemplate");
-            dxtemps = await _dXTemp.GetCCTempData();
+            //dxtemps = await App.Database.GetTableRowsAsync<TblDXTemplate>("TblDXTemplate");
+            dxtemps = await _dXTemp.GetDxTempData();
             await RefreshDataTable();
 
         }

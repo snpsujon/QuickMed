@@ -26,7 +26,7 @@ namespace QuickMed.BaseComponent
             ObjectReference = DotNetObjectReference.Create(this);
             await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             noteTemps = await _notes.GetAsync(); // Load the initial data
-            noteTemps = await App.Database.GetTableRowsAsync<TblNotesTemplate>("TblNotesTemplate");
+            //noteTemps = await App.Database.GetTableRowsAsync<TblNotesTemplate>("TblNotesTemplate");
             templateDetails = await _notes.GetDetailsAsync();
             await RefreshDataTable();
 

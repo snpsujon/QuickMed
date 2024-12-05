@@ -13,7 +13,7 @@ namespace QuickMed.Interface
         Task<dynamic> GetCCList();
         Task<dynamic> GetDXList();
         Task<dynamic> GetDurationsList();
-
+        Task<dynamic> SaveTblDurationNumberAsync(TblDurationNumber data);
 
         Task<dynamic> SavePresCC(List<TblPres_Cc> datas);
         Task<dynamic> SavePresMH(List<TblPres_MH> datas);

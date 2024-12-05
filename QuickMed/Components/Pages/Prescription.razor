@@ -96,13 +96,13 @@
                         <div class="mb-3 row">
                             <div class="col-sm-12 text-center">
                                 <div class="d-inline-block text-center me-2">
-                                    <button type="button" class="btn btn-outline-info btn-icon-circle btn-icon-circle-sm" title="Preview" @onclick="PreviewOnly">
+                                    <button type="button" class="btn btn-outline-info btn-icon-circle btn-icon-circle-sm" title="Preview" @onclick="(e) => PreviewOnly(true,false)">
                                         <i class="fa fa-expand"></i>
                                     </button>
                                     <div class="mt-1 small">Preview</div>
                                 </div>
                                 <div class="d-inline-block text-center me-2">
-                                    <button type="button" class="btn btn-outline-success btn-icon-circle btn-icon-circle-sm" title="Save & Print">
+                                    <button type="button" class="btn btn-outline-success btn-icon-circle btn-icon-circle-sm" @onclick="SaveAndPreview" title="Save & Print">
                                         <i class="fa fa-print"></i>
                                     </button>
                                     <div class="mt-1 small">Save & Print</div>
@@ -114,7 +114,7 @@
                                     <div class="mt-1 small">Save Only</div>
                                 </div>
                                 <div class="d-inline-block text-center me-2">
-                                    <button type="button" class="btn btn-outline-danger btn-icon-circle btn-icon-circle-sm" title="Save & Print Without Header">
+                                    <button type="button" class="btn btn-outline-danger btn-icon-circle btn-icon-circle-sm" @onclick="SaveAndPreviewWithOutHeader" title="Save & Print Without Header">
                                         <i class="far fa-file-alt"></i>
                                     </button>
                                     <div class="mt-1 small">Save & Print <br /> Without Header</div>
