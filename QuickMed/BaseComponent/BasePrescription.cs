@@ -168,8 +168,10 @@ namespace QuickMed.BaseComponent
 
         protected async Task InitializeJS()
         {
+
             await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
             await JS.InvokeVoidAsync("setInstanceReferenceForFavDrag", ObjectReferenceForFavDrag);
+            await JS.InvokeVoidAsync("initializeQuill", "#editors_pres");
             await JS.InvokeVoidAsync("makeSelect2", true);
             await JS.InvokeVoidAsync("makeSelect2Custom", "select2C", "GetMedicines", 3);
             await JS.InvokeVoidAsync("setupEditableTable", "TretmentTmpAdviceTbl", "add_Advice");
@@ -186,7 +188,7 @@ namespace QuickMed.BaseComponent
             await JS.InvokeVoidAsync("OnChangeEvent", "noteTempSelect", "NotesChange", ObjectReference);
 
 
-            await JS.InvokeVoidAsync("initializeQuill", "#editors_pres");
+
 
             //await JS.InvokeVoidAsync("clearQuillContent", "#editors_pres");
 
@@ -1206,6 +1208,8 @@ namespace QuickMed.BaseComponent
                 presmodal = await JS.InvokeAsync<PrescriptionViewModel>("getPresData", true);
                 presmodal.IsHeader = IsHeader;
                 presmodal.IsPrint = IsPrint;
+                List<TblDoctor> doctor = await App.Database.GetTableRowsAsync<TblDoctor>("TblDoctor");
+                presmodal.doctor = doctor.FirstOrDefault();
 
                 //modal.PrescriptionViewModel = result;
                 //StateHasChanged();

@@ -1,4 +1,5 @@
-﻿using QuickMed.ViewModels;
+﻿using QuickMed.DB;
+using QuickMed.ViewModels;
 
 public class PrescriptionViewModel
 {
@@ -18,6 +19,7 @@ public class PrescriptionViewModel
     public string? reffer { get; set; }
     public bool? IsHeader { get; set; } = true;
     public bool? IsPrint { get; set; } = false;
+    public TblDoctor? doctor { get; set; }
 }
 
 public class PatientData

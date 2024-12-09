@@ -29,25 +29,25 @@
                                 <!-- Left Column -->
                                 <div class="col-6 text-start">
                                     <span style="font-size:large;" class="fw-bold">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "ডা. সালেহ্‌ আহমেদ শাহীন" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.DoctorNameBn : string.Empty)
                                     </span><br>
                                     <span style="font-size: small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "এমবিবিএস, এমডি (বঙ্গবন্ধু শেখ মুজিব মেডিকেল বিশ্ববিদ্যালয়)" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.PassedMedicalDegreeBn : string.Empty)
                                     </span><br>
                                     <span style="font-size: small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "উচ্চতর প্রশিক্ষণ (এবারহার্ড কার্লস বিশ্ববিদ্যালয়, জার্মানী)" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.PassedMedicalDegreeBn : string.Empty)
                                     </span><br>
                                     <span style="font-size: medium;" class="fw-bold">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "সহযোগী অধ্যাপক ও বিভাগীয় প্রধাণ" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.DesignationBn : string.Empty)
                                     </span><br>
                                     <span style="font-size: small;" class="fw-bold">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "চর্ম ও যৌনরোগ বিভাগ" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.DepartmentBn : string.Empty)
                                     </span><br>
                                     <span style="font-size: small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "সিলেট এম........এ.জি. ওসমানী মেডিকেল কলেজ ও হাসপাতাল" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.ChemberHospitalBn : string.Empty)
                                     </span><br>
                                     <span style="font-size: small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "০১৭১২-৮৪৬১৩১ (জরুরী প্রয়োজনে)" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.MobileBn : string.Empty)
                                     </span><br>
 
                                 </div>
@@ -55,25 +55,25 @@
                                 <!-- Right Column -->
                                 <div class="col-6 text-end">
                                     <span style="font-size:large;" class="fw-bold">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "Dr. Saleh Ahmed Shaheen" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.Name : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "MBBS, MD (B.S.M Medical University)" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.PassedMedicalDegree : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "Higher Training (Eberhard Karls University, Germany)" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.PassedMedicalDegree : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;" class="fw-bold">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "Associate Professor & Head Of Dept." : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.Designation : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;" class="fw-bold">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "Dermatology & Venereology Dept." : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.Department : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "Sylhet M.A.G. Osmani Medical College & Hospital" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.ChemberHospital : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "01712-846131 (In Emergency)" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.Mobile : string.Empty)
                                     </span><br>
 
                                 </div>
@@ -90,8 +90,8 @@
                                     <span style="@tstyle" class="fw-bold fst-italic px-2">
                                         @((PrescriptionViewModelss?.IsHeader == true) ? "যখন আমি রোগাক্রান্ত হই, তখন তিনিই (আল্লাহতায়ালা) আমাকে আরোগ্য দান করেন। সূরা আশ-শুআরা-৮০" : string.Empty)
                                     </span>
-                                    
-                                    
+
+
 
                                 </div>
 
@@ -433,28 +433,20 @@
                                         </ol>
                                     </div>
 
+                                    <div id="advicePresc" class="refferTempLine" style="padding-left: 1.5em; margin-top: 40px; font-size: x-small;">
+                                        <style>
+                                            .refferTempLine p {
+                                                line-height: 0.5;
+                                            }
+                                        </style>
                                     @{
                                         if (PrescriptionViewModelss.reffer != null || PrescriptionViewModelss.reffer != "")
                                         {
-                                            <div id="advicePresc" class="refferTempLine" style="padding-left: 1.5em; margin-top: 40px; font-size: x-small;">
-                                                <style>
-                                                    .refferTempLine p {
-                                                        line-height: 0.5;
-                                                    }
-                                                    </style>
+                                            
                                                 @((MarkupString)PrescriptionViewModelss.reffer)
-                                            </div>
-                                            // <p><strong style="color: rgb(0, 0, 0);"><u>রেফার/পরবর্তী চিকিৎসার জন্যঃ</u></strong></p>
-
-                                            // <p><strong style="color: rgb(0, 0, 0);">ডা. এস. আলম চৌধুরী</strong></p>
-
-                                            // <p><span style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">এমবিবিএস, এফসিপিএস (মেডিসিন),</span></p>
-
-                                            // <p><strong style="color: rgb(0, 0, 0);">মেডিসিন বিশেষজ্ঞ</strong></p>
-
-                                            // <p><span style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">জিলসফট ডায়াগনোস্টিক সেন্টার, ঢাকা।</span></p>
                                         }
                                     }
+                                    </div>
 
                                     @{
                                         bool hasValidDataAdv = PrescriptionViewModelss.advice != null
@@ -516,7 +508,7 @@
 
                         <footer style="line-height: 1.2;position: absolute;bottom: 0;width: 100%;text-align: center;font-size: x-small; height:130px;">
                             <div class="row border-top pt-2">
-                                
+
                                 <div class="col-4">
                                     <div class="chemberPresc">
                                         <span style="font-size: medium;" class="fw-bold">
@@ -524,16 +516,16 @@
                                             {
                                                 @: <u>চেম্বারঃ</u>
                                             }
-                                            
+
                                         </span> <br>
                                         <span style="font-size: small;" class="fw-bold">
-                                            @((PrescriptionViewModelss?.IsHeader == true) ? "ইবনে সিনা হাসপাতাল সিলেট লিঃ" : string.Empty)
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.ChemberHospitalBn : string.Empty)
                                         </span> <br>
                                         <span style="font-size: x-small;">
-                                            @((PrescriptionViewModelss?.IsHeader == true) ? "সোবহানীঘাট পয়েন্ট, সিলেট। রুম নং- ৪২৮" : string.Empty)
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.ChemberAddressBn : string.Empty)
                                         </span> <br>
                                         <span style="font-size: x-small;">
-                                            @((PrescriptionViewModelss?.IsHeader == true) ? "ফোনঃ ০২ ৯৯ ৬৬ ৪০০ ১০-১৯" : string.Empty)
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.PhoneBn : string.Empty)
                                         </span> <br>
 
                                     </div>
@@ -547,16 +539,16 @@
                                             }
                                         </span> <br>
                                         <span style="font-size: small;">
-                                            @((PrescriptionViewModelss?.IsHeader == true) ? "০৯ ৬৩৬ ৩০০ ৩০০" : string.Empty)
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.PhoneBn : string.Empty)
                                         </span> <br>
                                         <span style="font-size: x-small;">
-                                            @((PrescriptionViewModelss?.IsHeader == true) ? "(সকাল ৮ টা)" : string.Empty)
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? GetBanglaTime(PrescriptionViewModelss?.doctor?.StartTime) : string.Empty)
                                         </span> <br>
                                         <span style="font-size: small;">
-                                            @((PrescriptionViewModelss?.IsHeader == true) ? "০১৭২৬-৩৪৮৭৬১" : string.Empty)
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.DoctorPhnSLBn : string.Empty)
                                         </span> <br>
                                         <span style="font-size: x-small;">
-                                            @((PrescriptionViewModelss?.IsHeader == true) ? "(সকাল ৮ টা - বিকাল ৩ টা)" : string.Empty)
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? GetBanglaTime(PrescriptionViewModelss?.doctor?.StartTime) + " - " + GetBanglaTime(PrescriptionViewModelss?.doctor?.EndTime) : string.Empty)
                                         </span> <br>
 
                                     </div>
@@ -569,10 +561,10 @@
                                         @((PrescriptionViewModelss?.IsHeader == true) ? "প্রতিদিন" : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "বিকাল ৪ টা থেকে রাত ৯ টা" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? GetBanglaTime(PrescriptionViewModelss?.doctor?.StartTime) + " - " + GetBanglaTime(PrescriptionViewModelss?.doctor?.EndTime) : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;" class="fw-bold">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? "(শুক্রবার যোগাযোগ সাপেক্ষে)" : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.OffDayNotesBn : string.Empty)
                                     </span><br>
 
                                 </div>
