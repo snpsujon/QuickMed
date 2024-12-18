@@ -1,0 +1,79 @@
+﻿@page "/dbpath"
+@using QuickMed.DB
+@inject ApplicationDbContext _db
+@inject IJSRuntime JS
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-danger text-center">
+            <h3 class="text-light">Database Path</h3>
+        </div>
+        <div class="card-body text-center">
+            <p class="lead mb-4">Below is the path to your database file:</p>
+            <div class="input-group mb-3">
+                <input type="text" id="dbPathInput" class="form-control" value="@dbpath" readonly>
+                <button class="btn btn-outline-primary" @onclick="CopyToClipboard">
+                    <i class="bi bi-clipboard"></i> Copy
+                </button>
+            </div>
+            <div id="copyMessage" class="text-success" style="display: none;">
+                <i class="bi bi-check-circle"></i> Copied to clipboard!
+            </div>
+            <div id="errorMessage" class="text-danger" style="display: none;">
+                <i class="bi bi-exclamation-circle"></i> Failed to copy!
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    string dbpath = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        dbpath = _db.GetDatabasePath();
+    }
+
+    private async Task CopyToClipboard()
+    {
+        try
+        {
+#if WINDOWS
+        // Use platform-specific code for Windows clipboard
+        await Clipboard.Default.SetTextAsync(dbpath);
+#elif MACCATALYST
+        // Use platform-specific code for macOS clipboard
+        await Clipboard.Default.SetTextAsync(dbpath);
+#else
+            // Use JavaScript for Android and fallback platforms
+            // await JS.InvokeVoidAsync("copyTextToClipboard", dbpath);
+            await Clipboard.SetTextAsync(dbpath);
+
+#endif
+
+            await ShowCopyMessage();
+        }
+        catch (Exception)
+        {
+            await ShowErrorMessage();
+        }
+    }
+
+    private async Task ShowCopyMessage()
+    {
+        await JS.InvokeVoidAsync("eval", @"
+            const copyMessage = document.getElementById('copyMessage');
+            copyMessage.style.display = 'block';
+            setTimeout(() => copyMessage.style.display = 'none', 2000);
+        ");
+    }
+
+    private async Task ShowErrorMessage()
+    {
+        await JS.InvokeVoidAsync("eval", @"
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.style.display = 'block';
+            setTimeout(() => errorMessage.style.display = 'none', 2000);
+        ");
+    }
+}

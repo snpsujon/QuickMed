@@ -27,22 +27,24 @@
     {
 
         StateHasChanged(); // Trigger UI update
-        UpdateDB();
-        await JS.InvokeVoidAsync("toggleLoadingIcon", "downloadIcon");
+        await JS.InvokeVoidAsync("toggleLoadingIcon", "downloadIcon", true);
+        await UpdateDB();
+        await JS.InvokeVoidAsync("toggleLoadingIcon", "downloadIcon", false);
 
         // Simulate an update check with a delay
-        await Task.Delay(3000); // Replace this with your actual update checking logic
+        // await Task.Delay(3000); // Replace this with your actual update checking logic
 
         StateHasChanged(); // Trigger UI update
     }
 
-    private async void UpdateDB()
+    private async Task UpdateDB()
     {
         await _service.SyncSqlToLiteAsync<DrugDosage>("Admin");
         await _service.SyncSqlToLiteAsync<DrugGeneric>("Admin");
         await _service.SyncSqlToLiteAsync<DrugManufacturer>("Admin");
         await _service.SyncSqlToLiteAsync<DrugType>("Admin");
         await _service.SyncSqlToLiteAsync<DrugMedicine>("Admin");
+
     }
 
 

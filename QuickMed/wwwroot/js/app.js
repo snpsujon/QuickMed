@@ -182,18 +182,20 @@ window.saveAsFile = function (fileName, byteBase64) {
 };
 
 
-function toggleLoadingIcon(id) {
+function toggleLoadingIcon(id, isLoading) {
     const icon = document.getElementById(id);
 
-    // Immediately show loading icon with rotation effect
-    icon.className = 'dripicons-loading display-3 refreshing'; // Replace with loading icon class
-
-    // Set a 3-second timeout to revert back to the original icon
-    setTimeout(() => {
-        icon.className = 'dripicons-time-reverse display-3'; // Revert to original icon
-        icon.style.color = 'red';
-    }, 3000); // 3-second loading time
+    if (isLoading) {
+        // Show loading icon with rotation effect
+        icon.className = 'dripicons-loading display-3 refreshing'; // Replace with loading icon class
+        icon.style.color = ''; // Reset color
+    } else {
+        // Revert to the original icon
+        icon.className = 'dripicons-time-reverse display-3'; // Replace with original icon class
+        icon.style.color = 'red'; // Set color
+    }
 }
+
 
 window.uploadFile = async (element) => {
     const file = element.files[0];
