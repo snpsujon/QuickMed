@@ -87,7 +87,7 @@
                                             tstyle = "font-size: small; background-color:black;color:#fff;";
                                         }
                                     }
-                                    <span style="@tstyle" class="fw-bold fst-italic px-2">
+                                    <span style="@tstyle" class="fw-bold fst-italic px-2 py-2">
                                         @((PrescriptionViewModelss?.IsHeader == true) ? "যখন আমি রোগাক্রান্ত হই, তখন তিনিই (আল্লাহতায়ালা) আমাকে আরোগ্য দান করেন। সূরা আশ-শুআরা-৮০" : string.Empty)
                                     </span>
 
@@ -107,7 +107,7 @@
                                     @{
                                         var sex = PrescriptionViewModelss?.pdata?.Sex == "Select" ? "" : "(" + (@PrescriptionViewModelss?.pdata?.Sex) + ")";
                                     }
-                                    <span>@PrescriptionViewModelss?.pdata?.Name @sex - @PrescriptionViewModelss?.pdata?.RegNo</span>
+                                    <span>নামঃ @PrescriptionViewModelss?.pdata?.Name @sex - @PrescriptionViewModelss?.pdata?.RegNo</span>
                                 </div>
                                 <!-- Age -->
                                 <div class="col text-center">
