@@ -8,7 +8,7 @@
     <div class="col-xl-12 d-flex">
         <div class="card w-100">
             <div class="card-header text-center bg-info">
-                <h4 class="card-title text-light mb-0 fs-4">Check Your Data</h4>
+                <h4 class="card-title text-light mb-0 fs-4">Update Drug DataBase</h4>
                 <p class="text-light mb-0">
                     You must have to turn on Internet Connection.
                 </p>
@@ -21,8 +21,29 @@
     </div><!--end col-->
 </div><!--end row-->
 
+<div class="row mt-4">
+    <div class="col-xl-12 d-flex">
+        <div class="card w-100">
+            <div class="card-header text-center bg-info">
+                <h4 class="card-title text-light mb-0 fs-4">Check Software Upgrade</h4>
+                <p class="text-light mb-0">
+                    You must have to turn on Internet Connection.
+                </p>
+            </div><!--end card-header-->
+            <div class="card-body d-flex justify-content-center align-items-center">
+                @*<i id="downloadIcon" class="dripicons-time-reverse display-3" style="color: red;" onclick="toggleLoadingIcon()"></i>*@
+                <i id="downloadIcons" class="dripicons-time-reverse display-3" style="color: red;" @onclick="CheckingSoftUpgrade"></i>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div><!--end col-->
+</div><!--end row-->
+
+
+
+
 @code {
 
+private List<TblLicenseInfo> tblLicenses = new();
     private async void CheckingUpgrade()
     {
 
@@ -36,6 +57,69 @@
 
         StateHasChanged(); // Trigger UI update
     }
+
+
+    private async Task CheckingSoftUpgrade()
+    {
+        await JS.InvokeVoidAsync("toggleLoadingIcon", "downloadIcons", true);
+        if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+        {
+            await JS.InvokeVoidAsync("alert", "No Internet Connection! Please connect to the internet and try again.");
+            await JS.InvokeVoidAsync("toggleLoadingIcon", "downloadIcons", false);
+            return;
+        }
+
+        try
+        {
+            // Define your API endpoint
+            var apiUrl = "https://quickmed.snpsujon.me/api/Software/GetLatestVersion";
+
+            // Create HttpClient with custom handler
+            var handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true; // Ignore certificate validation errors
+            var client = new HttpClient(handler);
+
+            // Send GET request to the API
+            var response = await client.GetAsync(apiUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Parse the response
+                var latestVersion = await response.Content.ReadAsStringAsync();
+tblLicenses = await App.Database.GetTableRowsAsync<TblLicenseInfo>("TblLicenseInfo");
+                // Get the current software version from the database
+                var currentVersion = tblLicenses.FirstOrDefault()?.SoftVersion ?? "1.0.0";
+
+                // Compare the versions
+                if (latestVersion != currentVersion)
+                {
+                    await JS.InvokeVoidAsync("alert", $"New version found: {latestVersion}. Please update your software from here or call us. - https://qmdownload.techstdio.com/");
+                }
+                else
+                {
+                    await JS.InvokeVoidAsync("alert", "No updates found. You are on the latest version.");
+                }
+                await JS.InvokeVoidAsync("toggleLoadingIcon", "downloadIcons", false);
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("alert", "No updates found.");
+                await JS.InvokeVoidAsync("toggleLoadingIcon", "downloadIcons", false);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle errors
+            await JS.InvokeVoidAsync("alert", $"Error occurred: No updates found. {ex.Message}");
+            await JS.InvokeVoidAsync("toggleLoadingIcon", "downloadIcons", false);
+        }
+    }
+
+
+
+
+
+
 
     private async Task UpdateDB()
     {

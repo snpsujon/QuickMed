@@ -5,6 +5,7 @@
 @inject ApplicationDbContext _db;
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
+@using Microsoft.Maui.Networking;
 
 <div class="page">
     <main>
@@ -28,49 +29,67 @@
         tblLicenses = await App.Database.GetTableRowsAsync<TblLicenseInfo>("TblLicenseInfo");
         if (tblLicenses.Count() != 0 && tblLicenses.First().ExpirationDate >= DateTime.Now)
         {
-            Navigation.NavigateTo("/dashboard");
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                var handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true; // This ignores all certificate validation errors
+                var client = new HttpClient(handler);
+                var modl = new { LicenseKey = tblLicenses.First().LicenseKey };
+                var response = await client.PostAsJsonAsync("https://quickmed.snpsujon.me/api/Licence/CheckValidity", modl);
+                if (response.IsSuccessStatusCode && response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    
+                    var licenseResponse = await response.Content.ReadFromJsonAsync<LicenseApiResponse>();
+                    if (licenseResponse.Data != null)
+                    {
+                        await App.Database.DeleteTableAsync("TblLicenseInfo");
+                        await App.Database.DeleteTableAsync("TblDoctor");
+                        if (licenseResponse.Data.IsValid == 1)
+                        {
+                            model.ExpirationDate = licenseResponse.Data.ExpirationDate;
+                            model.LicenseKey = tblLicenses.First().LicenseKey;
+                            model.Id = Guid.NewGuid();  // Consider changing this based on your business logic
+                            model.SoftVersion = licenseResponse.Data.SoftVersion ?? "1.0.0";
+                            await App.Database.CreateAsync(model);  // Assuming CreateAsync handles DB operations
+                            doctorModel = licenseResponse.Data.Doctor;
+                            await App.Database.CreateAsync(doctorModel);
+                            Navigation.NavigateTo("/dashboard");
+                            @* return "Congrats! Your License is Approved."; *@
+                            
+                        }
+                        else
+                        {
+                            GotoLoadPage();
+                        }
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/dashboard");
+                    }
+                }
+                else
+                {
+                    Navigation.NavigateTo("/dashboard");
+                }
+            }
+            else{
+                Navigation.NavigateTo("/dashboard");
+            }
+            
         }
         else
-
         {
             // Navigation.NavigateTo("/dashboard");
-
-            ObjectReference = DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
-            await JS.InvokeVoidAsync("LoadPage");
+            GotoLoadPage();
         }
-        // Track the current page
-        // currentPage = Navigation.Uri;
-
-        // // Conditionally invoke the JavaScript function only if the current page is not the "counter" page
-        // if (
-
-        //     !currentPage.Contains("/dashboard")
-        //     && !currentPage.Contains("/prescription")
-        //     && !currentPage.Contains("/prescriptionTemp")
-        //     && !currentPage.Contains("/prescription-list")
-        //     && !currentPage.Contains("/treatmentTemp")
-        //     && !currentPage.Contains("/favouriteTemp")
-        //     && !currentPage.Contains("/referTemp")
-        //     && !currentPage.Contains("/advice")
-        //     && !currentPage.Contains("/ixTemp")
-        //     && !currentPage.Contains("/doseTemp")
-        //     && !currentPage.Contains("/durationTemp")
-        //     && !currentPage.Contains("/dxTemp")
-        //     && !currentPage.Contains("/ccTemp")
-        //     && !currentPage.Contains("/mixTemp")
-        //     && !currentPage.Contains("/noteTemp")
-        //     && !currentPage.Contains("/appoinment")
-        //     && !currentPage.Contains("/databaseTool")
-        //     && !currentPage.Contains("/checkUpgrade")
-        //     && !currentPage.Contains("/drug")
-        // )
-        // {
-        //     await JS.InvokeVoidAsync("clearLocalStorage");
-        //     await JS.InvokeVoidAsync("LoadPage", "1");
-        // }   
+        
     }
 
+    public async Task GotoLoadPage(){
+        ObjectReference = DotNetObjectReference.Create(this);
+        await JS.InvokeVoidAsync("setInstanceReferenceForAll", ObjectReference);
+        await JS.InvokeVoidAsync("LoadPage");
+    }
     [JSInvokable("ValidateLicense")]
     public async Task<string> ValidateLicense(string license)
     {
@@ -95,6 +114,10 @@
                         model.ExpirationDate = licenseResponse.Data.ExpirationDate;
                         model.LicenseKey = license;
                         model.Id = Guid.NewGuid();  // Consider changing this based on your business logic
+                        model.SoftVersion = licenseResponse.Data.SoftVersion ?? "1.0.0";
+
+
+                        
                         await App.Database.CreateAsync(model);  // Assuming CreateAsync handles DB operations
                         doctorModel = licenseResponse.Data.Doctor;
                         await App.Database.CreateAsync(doctorModel);

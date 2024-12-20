@@ -8,6 +8,7 @@ namespace QuickMed.DB
         public Guid Id { get; set; }
         public string LicenseKey { get; set; }
         public DateTime ExpirationDate { get; set; }
+        public string? SoftVersion {get;set;}
 
     }
     public class LicenseApiResponse
@@ -20,5 +21,6 @@ namespace QuickMed.DB
         public int IsValid { get; set; }
         public DateTime ExpirationDate { get; set; }
         public TblDoctor Doctor { get; set; }
+        public string? SoftVersion {get;set;}
     }
 }
