@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using QuickMed.Interface;
 using QuickMed.ViewModels;
+using System.Text.Json;
 
 namespace QuickMed.BaseComponent
 {
@@ -33,7 +34,7 @@ namespace QuickMed.BaseComponent
         //{
         //    if (firstRender)
         //    {
-        //        await RefreshDataTable(); 
+        //        await RefreshDataTable();
         //    }
         //}
 
@@ -56,7 +57,7 @@ namespace QuickMed.BaseComponent
                     appoin.Code?.ToString() ?? string.Empty, // Note name
                     appoin.Weight?.ToString() ?? string.Empty, // Note name
                     appoin.AdmissionDate.ToString("yyyy-MM-dd"),
-                  
+
                     $@"
                     <div style='display: flex; justify-content: flex-end;'>
                         <i class='dripicons-pencil btn btn-soft-primary dTRowActionBtn' data-id='{appoin.Id}' data-method='OnEditClick'></i>
@@ -101,10 +102,42 @@ namespace QuickMed.BaseComponent
         }
 
         [JSInvokable("OnEditClick")]
-        public async Task OnEditClick(PatientVM data)
+        public async Task OnEditClick(dynamic data)
         {
-            model = data;
-            StateHasChanged(); // Re-render the component with the updated model
+            if (data.ValueKind == JsonValueKind.String)
+            {
+                var actualValue = data.GetString();
+                Guid actualGuid = Guid.Empty;
+                if (!string.IsNullOrEmpty(actualValue) && Guid.TryParse(actualValue, out actualGuid))
+                {
+                    var checkExist = models.FirstOrDefault(x => x.Id == actualGuid);
+
+                    if (checkExist != null)
+                    {
+                        checkExist.Gender = checkExist.Gender == "M" ? "1" : checkExist.Gender == "F" ? "2" : "3";
+                        model = checkExist;
+
+                        // Notify the framework of state changes to update the UI
+                        StateHasChanged();
+                    }
+                    else
+                    {
+                        Console.WriteLine("No matching model found for the provided GUID.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("The provided value is either null, empty, or not a valid GUID.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("The data is not a string. Unable to parse as GUID.");
+            }
+
+
+
+
         }
 
         [JSInvokable("OnDeleteClick")]
