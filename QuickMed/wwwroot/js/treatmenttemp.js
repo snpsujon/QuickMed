@@ -15,22 +15,23 @@ function OsudAddbtn() {
     const formData = {
         index: treatments.length + 1,
         brand: {
-            value: brandSelect.value,
-            text: brandSelect.selectedOptions[0].text
+            value: brandSelect.value === '' ? 0 : brandSelect.value,
+            text: brandSelect.selectedOptions[0]?.text || ''
         },
         dose: {
-            value: doseSelect.value,
-            text: doseSelect.selectedOptions[0].text
+            value: doseSelect.value === '' ? 0 : doseSelect.value,
+            text: doseSelect.selectedOptions[0]?.text || ''
         },
         duration: {
-            value: durationSelect.value,
-            text: durationSelect.selectedOptions[0].text
+            value: durationSelect.value === '' ? 0 : durationSelect.value,
+            text: durationSelect.selectedOptions[0]?.text || ''
         },
         instruction: {
-            value: instructionSelect.value,
-            text: instructionSelect.selectedOptions[0].text
+            value: instructionSelect.value === '' ? 0 : instructionSelect.value,
+            text: instructionSelect.selectedOptions[0]?.text || ''
         }
     };
+    
 
     // Add the object to the selections array
     treatments.push(formData);
