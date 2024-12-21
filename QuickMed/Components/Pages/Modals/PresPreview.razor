@@ -35,7 +35,7 @@
                                         @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.PassedMedicalDegreeBn : string.Empty)
                                     </span><br>
                                     <span style="font-size: small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? string.Empty : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "উচ্চতর প্রশিক্ষণ (এবারহার্ড কার্লস বিশ্ববিদ্যালয়, জার্মাণী)" : string.Empty)
                                     </span><br>
                                     <span style="font-size: medium;" class="fw-bold">
                                         @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.DesignationBn : string.Empty)
@@ -44,10 +44,10 @@
                                         @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.DepartmentBn : string.Empty)
                                     </span><br>
                                     <span style="font-size: small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.ChemberHospitalBn : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.AddressBn : string.Empty)
                                     </span><br>
                                     <span style="font-size: small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.MobileBn : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.MobileBn +" (জরুরী প্রয়োজনে)" : string.Empty)
                                     </span><br>
 
                                 </div>
@@ -61,7 +61,7 @@
                                         @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.PassedMedicalDegree : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? string.Empty : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "Higher Training (Eberhard Karls University, Germany)" : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;" class="fw-bold">
                                         @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.Designation : string.Empty)
@@ -70,15 +70,15 @@
                                         @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.Department : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.ChemberHospital : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.Address : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.Mobile : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.Mobile +" (In Emergency)" : string.Empty)
                                     </span><br>
 
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row mt-2">
                                 <div class="col-12 text-center">
                                     @{
                                         var tstyle = "";
@@ -87,7 +87,7 @@
                                             tstyle = "font-size: small; background-color:black;color:#fff;";
                                         }
                                     }
-                                    <span style="@tstyle" class="fw-bold fst-italic px-2 py-2">
+                                    <span style="@tstyle" class="fw-bold fst-italic px-2">
                                         @((PrescriptionViewModelss?.IsHeader == true) ? "যখন আমি রোগাক্রান্ত হই, তখন তিনিই (আল্লাহতায়ালা) আমাকে আরোগ্য দান করেন। সূরা আশ-শুআরা-৮০" : string.Empty)
                                     </span>
 
@@ -103,19 +103,20 @@
                             <!-- Single Row with Name, Age, Date -->
                             <div class="row border-top border-bottom py-2">
                                 <!-- Name -->
-                                <div class="col" style="padding-left: 10px;">
+                                <div class="col-2"></div>
+                                <div class="col-6" style="padding-left: 10px;">
                                     @{
                                         var sex = PrescriptionViewModelss?.pdata?.Sex == "Select" ? "" : "(" + (@PrescriptionViewModelss?.pdata?.Sex) + ")";
                                     }
-                                    <span>নামঃ @PrescriptionViewModelss?.pdata?.Name @sex - @PrescriptionViewModelss?.pdata?.RegNo</span>
+                                    <span>@((PrescriptionViewModelss?.IsHeader == true) ? "নামঃ" : string.Empty) @PrescriptionViewModelss?.pdata?.Name @sex - @PrescriptionViewModelss?.pdata?.RegNo</span>
                                 </div>
                                 <!-- Age -->
-                                <div class="col text-center">
-                                    <span>বয়সঃ @PrescriptionViewModelss?.pdata?.Age</span>
+                                <div class="col-2 text-center">
+                                    <span>@((PrescriptionViewModelss?.IsHeader == true) ? "বয়সঃ" : string.Empty) @PrescriptionViewModelss?.pdata?.Age</span>
                                 </div>
                                 <!-- Date -->
-                                <div class="col text-end">
-                                    <span>তারিখঃ @PrescriptionViewModelss?.pdata?.date</span>
+                                <div class="col-2 text-end">
+                                    <span>@((PrescriptionViewModelss?.IsHeader == true) ? "তারিখঃ" : string.Empty) @PrescriptionViewModelss?.pdata?.date</span>
                                 </div>
                             </div>
                         </section>
@@ -539,13 +540,13 @@
                                             }
                                         </span> <br>
                                         <span style="font-size: small;">
-                                            @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.PhoneBn : string.Empty)
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.DoctorPhnSLBn : string.Empty)
                                         </span> <br>
                                         <span style="font-size: x-small;">
                                             @((PrescriptionViewModelss?.IsHeader == true) ? GetBanglaTime(PrescriptionViewModelss?.doctor?.StartTime) : string.Empty)
                                         </span> <br>
                                         <span style="font-size: small;">
-                                            @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.DoctorPhnSLBn : string.Empty)
+                                            @((PrescriptionViewModelss?.IsHeader == true) ? "০১৭২৬ - ৩৮৪ ৭৬১" : string.Empty)
                                         </span> <br>
                                         <span style="font-size: x-small;">
                                             @((PrescriptionViewModelss?.IsHeader == true) ? GetBanglaTime(PrescriptionViewModelss?.doctor?.StartTime) + " - " + GetBanglaTime(PrescriptionViewModelss?.doctor?.EndTime) : string.Empty)
@@ -561,7 +562,7 @@
                                         @((PrescriptionViewModelss?.IsHeader == true) ? "প্রতিদিন" : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;">
-                                        @((PrescriptionViewModelss?.IsHeader == true) ? GetBanglaTime(PrescriptionViewModelss?.doctor?.StartTime) + " - " + GetBanglaTime(PrescriptionViewModelss?.doctor?.EndTime) : string.Empty)
+                                        @((PrescriptionViewModelss?.IsHeader == true) ? "বিকেল ৪টা - রাত ৯টা" : string.Empty)
                                     </span><br>
                                     <span style="font-size: x-small;" class="fw-bold">
                                         @((PrescriptionViewModelss?.IsHeader == true) ? PrescriptionViewModelss?.doctor?.OffDayNotesBn : string.Empty)
