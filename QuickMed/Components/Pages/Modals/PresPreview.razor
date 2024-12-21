@@ -101,17 +101,17 @@
                         <!-- Patient Information -->
                         <section class="mt-5 fw-bold" style="font-size: x-small; line-height: 1.2;">
                             <!-- Single Row with Name, Age, Date -->
-                            <div class="row border-top border-bottom py-2">
+                            <div class="row border-top border-bottom py-2" style="font-size: 13px;">
                                 <!-- Name -->
-                                <div class="col-2"></div>
-                                <div class="col-5" style="padding-left: 10px;">
+                                <div class="col-1"></div>
+                                <div class="col-6" style="padding-left: 10px;">
                                     @{
                                         var sex = PrescriptionViewModelss?.pdata?.Sex == "Select" ? "" : "(" + (@PrescriptionViewModelss?.pdata?.Sex) + ")";
                                     }
                                     <span>@((PrescriptionViewModelss?.IsHeader == true) ? "নামঃ" : string.Empty) @PrescriptionViewModelss?.pdata?.Name @sex - @PrescriptionViewModelss?.pdata?.RegNo</span>
                                 </div>
                                 <!-- Age -->
-                                <div class="col-2 text-center">
+                                <div class="col-2 text-end">
                                     <span>@((PrescriptionViewModelss?.IsHeader == true) ? "বয়সঃ" : string.Empty) @PrescriptionViewModelss?.pdata?.Age</span>
                                 </div>
                                 <!-- Date -->
@@ -408,7 +408,7 @@
 
                                 <div class="col-6 border-end">
                                     <span style="font-family: Lucida Calligraphy; margin-left: 10px; margin-top: 7px; font-size: 18pt;">
-                                        RX.
+                                        R<sub>x</sub>
                                     </span>
                                     <div id="rxListPresc" style="padding-left: 1.5em;">
                                         <ol>
@@ -419,19 +419,17 @@
 
                                                 <li>
                                                     <!-- Medicine Name -->
-                                                    <span style="font-size: small;" class="fw-bold d-block">
+                                                    <span style="font-size: small;" class="fw-bold d-block py-2">
 
                                                         @string.Join(" - ", parts)
 
                                                     </span>
                                                     <!-- Dosage and Duration -->
-                                                    <div class="d-flex justify-content-between" style="font-size: x-small;">
+                                                    <div class="d-flex justify-content-between pt-2 pb-4" style="font-size: x-small;">
                                                         <span>@row.dose.text - @row.instruction.text</span>
                                                         <span>-@row.duration.text</span>
                                                     </div>
                                                 </li>
-                                                <br/>
-                                                <br/>
 
                                             }
                                         </ol>
