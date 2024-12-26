@@ -115,7 +115,7 @@
                                     <span>@((PrescriptionViewModelss?.IsHeader == true) ? "বয়সঃ" : string.Empty) @PrescriptionViewModelss?.pdata?.Age</span>
                                 </div>
                                 <!-- Date -->
-                                <div class="col-2 text-end">
+                                <div class="col-3 text-end">
                                     <span>@((PrescriptionViewModelss?.IsHeader == true) ? "তারিখঃ" : string.Empty) @PrescriptionViewModelss?.pdata?.date</span>
                                 </div>
                             </div>
@@ -425,7 +425,7 @@
 
                                                     </span>
                                                     <!-- Dosage and Duration -->
-                                                    <div class="d-flex justify-content-between pt-2 pb-4" style="font-size: x-small;">
+                                                    <div class="d-flex justify-content-between py-2" style="font-size: x-small;">
                                                         <span>@row.dose.text - @row.instruction.text</span>
                                                         <span>-@row.duration.text</span>
                                                     </div>
