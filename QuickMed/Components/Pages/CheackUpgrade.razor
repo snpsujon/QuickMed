@@ -43,7 +43,11 @@
 
 @code {
 
-private List<TblLicenseInfo> tblLicenses = new();
+    private List<TblLicenseInfo> tblLicenses = new();
+    //private string baseUrl = "https://quickmed.snpsujon.me/api/";
+    private string baseUrl = "https://localhost:7202/api/";
+
+
     private async void CheckingUpgrade()
     {
 
@@ -72,7 +76,10 @@ private List<TblLicenseInfo> tblLicenses = new();
         try
         {
             // Define your API endpoint
-            var apiUrl = "https://quickmed.snpsujon.me/api/Software/GetLatestVersion";
+            ////var apiUrl = "https://quickmed.snpsujon.me/api/Licence/GetLatestVersion";
+
+            string OS = GetOperatingSystem();
+            var apiUrl = $"{baseUrl}Licence/GetLatestVersion?OS={OS}";
 
             // Create HttpClient with custom handler
             var handler = new HttpClientHandler();
@@ -86,7 +93,7 @@ private List<TblLicenseInfo> tblLicenses = new();
             {
                 // Parse the response
                 var latestVersion = await response.Content.ReadAsStringAsync();
-tblLicenses = await App.Database.GetTableRowsAsync<TblLicenseInfo>("TblLicenseInfo");
+                tblLicenses = await App.Database.GetTableRowsAsync<TblLicenseInfo>("TblLicenseInfo");
                 // Get the current software version from the database
                 var currentVersion = tblLicenses.FirstOrDefault()?.SoftVersion ?? "1.0.0";
 
@@ -115,6 +122,12 @@ tblLicenses = await App.Database.GetTableRowsAsync<TblLicenseInfo>("TblLicenseIn
         }
     }
 
+
+    private string GetOperatingSystem()
+    {
+        string OS = "WINDOWS";       
+        return OS;
+    }
 
 
 

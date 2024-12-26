@@ -24,6 +24,8 @@
     private List<TblLicenseInfo> tblLicenses = new();
     private TblLicenseInfo model = new();
 
+    //private string baseUrl = "https://quickmed.snpsujon.me/api/";
+    private string baseUrl = "https://localhost:7202/api/";
     protected override async Task OnInitializedAsync()
     {
         tblLicenses = await App.Database.GetTableRowsAsync<TblLicenseInfo>("TblLicenseInfo");
@@ -38,7 +40,7 @@
                 var response = await client.PostAsJsonAsync("https://quickmed.snpsujon.me/api/Licence/CheckValidity", modl);
                 if (response.IsSuccessStatusCode && response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    
+
                     var licenseResponse = await response.Content.ReadFromJsonAsync<LicenseApiResponse>();
                     if (licenseResponse.Data != null)
                     {
@@ -55,7 +57,7 @@
                             await App.Database.CreateAsync(doctorModel);
                             Navigation.NavigateTo("/dashboard");
                             @* return "Congrats! Your License is Approved."; *@
-                            
+
                         }
                         else
                         {
@@ -75,14 +77,14 @@
             else{
                 Navigation.NavigateTo("/dashboard");
             }
-            
+
         }
         else
         {
             // Navigation.NavigateTo("/dashboard");
             GotoLoadPage();
         }
-        
+
     }
 
     public async Task GotoLoadPage(){
@@ -100,7 +102,9 @@
             handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true; // This ignores all certificate validation errors
             var client = new HttpClient(handler);
             var modl = new { LicenseKey = license };
-            var response = await client.PostAsJsonAsync("https://quickmed.snpsujon.me/api/Licence/CheckValidity", modl);
+            var response = await client.PostAsJsonAsync($"{baseUrl}Licence/CheckValidity", modl);
+
+            var ClaimedLicense = await client.PostAsJsonAsync($"{baseUrl}Licence/ClaimedLicense", modl);
             if (response.IsSuccessStatusCode && response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var licenseResponse = await response.Content.ReadFromJsonAsync<LicenseApiResponse>();
@@ -117,16 +121,16 @@
                         model.SoftVersion = licenseResponse.Data.SoftVersion ?? "1.0.0";
 
 
-                        
+
                         await App.Database.CreateAsync(model);  // Assuming CreateAsync handles DB operations
                         doctorModel = licenseResponse.Data.Doctor;
                         await App.Database.CreateAsync(doctorModel);
                         return "Congrats! Your License is Approved.";
-                        
+
                     }
                     else
                     {
-                        return "License Key Expired.";
+                        return "License Key Expired OR User License Limit Exceeded";
                     }
                 }
                 else
@@ -142,7 +146,7 @@
         else
         {
             return "Please Connect to Internet";
-        }    
-    } 
+        }
+    }
 
   }

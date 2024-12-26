@@ -407,7 +407,8 @@ namespace QuickMed.DB
                         new TblInstruction { Id = Guid.NewGuid(), Name = "খাবার আগে" },
                         new TblInstruction { Id = Guid.NewGuid(), Name = "খাবার পরে" },
                         new TblInstruction { Id = Guid.NewGuid(), Name = "গোসলের আগে" },
-                        new TblInstruction { Id = Guid.NewGuid(), Name = "গোসলের পরে" }
+                        new TblInstruction { Id = Guid.NewGuid(), Name = "গোসলের পরে" },
+                        new TblInstruction { Id = Guid.NewGuid(), Name = "গোসলের সময়" },
 
 
 
